@@ -1,0 +1,5 @@
+name: Commons
+version: ${project.version}
+main: cl.bgmp.commons.Commons
+api-version: 1.13
+authors: [BGMP]

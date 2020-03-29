@@ -1,0 +1,15 @@
+navigator:
+  enabled: true
+  title: "&b&lAvailable Servers"
+  size: 27
+  servers:
+    13:
+      name: Local
+      ip: localhost
+      port: 25565
+      item:
+        material: GRASS_BLOCK
+        title: "&b&lElMedievo"
+        lore:
+          - ""
+          - "&aOnline: %player_count%"

@@ -1,0 +1,7 @@
+name: Lobby
+version: ${project.version}
+main: cl.bgmp.lobby.Lobby
+api-version: '1.13'
+authors: [BGMP]
+description: Lobby plugin
+depend: [NPCLibPlugin]

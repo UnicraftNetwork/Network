@@ -1,0 +1,9 @@
+name: ElMedievo
+version: ${project.version}
+main: cl.bgmp.elmedievo.ElMedievo
+prefix: ElMedievo
+authors: [BGem]
+api-version: '1.13'
+description: The Medieval Plugin
+softdepend: [Multiverse-Core]
+website: https://elmedievo.org/

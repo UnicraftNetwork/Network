@@ -81,6 +81,10 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>bgm</id>
+            <url>https://bgmp.cl/</url>
+        </repository>
     </repositories>
 
     <dependencies>

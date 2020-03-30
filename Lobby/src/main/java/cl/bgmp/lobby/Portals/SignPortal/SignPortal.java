@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SignPortal extends BungeePortal implements Listener {
   private Sign sign;
-  private SignRefreshTask signRefreshTask = new SignRefreshTask(this);
+  private SignRefreshTask signRefreshTask;
 
   public SignPortal(String id, Server server, Location location) {
     super(id, server, location, PortalType.SIGN);
@@ -28,6 +28,7 @@ public class SignPortal extends BungeePortal implements Listener {
     if (!(blockState instanceof Sign)) return;
 
     this.sign = (Sign) blockState;
+    this.signRefreshTask = new SignRefreshTask(this);
     Lobby.get().registerEvents(this);
   }
 

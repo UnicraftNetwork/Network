@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import net.jitse.npclib.api.NPC;
 import net.jitse.npclib.api.skin.MineSkinFetcher;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.jdom2.DataConversionException;
 import org.jdom2.Element;
@@ -51,7 +52,10 @@ public class PortalFactory {
           final Element mineskinModule = element.getChild("mineskin");
 
           final List<String> title =
-              titleLineModules.stream().map(Element::getText).collect(Collectors.toList());
+              titleLineModules
+                  .stream() // TODO: Create a new utils method to specify colour characters
+                  .map(line -> ChatColor.translateAlternateColorCodes('$', line.getText()))
+                  .collect(Collectors.toList());
           final String skinId = mineskinModule.getText();
 
           final NPC npc = Lobby.get().getNPCLib().createNPC(title);

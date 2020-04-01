@@ -54,7 +54,7 @@ public class Translator {
     else return translate(((Player) sender).getLocale(), toTranslate);
   }
 
-  public static void notifyMissingTranslations(Logger logger) {
+  public static void notifyMissingTranslations(final Logger logger) {
     final Class chatConstant = ChatConstant.class;
     final Field[] constants = chatConstant.getDeclaredFields();
     final Set<Field> missingTranslations =
@@ -62,6 +62,6 @@ public class Translator {
             .filter(constant -> constant.isAnnotationPresent(MissingTranslation.class))
             .collect(Collectors.toSet());
 
-    logger.info("[Translator] " + missingTranslations.size() + " translations are missing!");
+    logger.info(missingTranslations.size() + " translations are missing!");
   }
 }

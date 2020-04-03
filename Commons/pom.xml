@@ -80,6 +80,10 @@
             <id>bgm</id>
             <url>https://bgmp.cl/</url>
         </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -108,6 +112,12 @@
             <groupId>cl.bgmp</groupId>
             <artifactId>Utils-Bukkit</artifactId>
             <version>1.15.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

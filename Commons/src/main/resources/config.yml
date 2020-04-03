@@ -13,3 +13,7 @@ navigator:
         lore:
           - ""
           - "&aOnline: %player_count%"
+chat:
+  vault-formatting:
+    enabled: true
+    format: "<{prefix}{name}{suffix}> {message}"

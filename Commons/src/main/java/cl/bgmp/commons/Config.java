@@ -81,4 +81,19 @@ public class Config {
       return ImmutableSet.copyOf(serverButtons);
     }
   }
+
+  private static final String chatPath = "chat";
+  private static final String vaultFormattingPath = chatPath + ".vault-formatting";
+  private static final String vaultFormattingEnabledPath = vaultFormattingPath + ".enabled";
+  private static final String vaultFormattingFormatPath = vaultFormattingPath + ".format";
+
+  public static class ChatFormat {
+    public static boolean isEnabled() {
+      return getConfig().getBoolean(vaultFormattingEnabledPath);
+    }
+
+    public static String getFormat() {
+      return getConfig().getString(vaultFormattingFormatPath);
+    }
+  }
 }

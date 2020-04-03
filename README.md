@@ -1,5 +1,5 @@
 # Network
-All Minecraft plugins used by the UdeC Craft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
+Minecraft plugins used by the UdeC Craft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
 
 *Minecraft version:* `1.15.2`
 

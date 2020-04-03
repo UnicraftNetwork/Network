@@ -18,6 +18,7 @@ public class TPACommand {
   @Command(
       aliases = {"tpa"},
       desc = "Sends a teleport request to a player.",
+      usage = "<player>",
       min = 1,
       max = 1)
   public static void tpa(final CommandContext args, final CommandSender sender) {
@@ -34,8 +35,8 @@ public class TPACommand {
       return;
     }
 
-    Player player = (Player) sender;
     TPAManager tpaManager = ElMedievo.get().getTpaManager();
+    Player player = (Player) sender;
     TPA tpa = new TPA(player, playerTo);
 
     if (tpaManager.getMatchingTPA(tpa).isPresent())

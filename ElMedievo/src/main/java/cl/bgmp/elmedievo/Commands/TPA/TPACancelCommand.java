@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 public class TPACancelCommand {
 
+  // TODO: Allow players to cancel specific TPA requests
   @Command(
       aliases = {"tpcancel", "tpacancel"},
       desc = "Cancels one outgoing teleport request.",

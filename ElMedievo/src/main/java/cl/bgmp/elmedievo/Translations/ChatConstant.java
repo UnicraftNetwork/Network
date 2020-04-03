@@ -39,6 +39,10 @@ public enum ChatConstant {
   NO_TPAS("No Teleport requests to display."),
   @MissingTranslation
   TPA_MAP("TPA Map"),
+  @MissingTranslation
+  ACCEPT_BUTTON("Accept"),
+  @MissingTranslation
+  ACCEPT_BUTTON_HOVER("Click to accept"),
 
   // Misc
   @MissingTranslation

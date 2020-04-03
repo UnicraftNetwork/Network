@@ -39,8 +39,27 @@ public class TPAManager {
     return queue.stream().filter(tpaMatch -> tpaMatch.equals(tpa)).findFirst();
   }
 
-  public Optional<TPA> getPlayerIncomingTPA(Player player) {
-    return queue.stream().filter(tpa -> tpa.getPlayerTo().equals(player)).findFirst();
+  /**
+   * Retrieves the oldest TPA added to queue which matches the provided player as target
+   *
+   * @param target The player the TPA was sent to
+   * @return The oldest TPA, which may or may not be present
+   */
+  public Optional<TPA> getPlayerIncomingTPA(Player target) {
+    return queue.stream().filter(tpa -> tpa.getPlayerTo().equals(target)).findFirst();
+  }
+
+  /**
+   * Retrieves a specific TPA match
+   *
+   * @param target The player the TPA in queue was sent to
+   * @param sender The player who requested the TPA to the target
+   * @return The specific TPA match, which may or may not be present
+   */
+  public Optional<TPA> getPlayerSpecificIncomingTPA(Player target, Player sender) {
+    return queue.stream()
+        .filter(tpa -> tpa.getPlayerTo().equals(target) && tpa.getSender().equals(sender))
+        .findFirst();
   }
 
   public Optional<TPA> getPlayerOutgoingTPA(Player player) {

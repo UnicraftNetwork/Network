@@ -16,7 +16,7 @@ public class PortalsXMLManager {
   private String fileName = "portals.xml";
   private File fileInDataFolder = new File(Lobby.get().getDataFolder(), fileName);
   private Document portalsXML;
-  private List<Element> portals;
+  private List<Element> portalModules;
 
   public PortalsXMLManager() {
     if (!fileInDataFolder.exists()) {
@@ -26,19 +26,19 @@ public class PortalsXMLManager {
       } catch (IOException | NullPointerException e) {
         e.printStackTrace();
       }
+    }
 
-      try {
-        this.portalsXML = new SAXBuilder().build(fileInDataFolder);
-      } catch (JDOMException | IOException e) {
-        e.printStackTrace();
-      }
+    try {
+      this.portalsXML = new SAXBuilder().build(fileInDataFolder);
+    } catch (JDOMException | IOException e) {
+      e.printStackTrace();
     }
 
     final Element root = Objects.requireNonNull(portalsXML).getRootElement();
-    this.portals = root.getChildren();
+    this.portalModules = root.getChildren();
   }
 
   public List<Element> getAllPortalModules() {
-    return portals;
+    return portalModules;
   }
 }

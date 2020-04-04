@@ -1,16 +1,12 @@
 <!-- Sample Configuration -->
 
 <portals>
-    <signs>
-        <sign id="sign-1" location="0.5,100,0.5" bungee-server="local" ip="localhost" port="25565"/>
-    </signs>
-    <npcs>
-        <npc id="npc-1" location="0.5,100,0.5,0.0,0.0" bungee-server="local" ip="localhost" port="25565">
-            <title>
-                <line>line1</line>
-                <line>line2</line>
-            </title>
-            <mineskin>770682880</mineskin> <!-- Generated over at https://mineskin.org/ -->
-        </npc>
-    </npcs>
+    <sign id="sign-1" location="0.5,100,0.5" bungee-server="local" ip="localhost" port="25565"/>
+    <npc id="npc-1" location="0.5,100,0.5,0.0,0.0" bungee-server="local" ip="localhost" port="25565">
+        <title>
+            <line>line1</line>
+            <line>line2</line>
+        </title>
+        <mineskin>770682880</mineskin> <!-- Generated over at https://mineskin.org/ -->
+    </npc>
 </portals>

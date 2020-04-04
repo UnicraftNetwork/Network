@@ -4,7 +4,7 @@ import cl.bgmp.commons.Chat.ChatFormatter;
 import cl.bgmp.commons.Navigator.ServerButton;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.Items;
+import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Server;
 import cl.bgmp.utilsbukkit.Validate;
 import com.google.common.collect.ImmutableSet;
@@ -41,19 +41,19 @@ public class Config {
     public static String getTitle() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorTitlePath)))
         return defaultTitle;
-      return getConfig().getString(navigatorTitlePath);
+      else return getConfig().getString(navigatorTitlePath);
     }
 
     public static int getSize() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorSizePath)))
         return defaultSize;
-      return getConfig().getInt(navigatorSizePath);
+      else return getConfig().getInt(navigatorSizePath);
     }
 
     public static boolean isEnabled() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
         return defaultEnabledState;
-      return getConfig().getBoolean(navigatorEnabledPath);
+      else return getConfig().getBoolean(navigatorEnabledPath);
     }
 
     public static Set<ServerButton> getServerButtons() {

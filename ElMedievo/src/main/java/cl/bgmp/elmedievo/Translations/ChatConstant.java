@@ -49,7 +49,9 @@ public enum ChatConstant {
   NUMBER_STRING_EXCEPTION("Expected a number, string received instead."),
   @MissingTranslation
   UNKNOWN_ERROR("An unknown error has occurred."),
-  INVALID_PLAYER("No players matched query.");
+  INVALID_PLAYER("No players matched query."),
+  @MissingTranslation
+  SPAWN_TELEPORTED("You have been teleported to the spawn.");
 
   private String string;
 

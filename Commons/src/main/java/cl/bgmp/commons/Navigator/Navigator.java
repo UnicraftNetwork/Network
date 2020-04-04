@@ -3,15 +3,21 @@ package cl.bgmp.commons.Navigator;
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
 import cl.bgmp.utilsbukkit.Chat;
+import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Items.PlayerHeads;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /** The server navigator players are given when joining */
 public class Navigator implements Listener {
@@ -27,11 +33,20 @@ public class Navigator implements Listener {
     }
   }
 
+  // TODO: Move this out of here and come up with an idea to modularise it
+  private static List<ItemStack> onJoinItems = new ArrayList<ItemStack>() {{
+      add(Items.titledItemStackWithLore(Material.COMPASS, Chat.colourify("&9&lTeleport Tool&r"), new String[]{Chat.colourify("&7Click to teleport!&r")}));
+      add(Items.titledItemStack(Material.RABBIT_FOOT, Chat.colourify("&5&lEdit Wand")));
+  }};
+
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     final Player player = event.getPlayer();
     player.getInventory().clear();
     player.getInventory().setItem(4, navigator);
+
+    if (player.hasPermission("commons.items.compass")) player.getInventory().addItem(onJoinItems.get(0));
+    if (player.hasPermission("commons.items.rabbit_foot")) player.getInventory().addItem(onJoinItems.get(1));
   }
 
   @EventHandler

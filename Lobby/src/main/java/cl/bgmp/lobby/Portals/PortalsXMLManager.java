@@ -1,26 +1,41 @@
 package cl.bgmp.lobby.Portals;
 
 import cl.bgmp.lobby.Lobby;
-import cl.bgmp.utilsbukkit.FileUtils;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 public class PortalsXMLManager {
   private String fileName = "portals.xml";
+  private File fileInDataFolder = new File(Lobby.get().getDataFolder(), fileName);
+  private Document portalsXML;
   private List<Element> portals;
 
   public PortalsXMLManager() {
-    try {
-      final Document portalsXML =
-          FileUtils.buildXMLDocumentFromFileAtResources(
-              Lobby.get(), new File(Lobby.get().getDataFolder(), fileName), fileName);
-      final Element root = Objects.requireNonNull(portalsXML).getRootElement();
-      this.portals = root.getChildren();
-    } catch (NullPointerException ignore) {
+    if (!fileInDataFolder.exists()) {
+      try {
+        FileUtils.copyInputStreamToFile(
+                Objects.requireNonNull(Lobby.get().getResource(fileName)), fileInDataFolder);
+      } catch (IOException | NullPointerException e) {
+        e.printStackTrace();
+      }
+
+      try {
+        this.portalsXML = new SAXBuilder().build(fileInDataFolder);
+      } catch (JDOMException | IOException e) {
+        e.printStackTrace();
+      }
     }
+
+    final Element root = Objects.requireNonNull(portalsXML).getRootElement();
+    this.portals = root.getChildren();
   }
 
   public List<Element> getAllPortalModules() {

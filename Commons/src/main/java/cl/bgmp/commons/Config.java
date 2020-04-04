@@ -1,16 +1,19 @@
 package cl.bgmp.commons;
 
+import cl.bgmp.commons.Chat.ChatFormatter;
 import cl.bgmp.commons.Navigator.ServerButton;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.Items;
 import cl.bgmp.utilsbukkit.Server;
+import cl.bgmp.utilsbukkit.Validate;
 import com.google.common.collect.ImmutableSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,22 +26,33 @@ public class Config {
     else return new YamlConfiguration();
   }
 
-  private static final String navigatorPath = "navigator";
-  private static final String navigatorEnabledPath = navigatorPath + ".enabled";
-  private static final String navigatorTitlePath = navigatorPath + ".title";
-  private static final String navigatorSizePath = navigatorPath + ".size";
-  private static final String navigatorServersPath = navigatorPath + ".servers";
-
   public static class Navigator {
+    private static final String navigatorPath = "navigator";
+    private static final String navigatorEnabledPath = navigatorPath + ".enabled";
+    private static final String navigatorTitlePath = navigatorPath + ".title";
+    private static final String navigatorSizePath = navigatorPath + ".size";
+    private static final String navigatorServersPath = navigatorPath + ".servers";
+
+    private static final String defaultTitle =
+        ChatColor.BLUE.toString() + ChatColor.BOLD + "Navigator";
+    private static final int defaultSize = 27;
+    private static final boolean defaultEnabledState = false;
+
     public static String getTitle() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorTitlePath)))
+        return defaultTitle;
       return getConfig().getString(navigatorTitlePath);
     }
 
     public static int getSize() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorSizePath)))
+        return defaultSize;
       return getConfig().getInt(navigatorSizePath);
     }
 
     public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
+        return defaultEnabledState;
       return getConfig().getBoolean(navigatorEnabledPath);
     }
 
@@ -82,18 +96,25 @@ public class Config {
     }
   }
 
-  private static final String chatPath = "chat";
-  private static final String vaultFormattingPath = chatPath + ".vault-formatting";
-  private static final String vaultFormattingEnabledPath = vaultFormattingPath + ".enabled";
-  private static final String vaultFormattingFormatPath = vaultFormattingPath + ".format";
-
   public static class ChatFormat {
+    private static final String chatPath = "chat";
+    private static final String vaultFormattingPath = chatPath + ".vault-formatting";
+    private static final String vaultFormattingEnabledPath = vaultFormattingPath + ".enabled";
+    private static final String vaultFormattingFormatPath = vaultFormattingPath + ".format";
+
+    private static final boolean defaultEnabledState = false;
+    private static final String defaultFormat = ChatFormatter.DEFAULT_FORMAT;
+
     public static boolean isEnabled() {
-      return getConfig().getBoolean(vaultFormattingEnabledPath);
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingEnabledPath)))
+        return defaultEnabledState;
+      else return getConfig().getBoolean(vaultFormattingEnabledPath);
     }
 
     public static String getFormat() {
-      return getConfig().getString(vaultFormattingFormatPath);
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingFormatPath)))
+        return defaultFormat;
+      else return getConfig().getString(vaultFormattingFormatPath);
     }
   }
 }

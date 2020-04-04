@@ -20,7 +20,7 @@ public class ChatFormatter implements Listener {
   private static final String MESSAGE = "{message}";
   private static final String PREFIX = "{prefix}";
   private static final String SUFFIX = "{suffix}";
-  private static final String DEFAULT_FORMAT = "<" + PREFIX + NAME + SUFFIX + "> " + MESSAGE;
+  public static final String DEFAULT_FORMAT = "<" + PREFIX + NAME + SUFFIX + "> " + MESSAGE;
 
   private String format;
   private Chat vaultChat = null;

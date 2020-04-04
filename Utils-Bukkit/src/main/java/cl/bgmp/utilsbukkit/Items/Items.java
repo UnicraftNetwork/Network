@@ -1,11 +1,13 @@
-package cl.bgmp.utilsbukkit;
+package cl.bgmp.utilsbukkit.Items;
 
 import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public interface Items {
   static ItemStack titledItemStack(Material material, String title) {
@@ -20,12 +22,6 @@ public interface Items {
   static ItemStack titledItemStackWithLore(Material material, String title, String[] lore) {
     ItemStack itemStack = titledItemStack(material, title);
     ItemMeta itemMeta = itemStack.getItemMeta();
-
-    int i = 0;
-    for (String line : lore) {
-      lore[i] = line;
-      i++;
-    }
 
     itemMeta.setLore(Arrays.asList(lore));
     itemStack.setItemMeta(itemMeta);

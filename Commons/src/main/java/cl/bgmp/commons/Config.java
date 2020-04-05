@@ -26,6 +26,10 @@ public class Config {
     else return new YamlConfiguration();
   }
 
+  public static void reload() {
+    Commons.get().reloadConfig();
+  }
+
   public static class Tools {
     private static final String onJoinToolsPath = "onjoin-tools";
 

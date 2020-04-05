@@ -36,6 +36,7 @@ public class ChatFormatter implements Listener {
   }
 
   public void reloadConfigValues() {
+    Config.reload();
     format =
         cl.bgmp.utilsbukkit.Chat.colourify(
             Config.ChatFormat.getFormat().replace(DISPLAY_NAME, "%1$s").replace(MESSAGE, "%2$s"));

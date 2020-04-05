@@ -26,6 +26,17 @@ public class Config {
     else return new YamlConfiguration();
   }
 
+  public static class Tools {
+    private static final String onJoinToolsPath = "onjoin-tools";
+
+    private static final boolean defaultOnJoinToolsState = false;
+
+    public static boolean areEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(onJoinToolsPath))) return defaultOnJoinToolsState;
+      else return getConfig().getBoolean(onJoinToolsPath);
+    }
+  }
+
   public static class Navigator {
     private static final String navigatorPath = "navigator";
     private static final String navigatorEnabledPath = navigatorPath + ".enabled";

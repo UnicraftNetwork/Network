@@ -2,7 +2,10 @@ package cl.bgmp.commons;
 
 import cl.bgmp.commons.Chat.ChatFormatter;
 import cl.bgmp.commons.Commands.ChatFormatterCommand;
-import cl.bgmp.commons.Navigator.Navigator;
+import cl.bgmp.commons.Modules.Module;
+import cl.bgmp.commons.Modules.ModuleManager;
+import cl.bgmp.commons.Modules.NavigatorModule;
+import cl.bgmp.commons.Modules.JoinToolsModule;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
@@ -22,19 +25,20 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public final class Commons extends JavaPlugin {
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+public final class Commons extends JavaPlugin implements ModuleManager {
   private static Commons commons;
-  private Navigator navigator;
   private ChatFormatter chatFormatter;
   private CommandsManager commands;
   private CommandsManagerRegistration commandRegistry;
 
+  private Set<Module> modules = new HashSet<>();
+
   public static Commons get() {
     return commons;
-  }
-
-  public Navigator getNavigator() {
-    return navigator;
   }
 
   public ChatFormatter getChatFormatter() {
@@ -77,14 +81,16 @@ public final class Commons extends JavaPlugin {
 
     Channels.registerBungeeToPlugin(this);
 
-    navigator = new Navigator();
     chatFormatter = new ChatFormatter(getLogger());
 
     commands = new BukkitCommandsManager();
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
 
-    registerCommands();
+    registerModules(new NavigatorModule(), new JoinToolsModule());
+    loadModules();
+
     registerEvents();
+    registerCommands();
   }
 
   @Override
@@ -100,8 +106,23 @@ public final class Commons extends JavaPlugin {
     for (Listener listener : listeners) pluginManager.registerEvents(listener, this);
   }
 
-  public void loadConfiguration() {
+  private void loadConfiguration() {
     getConfig().options().copyDefaults(true);
     saveConfig();
+  }
+
+  @Override
+  public void registerModules(Module... modules) {
+    this.modules.addAll(Arrays.asList(modules));
+  }
+
+  @Override
+  public void loadModules() {
+    this.modules.forEach(Module::load);
+  }
+
+  @Override
+  public Module getModule(String id) {
+    return this.modules.stream().filter(module -> module.getId().equals(id)).findFirst().orElse(null);
   }
 }

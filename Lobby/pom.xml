@@ -42,10 +42,12 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
-                                <excludes>
-                                    <exclude>org.hamcrest:*</exclude>
-                                    <exclude>com.google.guava:*</exclude>
-                                </excludes>
+                                <includes>
+                                    <include>com.sk89q:*</include>
+                                    <include>cl.bgmp:*</include>
+                                    <include>org.jdom:*</include>
+                                    <include>org.jetbrains:*</include>
+                                </includes>
                             </artifactSet>
                         </configuration>
                     </execution>

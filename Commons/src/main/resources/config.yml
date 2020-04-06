@@ -18,3 +18,7 @@ chat:
   vault-formatting:
     enabled: true
     format: "<{prefix}{name}{suffix}> {message}"
+force-gamemode:
+  enabled: true
+  exempt-permission: "commons.defaultgamemode.exempt"
+  gamemode: survival

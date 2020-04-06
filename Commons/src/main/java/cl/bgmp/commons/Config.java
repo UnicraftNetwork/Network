@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -130,6 +131,44 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingFormatPath)))
         return defaultFormat;
       else return getConfig().getString(vaultFormattingFormatPath);
+    }
+  }
+
+  public static class ForceGamemode {
+    private static final String forceGamemodePath = "force-gamemode";
+    private static final String forceGamemodeEnabledPath = forceGamemodePath + ".enabled";
+    private static final String forceGamemodeExemptPermissionPath = forceGamemodePath + ".exempt-permission";
+    private static final String forcedGamemodePath = forceGamemodePath + ".gamemode";
+
+    private static final boolean defaultForceState = false;
+    private static final String defaultPermission = "commons.defaultgamemode.exempt";
+    private static final GameMode defaultGamemode = GameMode.SURVIVAL;
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeEnabledPath))) return defaultForceState;
+      else return getConfig().getBoolean(forceGamemodeEnabledPath);
+    }
+
+    public static String getGamemodeForceExemptPermission() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeExemptPermissionPath))) return defaultPermission;
+      else return getConfig().getString(forceGamemodeExemptPermissionPath);
+    }
+
+    public static GameMode getGamemode() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forcedGamemodePath))) return defaultGamemode;
+      else {
+        final String gamemodeString = getConfig().getString(forcedGamemodePath);
+        assert gamemodeString != null;
+
+        if (gamemodeString.equals("0") || gamemodeString.equalsIgnoreCase("survival")) return GameMode.SURVIVAL;
+        if (gamemodeString.equals("1") || gamemodeString.equalsIgnoreCase("creative")) return GameMode.CREATIVE;
+        if (gamemodeString.equals("2") || gamemodeString.equalsIgnoreCase("adventure")) return GameMode.ADVENTURE;
+        if (gamemodeString.equals("3") || gamemodeString.equalsIgnoreCase("spectator")) return GameMode.SPECTATOR;
+
+        Commons.get().getLogger().warning("Unable to parse default gamemode. Check your config.yml.");
+        Commons.get().getLogger().warning("Default gamemode was default to SURVIVAL.");
+        return GameMode.SURVIVAL;
+      }
     }
   }
 }

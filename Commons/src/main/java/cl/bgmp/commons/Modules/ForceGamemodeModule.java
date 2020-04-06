@@ -8,22 +8,22 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ForceGamemodeModule extends Module {
 
-    public ForceGamemodeModule() {
-        super(ModuleId.FORCE_GAMEMODE, Config.ForceGamemode.isEnabled());
-    }
+  public ForceGamemodeModule() {
+    super(ModuleId.FORCE_GAMEMODE, Config.ForceGamemode.isEnabled());
+  }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission(Config.ForceGamemode.getGamemodeForceExemptPermission())) return;
-        event.getPlayer().setGameMode(Config.ForceGamemode.getGamemode());
-    }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerJoin(PlayerJoinEvent event) {
+    if (event.getPlayer().hasPermission(Config.ForceGamemode.getGamemodeForceExemptPermission()))
+      return;
+    event.getPlayer().setGameMode(Config.ForceGamemode.getGamemode());
+  }
 
-    @Override
-    public void load() {
-        if (enabled) Commons.get().registerEvents(this);
-    }
+  @Override
+  public void load() {
+    if (enabled) Commons.get().registerEvents(this);
+  }
 
-    @Override
-    public void unload() {
-    }
+  @Override
+  public void unload() {}
 }

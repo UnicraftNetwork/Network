@@ -10,9 +10,9 @@ public class Navigator {
   private String[] lore = new String[] {Chat.colourify("&7Right-Click to pick a Server!&r")};
   private ItemStack navigator = PlayerHeads.titledPlayerHeadWithLore("Skyron_Varn", title, lore);
 
-  // Note: if navigator's item happens to be a player head, it must contain a lore for validation matters!
-  public Navigator() {
-  }
+  // Note: if navigator's item happens to be a player head, it must contain a lore for validation
+  // matters!
+  public Navigator() {}
 
   public ItemStack getItem() {
     return navigator;

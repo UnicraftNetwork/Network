@@ -1,6 +1,6 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.commons.Chat.ChatFormatter;
+import cl.bgmp.commons.Modules.ChatFormatModule;
 import cl.bgmp.commons.Navigator.ServerButton;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
@@ -37,7 +37,8 @@ public class Config {
     private static final boolean defaultOnJoinToolsState = false;
 
     public static boolean areEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(onJoinToolsPath))) return defaultOnJoinToolsState;
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(onJoinToolsPath)))
+        return defaultOnJoinToolsState;
       else return getConfig().getBoolean(onJoinToolsPath);
     }
   }
@@ -119,7 +120,7 @@ public class Config {
     private static final String vaultFormattingFormatPath = vaultFormattingPath + ".format";
 
     private static final boolean defaultEnabledState = false;
-    private static final String defaultFormat = ChatFormatter.DEFAULT_FORMAT;
+    private static final String defaultFormat = ChatFormatModule.DEFAULT_FORMAT;
 
     public static boolean isEnabled() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingEnabledPath)))
@@ -137,7 +138,8 @@ public class Config {
   public static class ForceGamemode {
     private static final String forceGamemodePath = "force-gamemode";
     private static final String forceGamemodeEnabledPath = forceGamemodePath + ".enabled";
-    private static final String forceGamemodeExemptPermissionPath = forceGamemodePath + ".exempt-permission";
+    private static final String forceGamemodeExemptPermissionPath =
+        forceGamemodePath + ".exempt-permission";
     private static final String forcedGamemodePath = forceGamemodePath + ".gamemode";
 
     private static final boolean defaultForceState = false;
@@ -145,27 +147,37 @@ public class Config {
     private static final GameMode defaultGamemode = GameMode.SURVIVAL;
 
     public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeEnabledPath))) return defaultForceState;
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeEnabledPath)))
+        return defaultForceState;
       else return getConfig().getBoolean(forceGamemodeEnabledPath);
     }
 
     public static String getGamemodeForceExemptPermission() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeExemptPermissionPath))) return defaultPermission;
+      if (!Validate.pathsAreValid(
+          getConfig().getConfigurationSection(forceGamemodeExemptPermissionPath)))
+        return defaultPermission;
       else return getConfig().getString(forceGamemodeExemptPermissionPath);
     }
 
     public static GameMode getGamemode() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forcedGamemodePath))) return defaultGamemode;
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forcedGamemodePath)))
+        return defaultGamemode;
       else {
         final String gamemodeString = getConfig().getString(forcedGamemodePath);
         assert gamemodeString != null;
 
-        if (gamemodeString.equals("0") || gamemodeString.equalsIgnoreCase("survival")) return GameMode.SURVIVAL;
-        if (gamemodeString.equals("1") || gamemodeString.equalsIgnoreCase("creative")) return GameMode.CREATIVE;
-        if (gamemodeString.equals("2") || gamemodeString.equalsIgnoreCase("adventure")) return GameMode.ADVENTURE;
-        if (gamemodeString.equals("3") || gamemodeString.equalsIgnoreCase("spectator")) return GameMode.SPECTATOR;
+        if (gamemodeString.equals("0") || gamemodeString.equalsIgnoreCase("survival"))
+          return GameMode.SURVIVAL;
+        if (gamemodeString.equals("1") || gamemodeString.equalsIgnoreCase("creative"))
+          return GameMode.CREATIVE;
+        if (gamemodeString.equals("2") || gamemodeString.equalsIgnoreCase("adventure"))
+          return GameMode.ADVENTURE;
+        if (gamemodeString.equals("3") || gamemodeString.equalsIgnoreCase("spectator"))
+          return GameMode.SPECTATOR;
 
-        Commons.get().getLogger().warning("Unable to parse default gamemode. Check your config.yml.");
+        Commons.get()
+            .getLogger()
+            .warning("Unable to parse default gamemode. Check your config.yml.");
         Commons.get().getLogger().warning("Default gamemode was default to SURVIVAL.");
         return GameMode.SURVIVAL;
       }

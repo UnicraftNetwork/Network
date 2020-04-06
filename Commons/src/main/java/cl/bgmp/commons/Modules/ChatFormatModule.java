@@ -1,4 +1,4 @@
-package cl.bgmp.commons.Chat;
+package cl.bgmp.commons.Modules;
 
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
@@ -7,14 +7,13 @@ import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.event.server.ServiceUnregisterEvent;
 
-public class ChatFormatter implements Listener {
-
+public class ChatFormatModule extends Module {
   // Placeholder constants
+
   private static final String NAME = "{name}";
   private static final String DISPLAY_NAME = "{displayname}";
   private static final String MESSAGE = "{message}";
@@ -26,13 +25,8 @@ public class ChatFormatter implements Listener {
   private Chat vaultChat = null;
   private Logger logger;
 
-  public ChatFormatter(Logger logger) {
-    if (!Config.ChatFormat.isEnabled()) return;
-    this.logger = logger;
-
-    reloadConfigValues();
-    refreshVault();
-    Commons.get().registerEvents(this);
+  public ChatFormatModule() {
+    super(ModuleId.CHAT_FORMAT, Config.ChatFormat.isEnabled());
   }
 
   public void reloadConfigValues() {
@@ -86,4 +80,12 @@ public class ChatFormatter implements Listener {
     format = format.replace(NAME, e.getPlayer().getName());
     e.setFormat(format);
   }
+
+  @Override
+  public void load() {
+    if (enabled) Commons.get().registerEvents(this);
+  }
+
+  @Override
+  public void unload() {}
 }

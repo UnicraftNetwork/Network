@@ -1,13 +1,13 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.commons.Chat.ChatFormatter;
 import cl.bgmp.commons.Commands.ChatFormatterCommand;
+import cl.bgmp.commons.Modules.ChatFormatModule;
+import cl.bgmp.commons.Modules.ForceGamemodeModule;
+import cl.bgmp.commons.Modules.JoinToolsModule;
 import cl.bgmp.commons.Modules.Module;
 import cl.bgmp.commons.Modules.ModuleId;
 import cl.bgmp.commons.Modules.ModuleManager;
 import cl.bgmp.commons.Modules.NavigatorModule;
-import cl.bgmp.commons.Modules.JoinToolsModule;
-import cl.bgmp.commons.Modules.ForceGamemodeModule;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
@@ -19,6 +19,10 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.CommandsManager;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,14 +31,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public final class Commons extends JavaPlugin implements ModuleManager {
   private static Commons commons;
-  private ChatFormatter chatFormatter;
   private CommandsManager commands;
   private CommandsManagerRegistration commandRegistry;
 
@@ -42,10 +40,6 @@ public final class Commons extends JavaPlugin implements ModuleManager {
 
   public static Commons get() {
     return commons;
-  }
-
-  public ChatFormatter getChatFormatter() {
-    return chatFormatter;
   }
 
   @SuppressWarnings("unchecked")
@@ -84,12 +78,14 @@ public final class Commons extends JavaPlugin implements ModuleManager {
 
     Channels.registerBungeeToPlugin(this);
 
-    chatFormatter = new ChatFormatter(getLogger());
-
     commands = new BukkitCommandsManager();
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
 
-    registerModules(new NavigatorModule(), new JoinToolsModule(), new ForceGamemodeModule());
+    registerModules(
+        new NavigatorModule(),
+        new JoinToolsModule(),
+        new ForceGamemodeModule(),
+        new ChatFormatModule());
     loadModules();
 
     registerEvents();
@@ -121,11 +117,17 @@ public final class Commons extends JavaPlugin implements ModuleManager {
 
   @Override
   public void loadModules() {
-    this.modules.stream().filter(Module::isEnabled).collect(Collectors.toSet()).forEach(Module::load);
+    this.modules.stream()
+        .filter(Module::isEnabled)
+        .collect(Collectors.toSet())
+        .forEach(Module::load);
   }
 
   @Override
   public Module getModule(ModuleId id) {
-    return this.modules.stream().filter(module -> module.getId().equals(id)).findFirst().orElse(null);
+    return this.modules.stream()
+        .filter(module -> module.getId().equals(id))
+        .findFirst()
+        .orElse(null);
   }
 }

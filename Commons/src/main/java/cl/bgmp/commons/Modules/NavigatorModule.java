@@ -11,11 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class NavigatorModule extends Module {
-    public static final String id = "navigator-module";
     private Navigator navigator = new Navigator();
 
     public NavigatorModule() {
-        super(id);
+        super(ModuleId.NAVIGATOR, Config.Navigator.isEnabled());
     }
 
     public Navigator getNavigator() {
@@ -44,7 +43,6 @@ public class NavigatorModule extends Module {
 
     @Override
     public void load() {
-        this.enabled = Config.Navigator.isEnabled();
         if (enabled) Commons.get().registerEvents(this);
     }
 

@@ -3,6 +3,7 @@ package cl.bgmp.commons;
 import cl.bgmp.commons.Chat.ChatFormatter;
 import cl.bgmp.commons.Commands.ChatFormatterCommand;
 import cl.bgmp.commons.Modules.Module;
+import cl.bgmp.commons.Modules.ModuleId;
 import cl.bgmp.commons.Modules.ModuleManager;
 import cl.bgmp.commons.Modules.NavigatorModule;
 import cl.bgmp.commons.Modules.JoinToolsModule;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class Commons extends JavaPlugin implements ModuleManager {
   private static Commons commons;
@@ -119,11 +121,11 @@ public final class Commons extends JavaPlugin implements ModuleManager {
 
   @Override
   public void loadModules() {
-    this.modules.forEach(Module::load);
+    this.modules.stream().filter(Module::isEnabled).collect(Collectors.toSet()).forEach(Module::load);
   }
 
   @Override
-  public Module getModule(String id) {
+  public Module getModule(ModuleId id) {
     return this.modules.stream().filter(module -> module.getId().equals(id)).findFirst().orElse(null);
   }
 }

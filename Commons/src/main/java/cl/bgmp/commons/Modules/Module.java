@@ -3,14 +3,15 @@ package cl.bgmp.commons.Modules;
 import org.bukkit.event.Listener;
 
 public abstract class Module implements Listener {
-    protected String id;
+    protected ModuleId id;
     protected boolean enabled;
 
-    public Module(String id) {
+    public Module(ModuleId id, boolean enabled) {
         this.id = id;
+        this.enabled = enabled;
     }
 
-    public String getId() {
+    public ModuleId getId() {
         return id;
     }
 

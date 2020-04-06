@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JoinToolsModule extends Module {
-    public static final String id = "join-module";
 
+    // TODO: Probably not the best of practices to keep this here
     private static List<ItemStack> onJoinTools = new ArrayList<ItemStack>() {{
         add(Items.titledItemStackWithLore(Material.COMPASS, Chat.colourify("&9&lTeleport Tool&r"), new String[]{Chat.colourify("&7Click to teleport!&r")}));
         add(Items.titledItemStack(Material.RABBIT_FOOT, Chat.colourify("&5&lEdit Wand")));
     }};
 
     public JoinToolsModule() {
-        super(id);
+        super(ModuleId.JOIN_TOOLS, Config.Tools.areEnabled());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -31,10 +31,10 @@ public class JoinToolsModule extends Module {
         final Player player = event.getPlayer();
         player.getInventory().clear();
 
-        final Module module = Commons.get().getModule(NavigatorModule.id);
+        final Module module = Commons.get().getModule(ModuleId.NAVIGATOR);
         if (module != null) {
             final NavigatorModule navigatorModule = (NavigatorModule) module;
-            if (navigatorModule.isEnabled()) player.getInventory().setItem(4, navigatorModule.getNavigator().getItem());
+            player.getInventory().setItem(4, navigatorModule.getNavigator().getItem());
         }
 
         if (!player.hasPermission("commons.tools")) return;
@@ -44,7 +44,6 @@ public class JoinToolsModule extends Module {
 
     @Override
     public void load() {
-        this.enabled = Config.Tools.areEnabled();
         if (enabled) Commons.get().registerEvents(this);
     }
 

@@ -7,10 +7,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ForceGamemodeModule extends Module {
-    public static final String id = "forcegamemode-module";
 
     public ForceGamemodeModule() {
-        super(id);
+        super(ModuleId.FORCE_GAMEMODE, Config.ForceGamemode.isEnabled());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -21,7 +20,6 @@ public class ForceGamemodeModule extends Module {
 
     @Override
     public void load() {
-        this.enabled = Config.ForceGamemode.isEnabled();
         if (enabled) Commons.get().registerEvents(this);
     }
 

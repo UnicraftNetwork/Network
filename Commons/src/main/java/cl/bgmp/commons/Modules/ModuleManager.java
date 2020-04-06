@@ -6,5 +6,5 @@ public interface ModuleManager {
 
     void loadModules();
 
-    Module getModule(String id);
+    Module getModule(ModuleId id);
 }

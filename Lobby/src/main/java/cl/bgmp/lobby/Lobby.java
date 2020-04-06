@@ -4,16 +4,31 @@ import cl.bgmp.lobby.Listeners.BlockEvents;
 import cl.bgmp.lobby.Listeners.PlayerEvents;
 import cl.bgmp.lobby.Portals.PortalFactory;
 import cl.bgmp.utilsbukkit.Channels;
+import cl.bgmp.utilsbukkit.Chat;
+import com.sk89q.bukkit.util.BukkitCommandsManager;
+import com.sk89q.bukkit.util.CommandsManagerRegistration;
+import com.sk89q.minecraft.util.commands.CommandException;
+import com.sk89q.minecraft.util.commands.CommandPermissionsException;
+import com.sk89q.minecraft.util.commands.CommandUsageException;
+import com.sk89q.minecraft.util.commands.CommandsManager;
+import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
+import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import net.jitse.npclib.NPCLib;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class Lobby extends JavaPlugin {
   private static Lobby lobby;
   private PortalFactory portalFactory;
   private NPCLib npcLib;
+  private CommandsManager commands;
+  private CommandsManagerRegistration commandRegistry;
 
   public static Lobby get() {
     return lobby;
@@ -23,21 +38,61 @@ public final class Lobby extends JavaPlugin {
     return npcLib;
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public boolean onCommand(
+      @NotNull CommandSender sender,
+      Command command,
+      @NotNull String label,
+      @NotNull String[] args) {
+    try {
+      this.commands.execute(command.getName(), args, sender, sender);
+    } catch (CommandPermissionsException exception) {
+      sender.sendMessage(Chat.getStringAsException("You do not have permission"));
+    } catch (MissingNestedCommandException exception) {
+      sender.sendMessage(Chat.getStringAsException(exception.getUsage()));
+    } catch (CommandUsageException exception) {
+      sender.sendMessage(ChatColor.RED + exception.getMessage());
+      sender.sendMessage(ChatColor.RED + exception.getUsage());
+    } catch (WrappedCommandException exception) {
+      if (exception.getCause() instanceof NumberFormatException) {
+        sender.sendMessage(Chat.getStringAsException("Expected a number. Received string instead"));
+      } else {
+        sender.sendMessage(Chat.getStringAsException("An unknown error has occurred."));
+        exception.printStackTrace();
+      }
+    } catch (CommandException exception) {
+      sender.sendMessage(ChatColor.RED + exception.getMessage());
+    }
+    return true;
+  }
+
   @Override
   public void onEnable() {
     lobby = this;
+
+    // Registers Bungee's outgoing channel used for bungee-related things
+    Channels.registerBungeeToPlugin(this);
+
+    // Instantiates the NPC library used to create NPC portals
+    npcLib = new NPCLib(this);
+
     loadConfiguration();
 
-    npcLib = new NPCLib(this);
     portalFactory = new PortalFactory();
     portalFactory.loadPortals();
 
-    Channels.registerBungeeToPlugin(this);
+    commands = new BukkitCommandsManager();
+    commandRegistry = new CommandsManagerRegistration(this, this.commands);
+
     registerEvents(new BlockEvents(), new PlayerEvents());
+    registerCommands();
   }
 
   @Override
   public void onDisable() {}
+
+  public void registerCommands() {}
 
   public void registerEvents(Listener... listeners) {
     final PluginManager pluginManager = Bukkit.getPluginManager();

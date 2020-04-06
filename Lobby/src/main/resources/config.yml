@@ -1,5 +1,6 @@
 name: "UdeC Craft"
 website: ""
+bypass-permission: "lobby.bypass"
 spawn:
   world: "world"
   point: "76.5,61.5,216.5"

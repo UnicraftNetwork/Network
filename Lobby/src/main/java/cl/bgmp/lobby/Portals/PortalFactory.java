@@ -51,9 +51,9 @@ public class PortalFactory {
           final List<Element> titleLineModules = titleModule.getChildren();
           final Element mineskinModule = element.getChild("mineskin");
 
+          // TODO: Create a new utils method to specify colour characters
           final List<String> title =
-              titleLineModules
-                  .stream() // TODO: Create a new utils method to specify colour characters
+              titleLineModules.stream()
                   .map(line -> ChatColor.translateAlternateColorCodes('$', line.getText()))
                   .collect(Collectors.toList());
           final String skinId = mineskinModule.getText();

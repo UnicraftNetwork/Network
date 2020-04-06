@@ -9,7 +9,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public final class Settings {
+public final class Config {
   private static Logger logger = Lobby.get().getLogger();
 
   private static Configuration getConfig() {
@@ -25,6 +25,10 @@ public final class Settings {
 
     public static String getWebsite() {
       return getConfig().getString("website");
+    }
+
+    public static String getBypassPermission() {
+      return getConfig().getString("bypass-permission");
     }
   }
 

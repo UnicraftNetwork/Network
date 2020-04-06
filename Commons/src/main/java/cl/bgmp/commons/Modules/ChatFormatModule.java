@@ -2,7 +2,6 @@ package cl.bgmp.commons.Modules;
 
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
-import java.util.logging.Logger;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -12,8 +11,8 @@ import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.event.server.ServiceUnregisterEvent;
 
 public class ChatFormatModule extends Module {
-  // Placeholder constants
 
+  // Placeholder constants
   private static final String NAME = "{name}";
   private static final String DISPLAY_NAME = "{displayname}";
   private static final String MESSAGE = "{message}";
@@ -21,12 +20,13 @@ public class ChatFormatModule extends Module {
   private static final String SUFFIX = "{suffix}";
   public static final String DEFAULT_FORMAT = "<" + PREFIX + NAME + SUFFIX + "> " + MESSAGE;
 
-  private String format;
+  private String format = Config.ChatFormat.getFormat();
   private Chat vaultChat = null;
-  private Logger logger;
 
   public ChatFormatModule() {
     super(ModuleId.CHAT_FORMAT, Config.ChatFormat.isEnabled());
+    refreshVault();
+    reloadConfigValues();
   }
 
   public void reloadConfigValues() {

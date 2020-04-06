@@ -26,26 +26,24 @@ public class PlayerEvents implements Listener {
     player.setFlySpeed(Config.Spawn.getFlySpeed());
   }
 
-   @EventHandler(priority = EventPriority.HIGH)
-   public void onBlockBreak(BlockBreakEvent event) {
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onBlockBreak(BlockBreakEvent event) {
     if (event.getPlayer().hasPermission(Config.Network.getBypassPermission())) return;
     event.setCancelled(true);
-   }
+  }
 
-   @EventHandler(priority = EventPriority.HIGH)
-   public void onBlockPlace(BlockPlaceEvent event) {
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onBlockPlace(BlockPlaceEvent event) {
     if (event.getPlayer().hasPermission(Config.Network.getBypassPermission())) return;
     event.setCancelled(true);
-   }
+  }
 
-   @EventHandler(priority = EventPriority.HIGH)
-   public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
-       final Entity attacker = event.getDamager();
-       final Entity damaged = event.getEntity();
-       if (damaged instanceof ArmorStand
-               || damaged instanceof ItemFrame
-               || damaged instanceof Boat
-       ) return;
-       if (attacker instanceof Player || damaged instanceof Player) event.setCancelled(true);
-   }
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
+    final Entity attacker = event.getDamager();
+    final Entity damaged = event.getEntity();
+    if (damaged instanceof ArmorStand || damaged instanceof ItemFrame || damaged instanceof Boat)
+      return;
+    if (attacker instanceof Player || damaged instanceof Player) event.setCancelled(true);
+  }
 }

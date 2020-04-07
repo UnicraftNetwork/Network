@@ -21,6 +21,7 @@ public class NavigatorModule extends Module {
     return navigator;
   }
 
+  @SuppressWarnings("ConstantConditions")
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     final ItemStack itemInHand = event.getItem();
@@ -35,7 +36,7 @@ public class NavigatorModule extends Module {
           || !navigatorItem.getItemMeta().hasLore()) return;
 
       if (itemInHand.getLore().equals(navigatorItem.getLore())) itemInHandIsNavigator = true;
-    } else if (itemInHand.equals(navigator)) itemInHandIsNavigator = true;
+    } else if (itemInHand.equals(navigator.getItem())) itemInHandIsNavigator = true;
 
     if (itemInHandIsNavigator) event.getPlayer().openInventory(new NavigatorGUI().getInventory());
   }

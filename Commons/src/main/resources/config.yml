@@ -25,3 +25,5 @@ force-gamemode:
   enabled: true
   exempt-permission: "commons.defaultgamemode.exempt"
   gamemode: survival
+weather:
+  enabled: true

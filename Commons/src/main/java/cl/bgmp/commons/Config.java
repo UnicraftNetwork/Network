@@ -204,4 +204,17 @@ public class Config {
       }
     }
   }
+
+  public static class Weather {
+    private static final String weatherPath = "weather";
+    private static final String weatherEnabledPath = weatherPath + ".enabled";
+
+    private static final boolean defaultWeatherState = false;
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(weatherEnabledPath)))
+        return defaultWeatherState;
+      else return getConfig().getBoolean(weatherEnabledPath);
+    }
+  }
 }

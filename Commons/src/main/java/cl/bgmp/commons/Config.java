@@ -113,6 +113,27 @@ public class Config {
     }
   }
 
+  public static class Tab {
+    private static final String tabPath = "tab";
+    private static final String tabEnabledPath = tabPath + ".enabled";
+    private static final String tabNickColourCodePath = tabPath + ".nicks-colour";
+
+    private static final boolean defaultTabState = false;
+    private static final String defaultTabNicksColourCode = "&b";
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(tabEnabledPath)))
+        return defaultTabState;
+      else return getConfig().getBoolean(tabEnabledPath);
+    }
+
+    public static String getNicksColourCode() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(tabNickColourCodePath)))
+        return defaultTabNicksColourCode;
+      else return getConfig().getString(tabNickColourCodePath);
+    }
+  }
+
   public static class ChatFormat {
     private static final String chatPath = "chat";
     private static final String vaultFormattingPath = chatPath + ".vault-formatting";

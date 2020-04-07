@@ -4,7 +4,8 @@ public enum ModuleId {
   CHAT_FORMAT("chatformat-module"),
   FORCE_GAMEMODE("forcegamemode-module"),
   NAVIGATOR("navigator-module"),
-  JOIN_TOOLS("jointools-module");
+  JOIN_TOOLS("jointools-module"),
+  TAB("tab-module");
 
   private String toString;
 

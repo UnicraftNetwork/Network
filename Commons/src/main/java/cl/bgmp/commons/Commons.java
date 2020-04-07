@@ -8,6 +8,7 @@ import cl.bgmp.commons.Modules.Module;
 import cl.bgmp.commons.Modules.ModuleId;
 import cl.bgmp.commons.Modules.ModuleManager;
 import cl.bgmp.commons.Modules.NavigatorModule;
+import cl.bgmp.commons.Modules.TabModule;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
@@ -85,7 +86,8 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         new NavigatorModule(),
         new JoinToolsModule(),
         new ForceGamemodeModule(),
-        new ChatFormatModule());
+        new ChatFormatModule(),
+        new TabModule());
     loadModules();
 
     registerEvents();

@@ -29,6 +29,10 @@ public class ChatFormatModule extends Module {
     reloadConfigValues();
   }
 
+  public Chat getVaultChat() {
+    return vaultChat;
+  }
+
   public void reloadConfigValues() {
     Config.reload();
     format =

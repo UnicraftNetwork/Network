@@ -51,7 +51,12 @@ public enum ChatConstant {
   UNKNOWN_ERROR("An unknown error has occurred."),
   INVALID_PLAYER("No players matched query."),
   @MissingTranslation
-  SPAWN_TELEPORTED("You have been teleported to the spawn.");
+  SPAWN_TELEPORTED("You have been teleported to the spawn."),
+
+  // Back Command
+  @MissingTranslation
+  NO_BACK_LOCATION("You do not have a location to go back to!"),
+  TELEPORTED_BACK("You have been teleported to your last death's location.");
 
   private String string;
 

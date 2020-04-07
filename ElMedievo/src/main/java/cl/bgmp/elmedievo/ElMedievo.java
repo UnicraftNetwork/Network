@@ -1,5 +1,6 @@
 package cl.bgmp.elmedievo;
 
+import cl.bgmp.elmedievo.Commands.BackCommand;
 import cl.bgmp.elmedievo.Commands.CoordsCommand;
 import cl.bgmp.elmedievo.Commands.Reciper.Furnace.FurnaceCommand;
 import cl.bgmp.elmedievo.Commands.Reciper.ReciperCommand;
@@ -12,6 +13,7 @@ import cl.bgmp.elmedievo.Commands.TPA.TPAcceptCommand;
 import cl.bgmp.elmedievo.Listeners.PlayerEvents;
 import cl.bgmp.elmedievo.Listeners.WeatherEvents;
 import cl.bgmp.elmedievo.Reciper.Furnace.FurnaceRecipesManager;
+import cl.bgmp.elmedievo.Teleport.BackQueueManager;
 import cl.bgmp.elmedievo.Teleport.TPAManager;
 import cl.bgmp.elmedievo.Translations.ChatConstant;
 import cl.bgmp.elmedievo.Translations.Translator;
@@ -30,8 +32,9 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ElMedievo extends JavaPlugin {
   private static ElMedievo elMedievo;
-  private static TPAManager tpaManager;
-  private static FurnaceRecipesManager furnaceRecipesManager;
+  private TPAManager tpaManager;
+  private FurnaceRecipesManager furnaceRecipesManager;
+  private BackQueueManager backQueueManager;
   private CommandsManager commands;
   private CommandsManagerRegistration commandRegistry;
 
@@ -45,6 +48,10 @@ public final class ElMedievo extends JavaPlugin {
 
   public FurnaceRecipesManager getFurnaceRecipesManager() {
     return furnaceRecipesManager;
+  }
+
+  public BackQueueManager getBackQueueManager() {
+    return backQueueManager;
   }
 
   @SuppressWarnings("unchecked")
@@ -86,6 +93,7 @@ public final class ElMedievo extends JavaPlugin {
 
     tpaManager = new TPAManager();
     furnaceRecipesManager = new FurnaceRecipesManager();
+    backQueueManager = new BackQueueManager();
 
     commands = new BukkitCommandsManager();
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
@@ -115,5 +123,6 @@ public final class ElMedievo extends JavaPlugin {
     commandRegistry.register(FurnaceCommand.FurnaceParentCommand.class);
     commandRegistry.register(FurnaceCommand.class);
     commandRegistry.register(SpawnCommand.class);
+    commandRegistry.register(BackCommand.class);
   }
 }

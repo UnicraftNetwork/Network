@@ -4,6 +4,7 @@ import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Modules.ChatFormatModule;
 import cl.bgmp.commons.Modules.Module;
 import cl.bgmp.commons.Modules.ModuleId;
+import cl.bgmp.utilsbukkit.Chat;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
@@ -19,7 +20,12 @@ public class ChatFormatterCommand {
   @CommandPermissions("commons.chat.reload")
   public static void reload(final CommandContext args, final CommandSender sender) {
     final Module module = Commons.get().getModule(ModuleId.CHAT_FORMAT);
-    if (module == null) return;
+    if (module == null) {
+      sender.sendMessage(
+          Chat.getStringAsException(
+              "No chat formatting is being applied by Commons. If you would like to enable this feature, check your config.yml."));
+      return;
+    }
 
     final ChatFormatModule chatFormatModule = (ChatFormatModule) module;
     chatFormatModule.refreshVault();

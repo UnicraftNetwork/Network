@@ -19,6 +19,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+// TODO: Reduce boilerplate validation methods
 public class Config {
   private static Configuration getConfig() {
     Commons commons = Commons.get();
@@ -178,14 +179,43 @@ public class Config {
 
   public static class Weather {
     private static final String weatherPath = "weather";
-    private static final String weatherEnabledPath = weatherPath + ".enabled";
+    private static final String weatherEnabledPath = weatherPath + ".disabled";
 
     private static final boolean defaultWeatherState = false;
 
-    public static boolean isEnabled() {
+    public static boolean isDisabled() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(weatherEnabledPath)))
         return defaultWeatherState;
       else return getConfig().getBoolean(weatherEnabledPath);
+    }
+  }
+
+  public static class JoinQuitMessages {
+    private static final String joinQuitMessagesPath = "joinquit-messages";
+    private static final String joinQuitmessagesEnabledPath = joinQuitMessagesPath + ".enabled";
+    private static final String joinQuitmessageJoinPath = joinQuitMessagesPath + ".join";
+    private static final String joinQuitmessageQuitPath = joinQuitMessagesPath + ".quit";
+
+    private static final boolean joinQuitMessagesDefaultState = false;
+    private static final String joinQuitMessagesDefaultJoin = "<%player%> joined the game";
+    private static final String joinQuitMessagesDefaultQuit = "<%player%> left the game";
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessagesEnabledPath)))
+        return joinQuitMessagesDefaultState;
+      else return getConfig().getBoolean(joinQuitmessagesEnabledPath);
+    }
+
+    public static String getJoinMessage() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessageJoinPath)))
+        return joinQuitMessagesDefaultJoin;
+      else return getConfig().getString(joinQuitmessageJoinPath);
+    }
+
+    public static String getQuitMessage() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessageQuitPath)))
+        return joinQuitMessagesDefaultQuit;
+      else return getConfig().getString(joinQuitmessageQuitPath);
     }
   }
 }

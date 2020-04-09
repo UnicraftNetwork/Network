@@ -5,7 +5,8 @@ public enum ModuleId {
   FORCE_GAMEMODE("forcegamemode-module"),
   NAVIGATOR("navigator-module"),
   JOIN_TOOLS("jointools-module"),
-  WEATHER("weather-module");
+  WEATHER("weather-module"),
+  JOINQUIT_MESSAGES("joinquit-messages-module");
 
   private String toString;
 

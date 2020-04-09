@@ -4,6 +4,7 @@ import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -31,6 +32,22 @@ public class ChatFormatModule extends Module {
 
   public Chat getVaultChat() {
     return vaultChat;
+  }
+
+  public String getPlayerPrefix(final Player player) {
+    return vaultChat.getPlayerPrefix(player);
+  }
+
+  public String getPlayerFormattedPrefix(final Player player) {
+    return vaultChat.getPlayerPrefix(player);
+  }
+
+  public String getPlayerSuffix(final Player player) {
+    return vaultChat.getPlayerSuffix(player);
+  }
+
+  public String getPlayerFormattedSuffix(final Player player) {
+    return vaultChat.getPlayerSuffix(player);
   }
 
   public void reloadConfigValues() {

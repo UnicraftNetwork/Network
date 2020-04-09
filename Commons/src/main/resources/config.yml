@@ -22,5 +22,9 @@ force-gamemode:
   enabled: true
   exempt-permission: "commons.defaultgamemode.exempt"
   gamemode: survival
-weather:
+joinquit-messages:
   enabled: true
+  join: "%prefix%&b%player%%suffix%&e joined the game"
+  quit: "%prefix%&b%player%%suffix%&e left the game"
+weather:
+  disabled: true

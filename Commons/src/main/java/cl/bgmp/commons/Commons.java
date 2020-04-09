@@ -3,6 +3,7 @@ package cl.bgmp.commons;
 import cl.bgmp.commons.Commands.ChatFormatterCommand;
 import cl.bgmp.commons.Modules.ChatFormatModule;
 import cl.bgmp.commons.Modules.ForceGamemodeModule;
+import cl.bgmp.commons.Modules.JoinQuitMessageModule;
 import cl.bgmp.commons.Modules.JoinToolsModule;
 import cl.bgmp.commons.Modules.Module;
 import cl.bgmp.commons.Modules.ModuleId;
@@ -87,7 +88,8 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         new JoinToolsModule(),
         new ForceGamemodeModule(),
         new ChatFormatModule(),
-        new WeatherModule());
+        new WeatherModule(),
+        new JoinQuitMessageModule());
     loadModules();
 
     registerEvents();

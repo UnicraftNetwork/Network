@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerEvents implements Listener {
@@ -45,5 +47,17 @@ public class PlayerEvents implements Listener {
     if (damaged instanceof ArmorStand || damaged instanceof ItemFrame || damaged instanceof Boat)
       return;
     if (attacker instanceof Player || damaged instanceof Player) event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onItemPickup(PlayerAttemptPickupItemEvent event) {
+    if (event.getPlayer().hasPermission(Config.Network.getBypassPermission())) return;
+    event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onItemDrop(PlayerDropItemEvent event) {
+    if (event.getPlayer().hasPermission(Config.Network.getBypassPermission())) return;
+    event.setCancelled(true);
   }
 }

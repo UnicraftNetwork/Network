@@ -90,6 +90,7 @@ public final class ElMedievo extends JavaPlugin {
   @Override
   public void onEnable() {
     elMedievo = this;
+    loadConfiguaration();
 
     tpaManager = new TPAManager();
     furnaceRecipesManager = new FurnaceRecipesManager();
@@ -102,6 +103,11 @@ public final class ElMedievo extends JavaPlugin {
     registerEvents(new WeatherEvents(), new PlayerEvents());
 
     Translator.notifyMissingTranslations(this.getLogger());
+  }
+
+  private void loadConfiguaration() {
+    getConfig().options().copyDefaults(true);
+    saveConfig();
   }
 
   @Override

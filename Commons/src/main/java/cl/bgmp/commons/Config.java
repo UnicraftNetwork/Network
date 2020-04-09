@@ -2,7 +2,6 @@ package cl.bgmp.commons;
 
 import cl.bgmp.commons.Modules.ChatFormatModule;
 import cl.bgmp.commons.Navigator.ServerButton;
-import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Server;
@@ -96,41 +95,13 @@ public class Config {
             Items.titledItemStackWithLore(
                 Material.valueOf(materialString),
                 Chat.colourify(title),
-                lore.stream()
-                    .map(
-                        line ->
-                            Chat.colourify(
-                                line.replaceAll(
-                                    "%player_count%",
-                                    Channels.getPrettyServerPlayerCount(serverIp, serverPort))))
-                    .collect(Collectors.toList()));
+                lore.stream().map(Chat::colourify).collect(Collectors.toList()));
 
         serverButtons.add(
             new ServerButton(new Server(serverName, serverIp, serverPort), item, slot));
       }
 
       return ImmutableSet.copyOf(serverButtons);
-    }
-  }
-
-  public static class Tab {
-    private static final String tabPath = "tab";
-    private static final String tabEnabledPath = tabPath + ".enabled";
-    private static final String tabNickColourCodePath = tabPath + ".nicks-colour";
-
-    private static final boolean defaultTabState = false;
-    private static final String defaultTabNicksColourCode = "&b";
-
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(tabEnabledPath)))
-        return defaultTabState;
-      else return getConfig().getBoolean(tabEnabledPath);
-    }
-
-    public static String getNicksColourCode() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(tabNickColourCodePath)))
-        return defaultTabNicksColourCode;
-      else return getConfig().getString(tabNickColourCodePath);
     }
   }
 

@@ -18,9 +18,6 @@ chat:
   vault-formatting:
     enabled: true
     format: "<{prefix}{name}{suffix}> {message}"
-tab:
-  enabled: true
-  nicks-colour: "&b"
 force-gamemode:
   enabled: true
   exempt-permission: "commons.defaultgamemode.exempt"

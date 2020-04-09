@@ -218,4 +218,16 @@ public class Config {
       else return getConfig().getString(joinQuitmessageQuitPath);
     }
   }
+
+  public static class Lobby {
+    public static final String lobbyPath = "lobby";
+
+    public static final String defaultLobby = "Lobby";
+
+    public static String getLobbyServerName() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(lobbyPath)))
+        return defaultLobby;
+      else return getConfig().getString(lobbyPath);
+    }
+  }
 }

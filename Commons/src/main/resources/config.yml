@@ -28,3 +28,4 @@ joinquit-messages:
   quit: "%prefix%&b%player%%suffix%&e left the game"
 weather:
   disabled: true
+lobby: "Lobby"

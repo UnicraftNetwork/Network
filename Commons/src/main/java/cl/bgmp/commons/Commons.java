@@ -1,6 +1,7 @@
 package cl.bgmp.commons;
 
 import cl.bgmp.commons.Commands.ChatFormatterCommand;
+import cl.bgmp.commons.Commands.LobbyCommand;
 import cl.bgmp.commons.Modules.ChatFormatModule;
 import cl.bgmp.commons.Modules.ForceGamemodeModule;
 import cl.bgmp.commons.Modules.JoinQuitMessageModule;
@@ -102,6 +103,7 @@ public final class Commons extends JavaPlugin implements ModuleManager {
   public void registerCommands() {
     commandRegistry.register(ChatFormatterCommand.ChatFormatterParentCommand.class);
     commandRegistry.register(ChatFormatterCommand.class);
+    commandRegistry.register(LobbyCommand.class);
   }
 
   public void registerEvents(Listener... listeners) {

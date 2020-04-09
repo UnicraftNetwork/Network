@@ -31,6 +31,7 @@ public interface Channels {
     }
   }
 
+  // TODO: Rework an async cache system
   static String getPrettyServerPlayerCount(final String ip, final int port) {
     try {
       final Socket socket = new Socket(ip, port);

@@ -1,7 +1,6 @@
 package cl.bgmp.lobby.Portals.SignPortal;
 
 import cl.bgmp.lobby.Lobby;
-import cl.bgmp.utilsbukkit.Channels;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SignRefreshTask extends BukkitRunnable {
@@ -13,9 +12,5 @@ public class SignRefreshTask extends BukkitRunnable {
   }
 
   @Override
-  public void run() {
-    signPortal.update(
-        Channels.getPrettyServerPlayerCount(
-            signPortal.getServer().getIp(), signPortal.getServer().getPort()));
-  }
+  public void run() {}
 }

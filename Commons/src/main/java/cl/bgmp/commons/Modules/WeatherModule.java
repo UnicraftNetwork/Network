@@ -8,7 +8,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 public class WeatherModule extends Module {
 
   public WeatherModule() {
-    super(ModuleId.WEATHER, Config.Weather.isEnabled());
+    super(ModuleId.WEATHER, Config.Weather.isDisabled());
   }
 
   @EventHandler

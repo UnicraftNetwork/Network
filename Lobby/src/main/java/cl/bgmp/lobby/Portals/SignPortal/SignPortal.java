@@ -35,14 +35,14 @@ public class SignPortal extends BungeePortal implements Listener {
     return signRefreshTask;
   }
 
-  public void update(String playerCount) {
+  public void update(String line3) {
     final String line0 = ChatColor.GRAY + "Connect to:";
     final String line1 =
         ChatColor.WHITE + "[" + ChatColor.GOLD + server.getName() + ChatColor.WHITE + "]";
 
     sign.setLine(0, line0);
     sign.setLine(1, line1);
-    sign.setLine(2, playerCount);
+    sign.setLine(3, line3);
     sign.update(true);
   }
 

@@ -1,6 +1,7 @@
 package cl.bgmp.lobby.Portals.SignPortal;
 
 import cl.bgmp.lobby.Lobby;
+import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SignRefreshTask extends BukkitRunnable {
@@ -12,5 +13,8 @@ public class SignRefreshTask extends BukkitRunnable {
   }
 
   @Override
-  public void run() {}
+  public void run() {
+    // TODO: This shouldn't be hardcoded
+    signPortal.update(ChatColor.AQUA + "Towny");
+  }
 }

@@ -1,19 +1,12 @@
 package cl.bgmp.elmedievo;
 
-import cl.bgmp.elmedievo.Commands.BackCommand;
 import cl.bgmp.elmedievo.Commands.CoordsCommand;
 import cl.bgmp.elmedievo.Commands.Reciper.Furnace.FurnaceCommand;
 import cl.bgmp.elmedievo.Commands.Reciper.ReciperCommand;
 import cl.bgmp.elmedievo.Commands.SpawnCommand;
-import cl.bgmp.elmedievo.Commands.TPA.TPACancelCommand;
-import cl.bgmp.elmedievo.Commands.TPA.TPACommand;
-import cl.bgmp.elmedievo.Commands.TPA.TPADenyCommand;
-import cl.bgmp.elmedievo.Commands.TPA.TPAList;
-import cl.bgmp.elmedievo.Commands.TPA.TPAcceptCommand;
 import cl.bgmp.elmedievo.Listeners.PlayerEvents;
 import cl.bgmp.elmedievo.Listeners.WeatherEvents;
 import cl.bgmp.elmedievo.Reciper.Furnace.FurnaceRecipesManager;
-import cl.bgmp.elmedievo.Teleport.BackQueueManager;
 import cl.bgmp.elmedievo.Teleport.TPAManager;
 import cl.bgmp.elmedievo.Translations.ChatConstant;
 import cl.bgmp.elmedievo.Translations.Translator;
@@ -34,7 +27,6 @@ public final class ElMedievo extends JavaPlugin {
   private static ElMedievo elMedievo;
   private TPAManager tpaManager;
   private FurnaceRecipesManager furnaceRecipesManager;
-  private BackQueueManager backQueueManager;
   private CommandsManager commands;
   private CommandsManagerRegistration commandRegistry;
 
@@ -48,10 +40,6 @@ public final class ElMedievo extends JavaPlugin {
 
   public FurnaceRecipesManager getFurnaceRecipesManager() {
     return furnaceRecipesManager;
-  }
-
-  public BackQueueManager getBackQueueManager() {
-    return backQueueManager;
   }
 
   @SuppressWarnings("unchecked")
@@ -94,7 +82,6 @@ public final class ElMedievo extends JavaPlugin {
 
     tpaManager = new TPAManager();
     furnaceRecipesManager = new FurnaceRecipesManager();
-    backQueueManager = new BackQueueManager();
 
     commands = new BukkitCommandsManager();
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
@@ -120,15 +107,9 @@ public final class ElMedievo extends JavaPlugin {
 
   private void registerCommands() {
     commandRegistry.register(CoordsCommand.class);
-    commandRegistry.register(TPACommand.class);
-    commandRegistry.register(TPAcceptCommand.class);
-    commandRegistry.register(TPADenyCommand.class);
-    commandRegistry.register(TPACancelCommand.class);
-    commandRegistry.register(TPAList.class);
     commandRegistry.register(ReciperCommand.class);
     commandRegistry.register(FurnaceCommand.FurnaceParentCommand.class);
     commandRegistry.register(FurnaceCommand.class);
     commandRegistry.register(SpawnCommand.class);
-    commandRegistry.register(BackCommand.class);
   }
 }

@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 
 public class TPAList {
   @Command(
-      aliases = {"tplist", "tpalist"},
+      aliases = {"tplist", "tpalist", "tpamap"},
       desc = "Lists all incoming and outgoing teleport requests.",
       max = 0)
   public static void tpalist(final CommandContext args, final CommandSender sender) {

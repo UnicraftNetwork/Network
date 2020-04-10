@@ -192,30 +192,30 @@ public class Config {
 
   public static class JoinQuitMessages {
     private static final String joinQuitMessagesPath = "joinquit-messages";
-    private static final String joinQuitmessagesEnabledPath = joinQuitMessagesPath + ".enabled";
-    private static final String joinQuitmessageJoinPath = joinQuitMessagesPath + ".join";
-    private static final String joinQuitmessageQuitPath = joinQuitMessagesPath + ".quit";
+    private static final String joinQuitMessagesEnabledPath = joinQuitMessagesPath + ".enabled";
+    private static final String joinQuitMessageJoinPath = joinQuitMessagesPath + ".join";
+    private static final String joinQuitMessageQuitPath = joinQuitMessagesPath + ".quit";
 
     private static final boolean joinQuitMessagesDefaultState = false;
     private static final String joinQuitMessagesDefaultJoin = "<%player%> joined the game";
     private static final String joinQuitMessagesDefaultQuit = "<%player%> left the game";
 
     public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessagesEnabledPath)))
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessagesEnabledPath)))
         return joinQuitMessagesDefaultState;
-      else return getConfig().getBoolean(joinQuitmessagesEnabledPath);
+      else return getConfig().getBoolean(joinQuitMessagesEnabledPath);
     }
 
     public static String getJoinMessage() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessageJoinPath)))
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessageJoinPath)))
         return joinQuitMessagesDefaultJoin;
-      else return getConfig().getString(joinQuitmessageJoinPath);
+      else return getConfig().getString(joinQuitMessageJoinPath);
     }
 
     public static String getQuitMessage() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitmessageQuitPath)))
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessageQuitPath)))
         return joinQuitMessagesDefaultQuit;
-      else return getConfig().getString(joinQuitmessageQuitPath);
+      else return getConfig().getString(joinQuitMessageQuitPath);
     }
   }
 

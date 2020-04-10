@@ -12,7 +12,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -47,6 +49,16 @@ public class PlayerEvents implements Listener {
     if (damaged instanceof ArmorStand || damaged instanceof ItemFrame || damaged instanceof Boat)
       return;
     if (attacker instanceof Player || damaged instanceof Player) event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onEntityDamage(EntityDamageEvent event) {
+    event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onEntityDamagedByBlock(EntityDamageByBlockEvent event) {
+    event.setCancelled(true);
   }
 
   @EventHandler

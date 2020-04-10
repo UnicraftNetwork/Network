@@ -46,7 +46,7 @@ public class JoinQuitMessageModule extends Module {
       final ChatFormatModule chatFormatModule = (ChatFormatModule) module;
       event.setQuitMessage(
           Chat.colourify(
-                  Config.JoinQuitMessages.getJoinMessage()
+                  Config.JoinQuitMessages.getQuitMessage()
                       .replaceAll("%prefix%", chatFormatModule.getPlayerPrefix(player))
                       .replaceAll("%player%", player.getName()))
               .replaceAll("%suffix%", chatFormatModule.getPlayerSuffix(player)));

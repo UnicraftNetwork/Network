@@ -47,6 +47,7 @@
                                     <include>cl.bgmp:*</include>
                                     <include>org.jdom:*</include>
                                     <include>org.jetbrains:*</include>
+                                    <include>commons-io:commons-io:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

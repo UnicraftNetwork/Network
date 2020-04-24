@@ -7,7 +7,7 @@ import com.sk89q.minecraft.util.commands.CommandPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 // FIXME: Abstract hard-coded stuffs beneath
 public class PurchaseNotificationCommand {
@@ -18,8 +18,8 @@ public class PurchaseNotificationCommand {
       max = 2)
   @CommandPermissions("commons.notifypurchase")
   public static void notifypurchase(final CommandContext args, final CommandSender sender) {
-    if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + "You must be a player to execute this command.");
+    if (sender instanceof Player) {
+      sender.sendMessage(ChatColor.RED + "This is an internal command.");
       return;
     }
 

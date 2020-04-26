@@ -36,6 +36,9 @@ public class PurchaseNotificationCommand {
       case "medievo":
         rankName = "&6&lMEDIEVO&r";
         break;
+      case "exclusive":
+        rankName = "&d\u2764&e"; // UTF-8 heart icon <3
+        break;
     }
 
     Bukkit.broadcastMessage(

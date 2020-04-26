@@ -220,9 +220,9 @@ public class Config {
   }
 
   public static class Lobby {
-    public static final String lobbyPath = "lobby";
+    private static final String lobbyPath = "lobby";
 
-    public static final String defaultLobby = "Lobby";
+    private static final String defaultLobby = "Lobby";
 
     public static String getLobbyServerName() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(lobbyPath)))

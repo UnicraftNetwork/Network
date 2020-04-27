@@ -82,6 +82,18 @@ public class Time {
     return time.toString();
   }
 
+  /**
+   * Deduces what is the maximum time {@link TimeUnit} that can be created off {@link this#unit},
+   * and formats it as a minimal string
+   *
+   * @return Formatted deduced {@link Time} minimal string
+   */
+  @NotNull
+  public String toEffectiveMinimalString() {
+    Time time = TimeUnit.revertTimeFromMillis(this.millis());
+    return time.toMinimalString();
+  }
+
   /** @return The literal amount of {@link TimeUnit}s, formatted as a string */
   @Override
   public String toString() {

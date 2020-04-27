@@ -87,4 +87,15 @@ public class Time {
   public String toString() {
     return this.value + " " + unit.toString().toLowerCase();
   }
+
+  /**
+   * @return The minimal string which can be parsed off the current {@link Time} instance. i.e: 3s,
+   *     5d, 10o, etc.
+   */
+  public String toMinimalString() {
+    if (unit.equals(TimeUnit.MONTHS))
+      return this.value
+          + "o"; // Months's first character doesn't match its first letter (m stands for minutes)
+    else return this.value + String.valueOf(unit.toString().toCharArray()[0]).toLowerCase();
+  }
 }

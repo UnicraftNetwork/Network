@@ -6,7 +6,8 @@ public enum ModuleId {
   NAVIGATOR("navigator-module"),
   JOIN_TOOLS("jointools-module"),
   WEATHER("weather-module"),
-  JOINQUIT_MESSAGES("joinquit-messages-module");
+  JOINQUIT_MESSAGES("joinquit-messages-module"),
+  RESTART("restart-module");
 
   private String toString;
 

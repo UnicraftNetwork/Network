@@ -13,7 +13,7 @@ navigator:
         title: "&b&lElMedievo"
         lore:
           - ""
-          - "&aOnline: %player_count%"
+          - "hi"
 chat:
   vault-formatting:
     enabled: true
@@ -29,3 +29,7 @@ joinquit-messages:
 weather:
   disabled: true
 lobby: "Lobby"
+restart:
+  enabled: true
+  interval: 24h
+  final-countdown: 30s

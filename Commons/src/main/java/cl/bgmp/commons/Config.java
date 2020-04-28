@@ -5,6 +5,7 @@ import cl.bgmp.commons.Navigator.ServerButton;
 import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Server;
+import cl.bgmp.utilsbukkit.TimeUtils.Time;
 import cl.bgmp.utilsbukkit.Validate;
 import com.google.common.collect.ImmutableSet;
 import java.util.HashSet;
@@ -228,6 +229,36 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(lobbyPath)))
         return defaultLobby;
       else return getConfig().getString(lobbyPath);
+    }
+  }
+
+  public static class Restart {
+    private static final String restartPath = "restart";
+    private static final String enabledPath = restartPath + ".enabled";
+    private static final String intervalPath = restartPath + ".interval";
+    private static final String finalCountdownPath = restartPath + ".final-countdown";
+
+    private static final boolean defaultEnabled = true;
+    private static final String defaultInterval = "24h";
+    private static final String defaultFinalCountdown = "30s";
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(restartPath)))
+        return defaultEnabled;
+      else return getConfig().getBoolean(enabledPath);
+    }
+
+    public static Time getInterval() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath)))
+        return Time.fromString(defaultInterval);
+      else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
+    }
+
+    public static Time getFinalCountdown() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(finalCountdownPath)))
+        return Time.fromString(defaultFinalCountdown);
+      else
+        return Time.fromString(Objects.requireNonNull(getConfig().getString(finalCountdownPath)));
     }
   }
 }

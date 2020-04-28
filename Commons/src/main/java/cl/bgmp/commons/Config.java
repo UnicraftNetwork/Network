@@ -236,11 +236,9 @@ public class Config {
     private static final String restartPath = "restart";
     private static final String enabledPath = restartPath + ".enabled";
     private static final String intervalPath = restartPath + ".interval";
-    private static final String finalCountdownPath = restartPath + ".final-countdown";
 
     private static final boolean defaultEnabled = true;
     private static final String defaultInterval = "24h";
-    private static final String defaultFinalCountdown = "30s";
 
     public static boolean isEnabled() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(restartPath)))
@@ -252,13 +250,6 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath)))
         return Time.fromString(defaultInterval);
       else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
-    }
-
-    public static Time getFinalCountdown() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(finalCountdownPath)))
-        return Time.fromString(defaultFinalCountdown);
-      else
-        return Time.fromString(Objects.requireNonNull(getConfig().getString(finalCountdownPath)));
     }
   }
 }

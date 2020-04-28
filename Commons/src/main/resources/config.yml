@@ -32,4 +32,3 @@ lobby: "Lobby"
 restart:
   enabled: true
   interval: 24h
-  final-countdown: 30s

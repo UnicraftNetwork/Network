@@ -9,67 +9,84 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
+// TODO: Translations
 public class RestartModule extends Module {
-  private Time interval = Config.Restart.getInterval();
-  private Time finalCountdown = Config.Restart.getFinalCountdown().getAs(TimeUnit.SECONDS);
+  private Time interval = Config.Restart.getInterval().getAs(TimeUnit.SECONDS);
+  private BukkitRunnable restartTask =
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          interval = new Time(interval.getValue() - 1, TimeUnit.SECONDS);
+          broadcastProgress();
+          if (interval.toMinimalString().equals("0s")) {
+            sendPlayersToLobby();
+            Bukkit.shutdown();
+          }
+        }
+      };
 
   public RestartModule() {
     super(ModuleId.RESTART, Config.Restart.isEnabled());
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        restartServer();
-      }
-    }.runTaskLater(Commons.get(), interval.ticks());
   }
 
-  // TODO: Translations
-  private void restartServer() {
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        finalCountdown = new Time(finalCountdown.getValue() - 1, TimeUnit.SECONDS);
+  public void setInterval(Time interval) {
+    this.interval = interval.getAs(TimeUnit.SECONDS);
+  }
 
-        if (finalCountdown.getValue() % 10 == 0
-            || finalCountdown.getValue() == 5
-            || finalCountdown.getValue() == 4
-            || finalCountdown.getValue() == 3
-            || finalCountdown.getValue() == 2
-            || finalCountdown.getValue() == 1) {
-          String secondOrSeconds =
-              finalCountdown.toMinimalString().equals("1s") ? "second" : "seconds";
-          Bukkit.broadcastMessage(
-              ChatColor.AQUA
-                  + "Server is restarting in "
-                  + ChatColor.DARK_RED
-                  + finalCountdown.getValue()
-                  + ChatColor.AQUA
-                  + " "
-                  + secondOrSeconds);
-        }
+  public void runNewRestartTask() {
+    this.restartTask.cancel();
+    this.restartTask =
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            interval = new Time(interval.getValue() - 1, TimeUnit.SECONDS);
+            broadcastProgress();
+            if (interval.toMinimalString().equals("0s")) {
+              sendPlayersToLobby();
+              Bukkit.shutdown();
+            }
+          }
+        };
+    this.restartTask.runTaskTimer(Commons.get(), 0L, Time.fromString("1s").ticks());
+  }
 
-        if (finalCountdown.toMinimalString().equals("0s")) {
-          Bukkit.getOnlinePlayers()
-              .forEach(
-                  onlinePlayer -> {
-                    onlinePlayer.sendMessage(
-                        ChatColor.RED
-                            + "The server you were previously on is currently restarting...");
-                    Channels.sendPlayerToServer(
-                        Commons.get(), onlinePlayer, Config.Lobby.getLobbyServerName());
-                  });
+  private void broadcastProgress() {
+    if (interval.getValue() > 60) return;
+    if (interval.getValue() % 10 == 0
+        || interval.getValue() == 5
+        || interval.getValue() == 4
+        || interval.getValue() == 3
+        || interval.getValue() == 2
+        || interval.getValue() == 1) {
+      String secondOrSeconds = interval.toMinimalString().equals("1s") ? "second" : "seconds";
+      Bukkit.broadcastMessage(
+          ChatColor.AQUA
+              + "Server is restarting in "
+              + ChatColor.DARK_RED
+              + interval.getValue()
+              + ChatColor.AQUA
+              + " "
+              + secondOrSeconds);
+    }
+  }
 
-          Bukkit.shutdown();
-          this.cancel();
-        }
-      }
-    }.runTaskTimer(Commons.get(), 0L, Time.fromString("1s").ticks());
+  private void sendPlayersToLobby() {
+    Bukkit.getOnlinePlayers()
+        .forEach(
+            onlinePlayer -> {
+              onlinePlayer.sendMessage(
+                  ChatColor.RED + "The server you were previously on is currently restarting...");
+              Channels.sendPlayerToServer(
+                  Commons.get(), onlinePlayer, Config.Lobby.getLobbyServerName());
+            });
   }
 
   @Override
   public void load() {
-    if (enabled) Commons.get().registerEvents(this);
+    if (enabled) {
+      restartTask.runTaskTimer(Commons.get(), 0L, Time.fromString("1s").ticks());
+      // Commons.get().registerEvents(this);
+    }
   }
 
   @Override

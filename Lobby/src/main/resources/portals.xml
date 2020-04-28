@@ -1,8 +1,8 @@
 <!-- Sample Configuration -->
 
 <portals>
-    <sign id="sign-1" location="0.5,100,0.5" bungee-server="local" ip="localhost" port="25565"/>
-    <npc id="npc-1" location="0.5,100,0.5,0.0,0.0" bungee-server="local" ip="localhost" port="25565">
+    <sign id="sign-1" location="world,0.5,100,0.5" bungee-server="local" ip="localhost" port="25565"/>
+    <npc id="npc-1" location="world,0.5,100,0.5,0.0,0.0" bungee-server="local" ip="localhost" port="25565">
         <title>
             <line>$a$lline1</line>
             <line>$bline2</line>

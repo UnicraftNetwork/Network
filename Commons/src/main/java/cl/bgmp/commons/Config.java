@@ -7,7 +7,9 @@ import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Server;
 import cl.bgmp.utilsbukkit.TimeUtils.Time;
 import cl.bgmp.utilsbukkit.Validate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -250,6 +252,48 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath)))
         return Time.fromString(defaultInterval);
       else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
+    }
+  }
+
+  public static class Tips {
+    private static final String tipsPath = "tips";
+    private static final String enabledPath = tipsPath + ".enabled";
+    private static final String intervalPath = tipsPath + ".interval";
+    private static final String prefixPath = tipsPath + ".prefix";
+    private static final String messagesPath = tipsPath + ".messages";
+
+    private static final boolean defaultEnabled = true;
+    private static final String defaultInterval = "7m";
+    private static final String defaultPrefix = "[Tip] ";
+    private static final List<String> defaultMessages =
+        new ArrayList<String>() {
+          {
+            add("Check your configuration! something might've gone wrong!");
+          }
+        };
+
+    public static boolean isEnabled() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(enabledPath))) {
+        return defaultEnabled;
+      } else return getConfig().getBoolean(enabledPath);
+    }
+
+    public static Time getInterval() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath))) {
+        return Time.fromString(defaultInterval);
+      } else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
+    }
+
+    public static String getPrefix() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(prefixPath))) {
+        return defaultPrefix;
+      } else return Chat.colourify(getConfig().getString(prefixPath));
+    }
+
+    public static ImmutableList<String> getMessages() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(messagesPath))) {
+        return ImmutableList.copyOf(defaultMessages);
+      } else return ImmutableList.copyOf(getConfig().getStringList(messagesPath));
     }
   }
 }

@@ -7,7 +7,8 @@ public enum ModuleId {
   JOIN_TOOLS("jointools-module"),
   WEATHER("weather-module"),
   JOINQUIT_MESSAGES("joinquit-messages-module"),
-  RESTART("restart-module");
+  RESTART("restart-module"),
+  TIPS("tips-module");
 
   private String toString;
 

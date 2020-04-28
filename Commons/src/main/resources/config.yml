@@ -32,3 +32,11 @@ lobby: "Lobby"
 restart:
   enabled: true
   interval: 24h
+tips:
+  enabled: true
+  interval: 7m
+  prefix: "&7[&b&oTip&7] "
+  messages:
+    - "&7Visita nuestra web oficial: &bhttps://udecesports.com/"
+    - "&7Síguenos en nuestro instagram &b@teamudecesports"
+    - "&7¿Quieres ayudar al servidor? Adquiere un rango VIP en &bhttps://udecesports.buycraft.net/"

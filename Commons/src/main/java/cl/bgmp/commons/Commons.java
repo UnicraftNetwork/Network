@@ -13,6 +13,7 @@ import cl.bgmp.commons.Modules.ModuleId;
 import cl.bgmp.commons.Modules.ModuleManager;
 import cl.bgmp.commons.Modules.NavigatorModule;
 import cl.bgmp.commons.Modules.RestartModule;
+import cl.bgmp.commons.Modules.TipsModule;
 import cl.bgmp.commons.Modules.WeatherModule;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
@@ -94,7 +95,8 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         new ChatFormatModule(),
         new WeatherModule(),
         new JoinQuitMessageModule(),
-        new RestartModule());
+        new RestartModule(),
+        new TipsModule());
 
     loadModules();
 

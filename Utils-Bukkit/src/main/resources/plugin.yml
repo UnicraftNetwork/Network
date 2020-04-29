@@ -1,6 +1,6 @@
 name: Utils-Bukkit
 version: ${project.version}
 main: cl.bgmp.utilsbukkit.UtilsBukkit
-api-version: 1.13
+api-version: '1.13'
 authors: [BGMP]
 description: Various Bukkit Utilities

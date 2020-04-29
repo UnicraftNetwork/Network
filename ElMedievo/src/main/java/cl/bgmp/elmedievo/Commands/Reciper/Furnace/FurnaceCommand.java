@@ -1,8 +1,7 @@
 package cl.bgmp.elmedievo.Commands.Reciper.Furnace;
 
 import cl.bgmp.elmedievo.ElMedievo;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
-import cl.bgmp.elmedievo.Translations.Translator;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
@@ -20,8 +19,7 @@ public class FurnaceCommand {
   public static void reload(final CommandContext args, final CommandSender sender)
       throws CommandException {
     ElMedievo.get().getFurnaceRecipesManager().reload();
-    sender.sendMessage(
-        ChatColor.GREEN + Translator.translate(sender, ChatConstant.RELOADED_FURNACE_RECIPES));
+    sender.sendMessage(ChatColor.GREEN + Translations.get("reciper.furnaces.reloaded", sender));
   }
 
   public static class FurnaceParentCommand {

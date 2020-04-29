@@ -1,8 +1,8 @@
 package cl.bgmp.elmedievo.Commands;
 
 import cl.bgmp.elmedievo.Sound.SoundManager;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
 import cl.bgmp.utilsbukkit.Chat;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ public class CoordsCommand {
       max = 0)
   public static void coords(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 

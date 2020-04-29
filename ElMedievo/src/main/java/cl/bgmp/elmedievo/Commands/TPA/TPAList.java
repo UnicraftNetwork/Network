@@ -2,11 +2,11 @@ package cl.bgmp.elmedievo.Commands.TPA;
 
 import cl.bgmp.elmedievo.ElMedievo;
 import cl.bgmp.elmedievo.Teleport.TPA;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
 import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.TextComponents.ComponentFactory;
 import cl.bgmp.utilsbukkit.TextComponents.ComponentSender;
 import cl.bgmp.utilsbukkit.TextComponents.ComponentWizard;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TPAList {
       max = 0)
   public static void tpalist(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 
@@ -34,8 +34,7 @@ public class TPAList {
     List<TPA> outgoingTPA = ElMedievo.get().getTpaManager().getAllPlayerOutgoingTPA(player);
 
     final TextComponent header =
-        new ComponentWizard(
-                Chat.buildHeader(ChatConstant.TPA_MAP.getTranslatedTo(player.getLocale())))
+        new ComponentWizard(Chat.buildHeader(Translations.get("tpa.map", sender)))
             .getTextComponent();
     final TextComponent first =
         new ComponentWizard(
@@ -53,8 +52,7 @@ public class TPAList {
 
   private static BaseComponent[] formattedTPAs(List<TPA> tpas, Player player) {
     if (tpas.isEmpty())
-      return new ComponentWizard(
-              ChatColor.RED + ChatConstant.NO_TPAS.getTranslatedTo(player.getLocale()))
+      return new ComponentWizard(ChatColor.RED + Translations.get("tpa.no.tpas", player))
           .asBaseComponentArray();
 
     ComponentBuilder componentBuilder = new ComponentBuilder();
@@ -82,10 +80,8 @@ public class TPAList {
       final TextComponent acceptClickable;
       if (tpa.getPlayerTo().equals(player)) {
         acceptClickable =
-            new ComponentWizard(
-                    ChatColor.GREEN
-                        + ChatConstant.ACCEPT_BUTTON.getTranslatedTo(player.getLocale()))
-                .setHoverable(ChatConstant.ACCEPT_BUTTON_HOVER.getTranslatedTo(player.getLocale()))
+            new ComponentWizard(ChatColor.GREEN + Translations.get("tpa.click.to.accept", player))
+                .setHoverable(Translations.get("tpa.click.to.accept", player))
                 .setClickable("/tpaccept " + tpa.getSender().getName())
                 .getTextComponent();
       } else acceptClickable = new ComponentWizard("").getTextComponent();

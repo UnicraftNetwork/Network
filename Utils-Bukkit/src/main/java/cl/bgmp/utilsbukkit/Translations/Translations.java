@@ -18,8 +18,11 @@ public class Translations {
             {
               add(new TranslatedLanguage("en_gb"));
               add(new TranslatedLanguage("es_cl"));
-              add(new TranslatedLanguage("lol_us"));
               add(new TranslatedLanguage("es_mx"));
+              add(new TranslatedLanguage("es_uy"));
+              add(new TranslatedLanguage("es_es"));
+              add(new TranslatedLanguage("lol_us"));
+              add(new TranslatedLanguage("pt_br"));
             }
           });
 

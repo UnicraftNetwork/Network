@@ -1,6 +1,7 @@
 package cl.bgmp.commons.Commands;
 
 import cl.bgmp.utilsbukkit.Chat;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
@@ -19,7 +20,7 @@ public class PurchaseNotificationCommand {
   @CommandPermissions("commons.notifypurchase")
   public static void notifypurchase(final CommandContext args, final CommandSender sender) {
     if (sender instanceof Player) {
-      sender.sendMessage(ChatColor.RED + "This is an internal command.");
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.internal", sender));
       return;
     }
 

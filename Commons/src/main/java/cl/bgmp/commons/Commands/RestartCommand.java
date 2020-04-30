@@ -6,27 +6,25 @@ import cl.bgmp.commons.Modules.ModuleId;
 import cl.bgmp.commons.Modules.RestartModule;
 import cl.bgmp.utilsbukkit.TimeUtils.Time;
 import cl.bgmp.utilsbukkit.TimeUtils.TimeUnit;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-// TODO: Translations
 public class RestartCommand {
   private static void setNewRestart(
       CommandSender setter, RestartModule restartModule, Time interval) {
     restartModule.setInterval(interval);
     restartModule.runNewRestartTask();
-
     setter.sendMessage(
         ChatColor.AQUA
-            + "Server will restart in "
-            + ChatColor.DARK_RED
-            + interval.getValue()
-            + ChatColor.AQUA
-            + " "
-            + interval.getUnit().toString().toLowerCase());
+            + Translations.get(
+                "module.restart.server.will.restart.in",
+                setter,
+                ChatColor.DARK_RED + String.valueOf(interval.getValue()) + ChatColor.AQUA,
+                interval.getUnit().toString().toLowerCase()));
   }
 
   @Command(
@@ -38,7 +36,7 @@ public class RestartCommand {
   public static void restart(final CommandContext args, final CommandSender sender) {
     final Module module = Commons.get().getModule(ModuleId.RESTART);
     if (module == null) {
-      sender.sendMessage(ChatColor.RED + "Server restart module is currently disabled.");
+      sender.sendMessage(ChatColor.RED + Translations.get("module.restart.disabled", sender));
       return;
     }
 
@@ -59,7 +57,8 @@ public class RestartCommand {
       time = Time.fromString(timeString);
       setNewRestart(sender, restartModule, time);
     } catch (Exception ignore) {
-      sender.sendMessage(ChatColor.RED + "'" + timeString + "' is not a valid time amount.");
+      sender.sendMessage(
+          ChatColor.RED + Translations.get("module.restart.invalid.time", sender, timeString));
     }
   }
 }

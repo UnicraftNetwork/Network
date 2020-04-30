@@ -17,7 +17,11 @@ public class TranslatedLanguage {
   }
 
   public String get(final String key) {
-    return languagePropertiesFile.getProperty(key);
+    final String translatedString = languagePropertiesFile.getProperty(key);
+    if (translatedString == null)
+      return Translations.applyArgsToTranslation(
+          Translations.templatePropertiesFile.getProperty(key));
+    else return translatedString;
   }
 
   private void loadFromResources(final Properties properties, final String locale) {

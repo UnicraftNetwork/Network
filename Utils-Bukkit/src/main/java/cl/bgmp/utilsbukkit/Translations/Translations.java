@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Translations {
-  private static final Properties templatePropertiesFile = loadTemplatePropertiesFromResources();
+  public static final Properties templatePropertiesFile = loadTemplatePropertiesFromResources();
   private static final ImmutableSet<TranslatedLanguage> translatedLanguages =
       ImmutableSet.copyOf(
           new HashSet<TranslatedLanguage>() {
@@ -36,7 +36,7 @@ public class Translations {
     else return applyArgsToTranslation(translatedLanguage.get(key), args);
   }
 
-  private static String applyArgsToTranslation(String translation, String... args) {
+  public static String applyArgsToTranslation(String translation, String... args) {
     if (args == null) return translation;
 
     int count = 0;

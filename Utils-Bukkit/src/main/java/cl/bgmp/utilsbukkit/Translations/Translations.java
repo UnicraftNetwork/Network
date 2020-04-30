@@ -26,7 +26,7 @@ public class Translations {
   public static String get(
       @NotNull String key, @NotNull CommandSender sender, @Nullable String... args) {
     if (sender instanceof ConsoleCommandSender)
-      return applyArgsToTranslation(templatePropertiesFile.getProperty(key));
+      return applyArgsToTranslation(templatePropertiesFile.getProperty(key), args);
 
     final String locale = ((Player) sender).getLocale();
     final TranslatedLanguage translatedLanguage = getTranslatedLanguageByLocale(locale);

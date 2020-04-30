@@ -37,12 +37,6 @@ public class JoinToolsModule extends Module {
     final Player player = event.getPlayer();
     player.getInventory().clear();
 
-    final Module module = Commons.get().getModule(ModuleId.NAVIGATOR);
-    if (module != null) {
-      final NavigatorModule navigatorModule = (NavigatorModule) module;
-      player.getInventory().setItem(4, navigatorModule.getNavigator().getItem());
-    }
-
     if (!player.hasPermission("commons.tools")) return;
     player.getInventory().setItem(0, onJoinTools.get(0));
     player.getInventory().setItem(1, onJoinTools.get(1));

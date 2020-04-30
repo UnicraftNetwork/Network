@@ -2,8 +2,7 @@ package cl.bgmp.elmedievo.Commands.TPA;
 
 import cl.bgmp.elmedievo.ElMedievo;
 import cl.bgmp.elmedievo.Teleport.TPA;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
-import cl.bgmp.elmedievo.Translations.Translator;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import java.util.List;
@@ -22,7 +21,7 @@ public class TPACancelCommand {
       max = 0)
   public static void tpcancel(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 
@@ -33,10 +32,11 @@ public class TPACancelCommand {
       tpa.get().cancel();
       player.sendMessage(
           ChatColor.RED
-              + ChatConstant.TPA_CANCEL
-                  .getTranslatedTo(player.getLocale())
-                  .replace("{0}", tpa.get().getPlayerTo().getDisplayName() + ChatColor.GREEN));
-    } else player.sendMessage(ChatConstant.TPA_NO_PENDANT.getTranslatedTo(player.getLocale()));
+              + Translations.get(
+                  "tpa.cancel",
+                  player,
+                  tpa.get().getPlayerTo().getDisplayName() + ChatColor.GREEN));
+    } else player.sendMessage(ChatColor.GREEN + Translations.get("tpa.no.pendant", player));
   }
 
   @Command(
@@ -45,7 +45,7 @@ public class TPACancelCommand {
       max = 0)
   public static void tpcancelall(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 
@@ -54,11 +54,7 @@ public class TPACancelCommand {
 
     if (!tpa.isEmpty()) {
       tpa.forEach(TPA::cancel);
-      player.sendMessage(
-          ChatColor.GREEN
-              + Translator.translate(player.getLocale(), ChatConstant.TPA_CANCELLED_ALL));
-    } else
-      player.sendMessage(
-          ChatColor.RED + Translator.translate(player.getLocale(), ChatConstant.TPA_NO_PENDANT));
+      player.sendMessage(ChatColor.GREEN + Translations.get("tpa.cancelled.all", player));
+    } else player.sendMessage(ChatColor.RED + Translations.get("tpa.no.pendant", player));
   }
 }

@@ -2,7 +2,7 @@ package cl.bgmp.elmedievo.Commands.TPA;
 
 import cl.bgmp.elmedievo.ElMedievo;
 import cl.bgmp.elmedievo.Teleport.TPA;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import java.util.Optional;
@@ -21,7 +21,7 @@ public class TPAcceptCommand {
       max = 1)
   public static void tpaccept(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 
@@ -32,8 +32,7 @@ public class TPAcceptCommand {
       final String targetName = args.getString(0);
       final Player target = Bukkit.getPlayer(targetName);
       if (target == null) {
-        sender.sendMessage(
-            ChatColor.RED + ChatConstant.INVALID_PLAYER.getTranslatedTo(player.getLocale()));
+        sender.sendMessage(ChatColor.RED + Translations.get("misc.invalid.player", player));
         return;
       }
 
@@ -41,8 +40,6 @@ public class TPAcceptCommand {
     } else tpa = ElMedievo.get().getTpaManager().getPlayerIncomingTPA(player);
 
     if (tpa.isPresent()) tpa.get().accept();
-    else
-      player.sendMessage(
-          ChatColor.RED + ChatConstant.TPA_NO_PENDANT.getTranslatedTo(player.getLocale()));
+    else player.sendMessage(ChatColor.RED + Translations.get("tpa.no.pendant", player));
   }
 }

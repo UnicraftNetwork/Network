@@ -2,7 +2,7 @@ package cl.bgmp.elmedievo.Commands.TPA;
 
 import cl.bgmp.elmedievo.ElMedievo;
 import cl.bgmp.elmedievo.Teleport.TPA;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class TPADenyCommand {
       max = 0)
   public static void tpdeny(final CommandContext args, final CommandSender sender) {
     if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatColor.RED + ChatConstant.NO_CONSOLE.getString());
+      sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
       return;
     }
 
@@ -30,11 +30,8 @@ public class TPADenyCommand {
       tpa.get().deny();
       player.sendMessage(
           ChatColor.RED
-              + ChatConstant.TPA_DENY
-                  .getTranslatedTo(player.getLocale())
-                  .replace("{0}", tpa.get().getPlayerTo().getDisplayName() + ChatColor.RED));
-    } else
-      player.sendMessage(
-          ChatColor.RED + ChatConstant.TPA_NO_PENDANT.getTranslatedTo(player.getLocale()));
+              + Translations.get(
+                  "tpa.deny", player, tpa.get().getPlayerTo().getDisplayName() + ChatColor.RED));
+    } else player.sendMessage(ChatColor.RED + Translations.get("tpa.no.pendant", player));
   }
 }

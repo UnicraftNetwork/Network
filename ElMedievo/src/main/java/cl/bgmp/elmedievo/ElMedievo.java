@@ -8,9 +8,8 @@ import cl.bgmp.elmedievo.Listeners.PlayerEvents;
 import cl.bgmp.elmedievo.Listeners.WeatherEvents;
 import cl.bgmp.elmedievo.Reciper.Furnace.FurnaceRecipesManager;
 import cl.bgmp.elmedievo.Teleport.TPAManager;
-import cl.bgmp.elmedievo.Translations.ChatConstant;
-import cl.bgmp.elmedievo.Translations.Translator;
 import cl.bgmp.utilsbukkit.Chat;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;
@@ -53,7 +52,7 @@ public final class ElMedievo extends JavaPlugin {
       this.commands.execute(command.getName(), args, sender, sender);
     } catch (CommandPermissionsException exception) {
       sender.sendMessage(
-          Chat.getStringAsException(Translator.translate(sender, ChatConstant.NO_PERMISSION)));
+          Chat.getStringAsException(Translations.get("commands.no.permission", sender)));
     } catch (MissingNestedCommandException exception) {
       sender.sendMessage(Chat.getStringAsException(exception.getUsage()));
     } catch (CommandUsageException exception) {
@@ -62,11 +61,10 @@ public final class ElMedievo extends JavaPlugin {
     } catch (WrappedCommandException exception) {
       if (exception.getCause() instanceof NumberFormatException) {
         sender.sendMessage(
-            Chat.getStringAsException(
-                Translator.translate(sender, ChatConstant.NUMBER_STRING_EXCEPTION)));
+            Chat.getStringAsException(Translations.get("misc.number.string.exception", sender)));
       } else {
         sender.sendMessage(
-            Chat.getStringAsException(Translator.translate(sender, ChatConstant.UNKNOWN_ERROR)));
+            Chat.getStringAsException(Translations.get("misc.unknown.error", sender)));
         exception.printStackTrace();
       }
     } catch (CommandException exception) {
@@ -88,8 +86,6 @@ public final class ElMedievo extends JavaPlugin {
 
     registerCommands();
     registerEvents(new WeatherEvents(), new PlayerEvents());
-
-    Translator.notifyMissingTranslations(this.getLogger());
   }
 
   private void loadConfiguaration() {

@@ -5,8 +5,10 @@ import cl.bgmp.lobby.Listeners.PlayerEvents;
 import cl.bgmp.lobby.Portals.PortalFactory;
 import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.Chat;
+import cl.bgmp.utilsbukkit.Translations.Translations;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
+import com.sk89q.minecraft.util.commands.ChatColor;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissionsException;
 import com.sk89q.minecraft.util.commands.CommandUsageException;
@@ -15,7 +17,6 @@ import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import net.jitse.npclib.NPCLib;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -48,7 +49,8 @@ public final class Lobby extends JavaPlugin {
     try {
       this.commands.execute(command.getName(), args, sender, sender);
     } catch (CommandPermissionsException exception) {
-      sender.sendMessage(Chat.getStringAsException("You do not have permission"));
+      sender.sendMessage(
+          Chat.getStringAsException(Translations.get("commands.no.permission", sender)));
     } catch (MissingNestedCommandException exception) {
       sender.sendMessage(Chat.getStringAsException(exception.getUsage()));
     } catch (CommandUsageException exception) {
@@ -56,9 +58,11 @@ public final class Lobby extends JavaPlugin {
       sender.sendMessage(ChatColor.RED + exception.getUsage());
     } catch (WrappedCommandException exception) {
       if (exception.getCause() instanceof NumberFormatException) {
-        sender.sendMessage(Chat.getStringAsException("Expected a number. Received string instead"));
+        sender.sendMessage(
+            Chat.getStringAsException(Translations.get("misc.number.string.exception", sender)));
       } else {
-        sender.sendMessage(Chat.getStringAsException("An unknown error has occurred."));
+        sender.sendMessage(
+            Chat.getStringAsException(Translations.get("misc.unknown.error", sender)));
         exception.printStackTrace();
       }
     } catch (CommandException exception) {

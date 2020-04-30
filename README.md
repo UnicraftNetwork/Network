@@ -1,4 +1,6 @@
-# Network
+Network ![deploy](https://github.com/ElMedievo-UdeC/Network/workflows/build/badge.svg) [![Crowdin](https://badges.crowdin.net/elmedievo/localized.svg)](https://crowdin.com/project/elmedievo)
+===
+
 Minecraft plugins used by the UdeC Craft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
 
 *Minecraft version:* `1.15.2`

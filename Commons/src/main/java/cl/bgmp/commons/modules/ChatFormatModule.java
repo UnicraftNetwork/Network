@@ -26,6 +26,8 @@ public class ChatFormatModule extends Module {
 
   public ChatFormatModule() {
     super(ModuleId.CHAT_FORMAT, Config.ChatFormat.isEnabled());
+    if (!enabled) return;
+
     refreshVault();
     reloadConfigValues();
   }

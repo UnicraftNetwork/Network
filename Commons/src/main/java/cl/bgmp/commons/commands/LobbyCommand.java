@@ -22,7 +22,7 @@ public class LobbyCommand {
       return;
     }
 
-    sender.sendMessage();
+    sender.sendMessage(); // TODO: Add translatable string here
     Channels.sendPlayerToServer(Commons.get(), (Player) sender, Config.Lobby.getLobbyServerName());
   }
 }

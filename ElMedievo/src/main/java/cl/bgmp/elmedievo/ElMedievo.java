@@ -1,15 +1,15 @@
 package cl.bgmp.elmedievo;
 
-import cl.bgmp.elmedievo.Commands.CoordsCommand;
-import cl.bgmp.elmedievo.Commands.Reciper.Furnace.FurnaceCommand;
-import cl.bgmp.elmedievo.Commands.Reciper.ReciperCommand;
-import cl.bgmp.elmedievo.Commands.SpawnCommand;
-import cl.bgmp.elmedievo.Listeners.PlayerEvents;
-import cl.bgmp.elmedievo.Listeners.WeatherEvents;
-import cl.bgmp.elmedievo.Reciper.Furnace.FurnaceRecipesManager;
-import cl.bgmp.elmedievo.Teleport.TPAManager;
+import cl.bgmp.elmedievo.commands.CoordsCommand;
+import cl.bgmp.elmedievo.commands.Reciper.Furnace.FurnaceCommand;
+import cl.bgmp.elmedievo.commands.Reciper.ReciperCommand;
+import cl.bgmp.elmedievo.commands.SpawnCommand;
+import cl.bgmp.elmedievo.listeners.PlayerEvents;
+import cl.bgmp.elmedievo.listeners.WeatherEvents;
+import cl.bgmp.elmedievo.reciper.Furnace.FurnaceRecipesManager;
+import cl.bgmp.elmedievo.teleport.TPAManager;
 import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.Translations.Translations;
+import cl.bgmp.utilsbukkit.translations.Translations;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;

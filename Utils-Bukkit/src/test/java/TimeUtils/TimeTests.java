@@ -2,8 +2,8 @@ package TimeUtils;
 
 import static org.junit.Assert.assertEquals;
 
-import cl.bgmp.utilsbukkit.TimeUtils.Time;
-import cl.bgmp.utilsbukkit.TimeUtils.TimeUnit;
+import cl.bgmp.utilsbukkit.timeutils.Time;
+import cl.bgmp.utilsbukkit.timeutils.TimeUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

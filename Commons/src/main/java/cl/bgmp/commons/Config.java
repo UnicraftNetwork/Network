@@ -1,12 +1,12 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.commons.Modules.ChatFormatModule;
-import cl.bgmp.commons.Navigator.ServerButton;
+import cl.bgmp.commons.modules.ChatFormatModule;
+import cl.bgmp.commons.navigator.ServerButton;
 import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.Items.Items;
 import cl.bgmp.utilsbukkit.Server;
-import cl.bgmp.utilsbukkit.TimeUtils.Time;
 import cl.bgmp.utilsbukkit.Validate;
+import cl.bgmp.utilsbukkit.items.Items;
+import cl.bgmp.utilsbukkit.timeutils.Time;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;

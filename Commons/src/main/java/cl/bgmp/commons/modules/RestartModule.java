@@ -6,9 +6,11 @@ import cl.bgmp.utilsbukkit.Channels;
 import cl.bgmp.utilsbukkit.timeutils.Time;
 import cl.bgmp.utilsbukkit.timeutils.TimeUnit;
 import cl.bgmp.utilsbukkit.translations.Translations;
+import com.destroystokyo.paper.Title;
 import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -60,16 +62,34 @@ public class RestartModule extends Module {
         || interval.getValue() == 3
         || interval.getValue() == 2
         || interval.getValue() == 1) {
-      String secondOrSeconds = interval.toMinimalString().equals("1s") ? "second" : "seconds";
+
+      final String secondOrSeconds = interval.toMinimalString().equals("1s") ? "second" : "seconds";
+      final int v1 = interval.getValue() <= 3 ? 20 : 10;
+
       players.forEach(
-          player ->
-              player.sendMessage(
-                  ChatColor.AQUA
-                      + Translations.get(
-                          "module.restart.restarting.in",
-                          player,
-                          ChatColor.DARK_RED + String.valueOf(interval.getValue()) + ChatColor.AQUA,
-                          secondOrSeconds)));
+          player -> {
+            final String message =
+                ChatColor.AQUA
+                    + Translations.get(
+                        "module.restart.restarting.in",
+                        player,
+                        ChatColor.DARK_RED + String.valueOf(interval.getValue()) + ChatColor.AQUA,
+                        secondOrSeconds);
+
+            player.sendMessage(message);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10, v1);
+            player.sendTitle(
+                new Title(
+                    ChatColor.AQUA + Translations.get("module.restart.title", player),
+                    ChatColor.DARK_RED.toString()
+                        + interval.getValue()
+                        + ChatColor.AQUA
+                        + " "
+                        + interval.getUnit().toString().toLowerCase(),
+                    10,
+                    30,
+                    15));
+          });
     }
   }
 

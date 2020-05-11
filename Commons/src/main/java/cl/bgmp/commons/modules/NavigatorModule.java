@@ -4,9 +4,12 @@ import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
 import cl.bgmp.commons.navigator.Navigator;
 import cl.bgmp.commons.navigator.NavigatorGUI;
+import cl.bgmp.utilsbukkit.translations.Translations;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,7 +43,17 @@ public class NavigatorModule extends Module {
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     final ItemStack itemInHand = event.getItem();
+    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
+      return;
     if (itemInHand == null || itemInHand.getType() == Material.AIR) return;
+    // FIXME: Statement bellow should never be true, and must be filtered in config rather than
+    // here, I'll fix it... eventually
+    if (Config.Navigator.getServerButtons().stream().anyMatch(button -> button.getItem() == null)) {
+      event
+          .getPlayer()
+          .sendMessage(ChatColor.RED + Translations.get("misc.unknown.error", event.getPlayer()));
+      return;
+    }
     if (itemIsNavigator(itemInHand))
       event.getPlayer().openInventory(new NavigatorGUI().getInventory());
   }

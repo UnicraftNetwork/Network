@@ -22,7 +22,7 @@ public class LobbyCommand {
       return;
     }
 
-    sender.sendMessage(); // TODO: Add translatable string here
+    sender.sendMessage(ChatColor.GREEN + Translations.get("lobby.teleported", sender));
     Channels.sendPlayerToServer(Commons.get(), (Player) sender, Config.Lobby.getLobbyServerName());
   }
 }

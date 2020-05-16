@@ -1,5 +1,6 @@
 package cl.bgmp.commons.navigator;
 
+import cl.bgmp.commons.Config;
 import cl.bgmp.utilsbukkit.items.PlayerHeads;
 import cl.bgmp.utilsbukkit.translations.Translations;
 import org.bukkit.ChatColor;
@@ -8,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 /** The server navigator players are given when joining */
 public class Navigator {
-  public static final String playerHeadOwner = "Skyron_Varn";
+  public static final String playerHeadOwner = Config.Navigator.getNavigatorHead();
   private ItemStack navigator;
 
   public Navigator(final Player player) {

@@ -65,8 +65,7 @@ public class RestartCommand {
 
   @Command(
       aliases = {"restartinfo"},
-      desc = "Provides information regarding the restart in course."
-  )
+      desc = "Provides information regarding the restart in course.")
   public static void restartinfo(final CommandContext args, final CommandSender sender) {
     final Module module = Commons.get().getModule(ModuleId.RESTART);
     if (module == null || !module.isEnabled()) {

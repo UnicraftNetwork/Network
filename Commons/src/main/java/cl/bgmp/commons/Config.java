@@ -49,6 +49,7 @@ public class Config {
   public static class Navigator {
     private static final String navigatorPath = "navigator";
     private static final String navigatorEnabledPath = navigatorPath + ".enabled";
+    private static final String navigatorHeadPath = navigatorPath + ".head";
     private static final String navigatorTitlePath = navigatorPath + ".title";
     private static final String navigatorSizePath = navigatorPath + ".size";
     private static final String navigatorServersPath = navigatorPath + ".servers";
@@ -57,6 +58,7 @@ public class Config {
         ChatColor.BLUE.toString() + ChatColor.BOLD + "Navigator";
     private static final int defaultSize = 27;
     private static final boolean defaultEnabledState = false;
+    private static final String defaultHead = "xOSPREYx";
 
     public static String getTitle() {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorTitlePath)))
@@ -74,6 +76,12 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
         return defaultEnabledState;
       else return getConfig().getBoolean(navigatorEnabledPath);
+    }
+
+    public static String getNavigatorHead() {
+      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
+        return defaultHead;
+      else return getConfig().getString(navigatorHeadPath);
     }
 
     public static Set<ServerButton> getServerButtons() {

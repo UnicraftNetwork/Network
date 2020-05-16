@@ -1,6 +1,7 @@
 onjoin-tools: true
 navigator:
   enabled: true
+  head: "xOSPREYx"
   title: "&b&lAvailable Servers"
   size: 27
   servers:

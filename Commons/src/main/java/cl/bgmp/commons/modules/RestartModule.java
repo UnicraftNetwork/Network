@@ -37,6 +37,10 @@ public class RestartModule extends Module {
     this.interval = interval.getAs(TimeUnit.SECONDS);
   }
 
+  public Time getCurrentInterval() {
+    return interval;
+  }
+
   public void runNewRestartTask() {
     this.restartTask.cancel();
     this.restartTask =

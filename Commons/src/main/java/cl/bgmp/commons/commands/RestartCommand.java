@@ -4,6 +4,7 @@ import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.modules.Module;
 import cl.bgmp.commons.modules.ModuleId;
 import cl.bgmp.commons.modules.RestartModule;
+import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.timeutils.Time;
 import cl.bgmp.utilsbukkit.timeutils.TimeUnit;
 import cl.bgmp.utilsbukkit.translations.Translations;
@@ -35,7 +36,7 @@ public class RestartCommand {
   @CommandPermissions("commons.restart")
   public static void restart(final CommandContext args, final CommandSender sender) {
     final Module module = Commons.get().getModule(ModuleId.RESTART);
-    if (module == null) {
+    if (module == null || !module.isEnabled()) {
       sender.sendMessage(ChatColor.RED + Translations.get("module.restart.disabled", sender));
       return;
     }
@@ -60,5 +61,33 @@ public class RestartCommand {
       sender.sendMessage(
           ChatColor.RED + Translations.get("module.restart.invalid.time", sender, timeString));
     }
+  }
+
+  @Command(
+      aliases = {"restartinfo"},
+      desc = "Provides information regarding the restart in course.",
+      min = 1)
+  public static void restartinfo(final CommandContext args, final CommandSender sender) {
+    final Module module = Commons.get().getModule(ModuleId.RESTART);
+    if (module == null || !module.isEnabled()) {
+      sender.sendMessage(ChatColor.RED + Translations.get("module.restart.disabled", sender));
+      return;
+    }
+
+    final RestartModule restartModule = (RestartModule) module;
+
+    sender.sendMessage(
+        Chat.buildHeader(Translations.get("module.restart.self", sender))
+            + Chat.NEW_LINE
+            + ChatColor.GREEN
+            + Translations.get("module.restart.next", sender)
+            + ChatColor.AQUA
+            + restartModule.getCurrentInterval().toEffectiveString()
+            + Chat.NEW_LINE
+            + ChatColor.GREEN
+            + Translations.get("module.restart.queue.new", sender)
+            + " "
+            + ChatColor.AQUA
+            + "/queuerestart {time} (e.g: /queuerestart 3h)");
   }
 }

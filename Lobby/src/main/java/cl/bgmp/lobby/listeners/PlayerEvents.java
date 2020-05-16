@@ -48,7 +48,10 @@ public class PlayerEvents implements Listener {
     final Entity damaged = event.getEntity();
     if (damaged instanceof ArmorStand || damaged instanceof ItemFrame || damaged instanceof Boat)
       return;
-    if (attacker instanceof Player || damaged instanceof Player) event.setCancelled(true);
+    if (attacker instanceof Player || damaged instanceof Player) {
+      if (attacker.hasPermission(Config.Network.getBypassPermission())) return;
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler

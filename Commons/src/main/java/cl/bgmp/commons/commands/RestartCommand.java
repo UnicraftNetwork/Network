@@ -65,8 +65,8 @@ public class RestartCommand {
 
   @Command(
       aliases = {"restartinfo"},
-      desc = "Provides information regarding the restart in course.",
-      min = 1)
+      desc = "Provides information regarding the restart in course."
+  )
   public static void restartinfo(final CommandContext args, final CommandSender sender) {
     final Module module = Commons.get().getModule(ModuleId.RESTART);
     if (module == null || !module.isEnabled()) {
@@ -81,6 +81,7 @@ public class RestartCommand {
             + Chat.NEW_LINE
             + ChatColor.GREEN
             + Translations.get("module.restart.next", sender)
+            + " "
             + ChatColor.AQUA
             + restartModule.getCurrentInterval().toEffectiveString()
             + Chat.NEW_LINE
@@ -88,6 +89,6 @@ public class RestartCommand {
             + Translations.get("module.restart.queue.new", sender)
             + " "
             + ChatColor.AQUA
-            + "/queuerestart {time} (e.g: /queuerestart 3h)");
+            + "/queuerestart {time}");
   }
 }

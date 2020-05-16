@@ -23,8 +23,7 @@ public class CommonsCommand {
   public static class CommonsParentCommand {
     @Command(
         aliases = {"commons"},
-        desc = "Commons node command",
-        max = 0)
+        desc = "Commons node command")
     @NestedCommand(CommonsCommand.class)
     @CommandPermissions("commons.node")
     public static void commons(final CommandContext args, final CommandSender sender) {}

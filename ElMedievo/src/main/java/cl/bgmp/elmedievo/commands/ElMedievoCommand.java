@@ -23,8 +23,7 @@ public class ElMedievoCommand {
   public static class ElMedievoParentCommand {
     @Command(
         aliases = {"medievo"},
-        desc = "ElMedievo node command.",
-        max = 0)
+        desc = "ElMedievo node command.")
     @NestedCommand(ElMedievoCommand.class)
     @CommandPermissions("elmedievo.node")
     public static void medievo(final CommandContext args, final CommandSender sender) {}

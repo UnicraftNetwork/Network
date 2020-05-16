@@ -23,8 +23,7 @@ public class LobbyCommand {
   public static class LobbyParentCommand {
     @Command(
         aliases = {"lobby"},
-        desc = "Lobby node command.",
-        max = 0)
+        desc = "Lobby node command.")
     @NestedCommand(LobbyCommand.class)
     @CommandPermissions("lobby.node")
     public static void lobby(final CommandContext args, final CommandSender sender) {}

@@ -18,6 +18,10 @@ public class Config {
     else return new YamlConfiguration();
   }
 
+  public static void reload() {
+    ElMedievo.get().reloadConfig();
+  }
+
   public static class Spawn {
     private static final String spawnPath = "spawn";
     private static final String worldPath = spawnPath + ".world";

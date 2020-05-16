@@ -18,6 +18,10 @@ public final class Config {
     else return new YamlConfiguration();
   }
 
+  public static void reload() {
+    Lobby.get().reloadConfig();
+  }
+
   public static class Network {
     public static String getName() {
       return getConfig().getString("name");

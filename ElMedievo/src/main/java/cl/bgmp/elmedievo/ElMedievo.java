@@ -1,6 +1,7 @@
 package cl.bgmp.elmedievo;
 
 import cl.bgmp.elmedievo.commands.CoordsCommand;
+import cl.bgmp.elmedievo.commands.ElMedievoCommand;
 import cl.bgmp.elmedievo.commands.Reciper.Furnace.FurnaceCommand;
 import cl.bgmp.elmedievo.commands.Reciper.ReciperCommand;
 import cl.bgmp.elmedievo.commands.SpawnCommand;
@@ -107,5 +108,7 @@ public final class ElMedievo extends JavaPlugin {
     commandRegistry.register(FurnaceCommand.FurnaceParentCommand.class);
     commandRegistry.register(FurnaceCommand.class);
     commandRegistry.register(SpawnCommand.class);
+    commandRegistry.register(ElMedievoCommand.ElMedievoParentCommand.class);
+    commandRegistry.register(ElMedievoCommand.class);
   }
 }

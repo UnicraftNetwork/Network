@@ -1,5 +1,6 @@
 package cl.bgmp.lobby;
 
+import cl.bgmp.lobby.commands.LobbyCommand;
 import cl.bgmp.lobby.listeners.BlockEvents;
 import cl.bgmp.lobby.listeners.PlayerEvents;
 import cl.bgmp.lobby.portals.PortalFactory;
@@ -96,7 +97,10 @@ public final class Lobby extends JavaPlugin {
   @Override
   public void onDisable() {}
 
-  public void registerCommands() {}
+  public void registerCommands() {
+    commandRegistry.register(LobbyCommand.LobbyParentCommand.class);
+    commandRegistry.register(LobbyCommand.class);
+  }
 
   public void registerEvents(Listener... listeners) {
     final PluginManager pluginManager = Bukkit.getPluginManager();

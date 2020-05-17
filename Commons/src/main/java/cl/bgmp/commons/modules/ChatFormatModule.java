@@ -32,23 +32,11 @@ public class ChatFormatModule extends Module {
     reloadConfigValues();
   }
 
-  public Chat getVaultChat() {
-    return vaultChat;
-  }
-
   public String getPlayerPrefix(final Player player) {
     return vaultChat.getPlayerPrefix(player);
   }
 
-  public String getPlayerFormattedPrefix(final Player player) {
-    return vaultChat.getPlayerPrefix(player);
-  }
-
   public String getPlayerSuffix(final Player player) {
-    return vaultChat.getPlayerSuffix(player);
-  }
-
-  public String getPlayerFormattedSuffix(final Player player) {
     return vaultChat.getPlayerSuffix(player);
   }
 

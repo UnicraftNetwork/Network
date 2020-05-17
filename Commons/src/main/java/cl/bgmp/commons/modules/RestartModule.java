@@ -67,11 +67,15 @@ public class RestartModule extends Module {
         || interval.getValue() == 2
         || interval.getValue() == 1) {
 
-      final String secondOrSeconds = interval.toMinimalString().equals("1s") ? "second" : "seconds";
       final int v1 = interval.getValue() <= 3 ? 20 : 10;
 
       players.forEach(
           player -> {
+            final String secondOrSeconds =
+                interval.toMinimalString().equals("1s")
+                    ? Translations.get("time.unit.second", player)
+                    : Translations.get("time.unit.seconds", player);
+
             final String message =
                 ChatColor.AQUA
                     + Translations.get(
@@ -89,7 +93,7 @@ public class RestartModule extends Module {
                         + interval.getValue()
                         + ChatColor.AQUA
                         + " "
-                        + interval.getUnit().toString().toLowerCase(),
+                        + interval.getUnit().toLocalizedString(player),
                     10,
                     30,
                     15));

@@ -1,5 +1,7 @@
 package cl.bgmp.utilsbukkit.timeutils;
 
+import cl.bgmp.utilsbukkit.translations.Translations;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public enum TimeUnit {
@@ -165,6 +167,29 @@ public enum TimeUnit {
         return "SECONDS";
       case MILLISECONDS:
         return "MILLISECONDS";
+      default:
+        return "null";
+    }
+  }
+
+  public String toLocalizedString(final CommandSender sender) {
+    switch (this) {
+      case DAYS:
+        return Translations.get("time.unit.days", sender);
+      case HOURS:
+        return Translations.get("time.unit.hours", sender);
+      case WEEKS:
+        return Translations.get("time.unit.weeks", sender);
+      case YEARS:
+        return Translations.get("time.unit.years", sender);
+      case MONTHS:
+        return Translations.get("time.unit.months", sender);
+      case MINUTES:
+        return Translations.get("time.unit.minutes", sender);
+      case SECONDS:
+        return Translations.get("time.unit.seconds", sender);
+      case MILLISECONDS:
+        return Translations.get("time.unit.milliseconds", sender);
       default:
         return "null";
     }

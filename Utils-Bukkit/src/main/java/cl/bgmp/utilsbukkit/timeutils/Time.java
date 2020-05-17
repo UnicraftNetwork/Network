@@ -1,6 +1,7 @@
 package cl.bgmp.utilsbukkit.timeutils;
 
 import java.util.Date;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 public class Time {
@@ -71,8 +72,8 @@ public class Time {
   }
 
   /**
-   * Deduces what is the maximum time {@link TimeUnit} that can be created off {@link this#unit},
-   * and formats it as a string
+   * Deduces what is the maximum {@link TimeUnit} that can be created off {@link this#unit}, and
+   * formats it as a string
    *
    * @return Formatted deduced {@link Time} string
    */
@@ -80,6 +81,18 @@ public class Time {
   public String toEffectiveString() {
     Time time = TimeUnit.revertTimeFromMillis(this.millis());
     return time.toString();
+  }
+
+  /**
+   * Deduces what is the maximum {@link TimeUnit} that can be created off {@link this#unit}, and
+   * formats it as a localised string
+   *
+   * @return Formatted deduced {@link Time} string
+   */
+  @NotNull
+  public String toEffectiveLocalizedString(final CommandSender sender) {
+    Time time = TimeUnit.revertTimeFromMillis(this.millis());
+    return time.toLocalizedString(sender);
   }
 
   /**
@@ -97,7 +110,12 @@ public class Time {
   /** @return The literal amount of {@link TimeUnit}s, formatted as a string */
   @Override
   public String toString() {
-    return this.value + " " + unit.toString().toLowerCase();
+    return this.value + " " + unit.toString();
+  }
+
+  /** @return The literal amount of {@link TimeUnit}s, formatted as a localised string */
+  public String toLocalizedString(final CommandSender sender) {
+    return this.value + " " + unit.toLocalizedString(sender);
   }
 
   /**

@@ -25,7 +25,7 @@ public class RestartCommand {
                 "module.restart.server.will.restart.in",
                 setter,
                 ChatColor.DARK_RED + String.valueOf(interval.getValue()) + ChatColor.AQUA,
-                interval.getUnit().toString().toLowerCase()));
+                interval.getUnit().toLocalizedString(setter)));
   }
 
   @Command(
@@ -82,7 +82,7 @@ public class RestartCommand {
             + Translations.get("module.restart.next", sender)
             + " "
             + ChatColor.AQUA
-            + restartModule.getCurrentInterval().toEffectiveString()
+            + restartModule.getCurrentInterval().toEffectiveLocalizedString(sender)
             + Chat.NEW_LINE
             + ChatColor.GREEN
             + Translations.get("module.restart.queue.new", sender)

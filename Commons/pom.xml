@@ -61,13 +61,6 @@
         </resources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>

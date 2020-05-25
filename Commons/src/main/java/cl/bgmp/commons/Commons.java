@@ -101,7 +101,7 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         new WeatherModule(),
         new JoinQuitMessageModule(),
         new RestartModule(),
-        new TipsModule());
+        new TipsModule(getLogger()));
 
     loadModules();
 

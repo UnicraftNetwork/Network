@@ -1,0 +1,4 @@
+name: Commons-Bungee
+main: cl.bgmp.bungee.CommonsBungee
+version: '1.0'
+author: BGMP

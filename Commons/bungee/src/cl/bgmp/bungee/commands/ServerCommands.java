@@ -2,6 +2,7 @@ package cl.bgmp.bungee.commands;
 
 import cl.bgmp.bungee.BungeeMessages;
 import cl.bgmp.bungee.ChatConstant;
+import cl.bgmp.bungee.Util;
 import com.sk89q.minecraft.util.commands.*;
 import java.net.InetSocketAddress;
 import net.md_5.bungee.api.ChatColor;
@@ -23,15 +24,13 @@ public class ServerCommands {
       desc = "Teleport to the lobby",
       max = 0)
   public static void hub(final CommandContext args, CommandSender sender) {
-    if (sender instanceof ProxiedPlayer) {
-      ((ProxiedPlayer) sender).connect(ProxyServer.getInstance().getServers().get("default"));
-      sender.sendMessage(
-          BungeeMessages.colourify(
-              ChatColor.GREEN, ChatConstant.LOBBY_TELEPORTING.getAsTextComponent()));
-    } else {
+    if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
           BungeeMessages.colourify(ChatColor.RED, ChatConstant.NO_CONSOLE.getAsTextComponent()));
+      return;
     }
+
+    Util.sendProxiedPlayerToLobby((ProxiedPlayer) sender);
   }
 
   @Command(

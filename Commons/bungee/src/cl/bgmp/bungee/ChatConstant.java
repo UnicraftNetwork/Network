@@ -12,6 +12,7 @@ public enum ChatConstant {
   SERVER_NOT_FOUND("Could not find server "),
   NOTHING_TO_REPLY("Nothing to reply to."),
   PLAYER_NOT_FOUND("No player matched query."),
+  NO_LOBBIES_AVAILABLE("No lobbies are available at this moment."),
 
   // Prefixes
   HELPOP_PREFIX(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] "),
@@ -46,7 +47,7 @@ public enum ChatConstant {
           + ChatColor.RESET),
 
   // ServerCommands strings
-  LOBBY_TELEPORTING("Teleporting you to the lobby..."),
+  TELEPORTING("Teleporting..."),
   ADDED_SERVER("Added Server "),
   REMOVED_SERVER("Removed Server "),
 

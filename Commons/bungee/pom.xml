@@ -13,19 +13,6 @@
 
     <name>Commons-Bungee</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>command-framework-bungee</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.10-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-	</dependencies>
-
     <build>
         <sourceDirectory>${basedir}/src/</sourceDirectory>
         <resources>
@@ -42,8 +29,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -68,6 +55,23 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>command-framework-bungee</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.10-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

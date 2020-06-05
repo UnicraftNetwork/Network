@@ -10,10 +10,32 @@ public enum ChatConstant {
   NUMBER_STRING_EXCEPTION(new TextComponent("Number expected, string received instead.")),
   ERROR(new TextComponent("An error has occurred. See console.")),
   SERVER_NOT_FOUND(new TextComponent("Could not find server ")),
+  NOTHING_TO_REPLY(new TextComponent("Nothing to reply to.")),
+  PLAYER_NOT_FOUND(new TextComponent("No player matched query.")),
 
   // Prefixes
   HELPOP_PREFIX(
       new TextComponent(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] ")),
+  MSG_PREFIX_FROM(
+      new TextComponent(
+          ChatColor.WHITE
+              + "["
+              + ChatColor.GOLD
+              + "PM"
+              + ChatColor.WHITE
+              + "] "
+              + ChatColor.GRAY
+              + "From ")),
+  MSG_PREFIX_TO(
+      new TextComponent(
+          ChatColor.WHITE
+              + "["
+              + ChatColor.GOLD
+              + "PM"
+              + ChatColor.WHITE
+              + "] "
+              + ChatColor.GRAY
+              + "To ")),
 
   // ServerCommands strings
   LOBBY_TELEPORTING(new TextComponent("Teleporting you to the lobby...")),

@@ -50,6 +50,9 @@ public enum ChatConstant {
   ADDED_SERVER("Added Server "),
   REMOVED_SERVER("Removed Server "),
 
+  // Success messages
+  HELPOP_SENT("Your message has been sent to the server staff."),
+
   // Misc
   ARROW("➔");
 

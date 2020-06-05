@@ -45,5 +45,7 @@ public class HelpOPCommand {
         onlinePlayer.sendMessage(componentBuilder.create());
       }
     }
+
+    player.sendMessage(BungeeMessages.colourify(ChatColor.GREEN, ChatConstant.HELPOP_SENT.getAsTextComponent()));
   }
 }

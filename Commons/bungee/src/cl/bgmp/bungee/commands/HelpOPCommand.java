@@ -41,11 +41,12 @@ public class HelpOPCommand {
         componentBuilder.append(" ");
         componentBuilder.append(ChatColor.WHITE + ChatConstant.ARROW.getAsString());
         componentBuilder.append(" ");
-        componentBuilder.append(ChatColor.GRAY + message);
+        componentBuilder.append(ChatColor.WHITE + message);
         onlinePlayer.sendMessage(componentBuilder.create());
       }
     }
 
-    player.sendMessage(BungeeMessages.colourify(ChatColor.GREEN, ChatConstant.HELPOP_SENT.getAsTextComponent()));
+    player.sendMessage(
+        BungeeMessages.colourify(ChatColor.GREEN, ChatConstant.HELPOP_SENT.getAsTextComponent()));
   }
 }

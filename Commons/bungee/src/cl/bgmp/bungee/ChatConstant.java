@@ -5,57 +5,65 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public enum ChatConstant {
   // Exceptions
-  NO_CONSOLE(new TextComponent("You must be a player to execute this command.")),
-  NO_PERMISSION(new TextComponent("You do not have permission.")),
-  NUMBER_STRING_EXCEPTION(new TextComponent("Number expected, string received instead.")),
-  ERROR(new TextComponent("An error has occurred. See console.")),
-  SERVER_NOT_FOUND(new TextComponent("Could not find server ")),
-  NOTHING_TO_REPLY(new TextComponent("Nothing to reply to.")),
-  PLAYER_NOT_FOUND(new TextComponent("No player matched query.")),
+  NO_CONSOLE("You must be a player to execute this command."),
+  NO_PERMISSION("You do not have permission."),
+  NUMBER_STRING_EXCEPTION("Number expected, string received instead."),
+  ERROR("An error has occurred. See console."),
+  SERVER_NOT_FOUND("Could not find server "),
+  NOTHING_TO_REPLY("Nothing to reply to."),
+  PLAYER_NOT_FOUND("No player matched query."),
 
   // Prefixes
-  HELPOP_PREFIX(
-      new TextComponent(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] ")),
+  HELPOP_PREFIX(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] "),
   MSG_PREFIX_FROM(
-      new TextComponent(
-          ChatColor.WHITE
-              + "["
-              + ChatColor.GOLD
-              + "PM"
-              + ChatColor.WHITE
-              + "] "
-              + ChatColor.GRAY
-              + "From ")),
+      ChatColor.WHITE
+          + "["
+          + ChatColor.GOLD
+          + "PM"
+          + ChatColor.WHITE
+          + "] "
+          + ChatColor.GRAY
+          + "From "),
   MSG_PREFIX_TO(
-      new TextComponent(
-          ChatColor.WHITE
-              + "["
-              + ChatColor.GOLD
-              + "PM"
-              + ChatColor.WHITE
-              + "] "
-              + ChatColor.GRAY
-              + "To ")),
+      ChatColor.WHITE
+          + "["
+          + ChatColor.GOLD
+          + "PM"
+          + ChatColor.WHITE
+          + "] "
+          + ChatColor.GRAY
+          + "To "
+          + ChatColor.RESET),
+  STAFF_CHAT_PREFIX(
+      ChatColor.WHITE
+          + "["
+          + ChatColor.GOLD
+          + "A"
+          + ChatColor.WHITE
+          + "] "
+          + ChatColor.GRAY
+          + "To "
+          + ChatColor.RESET),
 
   // ServerCommands strings
-  LOBBY_TELEPORTING(new TextComponent("Teleporting you to the lobby...")),
-  ADDED_SERVER(new TextComponent("Added Server ")),
-  REMOVED_SERVER(new TextComponent("Removed Server ")),
+  LOBBY_TELEPORTING("Teleporting you to the lobby..."),
+  ADDED_SERVER("Added Server "),
+  REMOVED_SERVER("Removed Server "),
 
   // Misc
-  ARROW(new TextComponent("➔"));
+  ARROW("➔");
 
-  private TextComponent component;
+  private String text;
 
-  ChatConstant(final TextComponent component) {
-    this.component = component;
+  ChatConstant(final String text) {
+    this.text = text;
   }
 
   public TextComponent getAsTextComponent() {
-    return component;
+    return new TextComponent(text);
   }
 
   public String getAsString() {
-    return component.getText();
+    return text;
   }
 }

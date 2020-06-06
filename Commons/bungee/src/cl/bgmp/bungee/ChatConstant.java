@@ -13,6 +13,8 @@ public enum ChatConstant {
   NOTHING_TO_REPLY("Nothing to reply to."),
   PLAYER_NOT_FOUND("No player matched query."),
   NO_LOBBIES_AVAILABLE("No lobbies are available at this moment."),
+  SERVER_KICK(
+      "The server you were previously on went offline. You have been connected to a fallback server."),
 
   // Prefixes
   HELPOP_PREFIX(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] "),

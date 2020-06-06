@@ -4,6 +4,7 @@ import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.ServerCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
+import cl.bgmp.bungee.listeners.PlayerEvents;
 import com.sk89q.bungee.util.BungeeCommandsManager;
 import com.sk89q.bungee.util.CommandExecutor;
 import com.sk89q.bungee.util.CommandRegistration;
@@ -20,6 +21,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class CommonsBungee extends Plugin implements CommandExecutor<CommandSender> {
   private static CommonsBungee commonsBungee;
   private static HashMap<String, String> privateMessagesReplyRelations;
+  private static HashMap<String, ChatState> playerChatStates;
 
   private BungeeCommandsManager commands;
   private CommandRegistration registrar;
@@ -30,6 +32,10 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
 
   public static HashMap<String, String> getPrivateMessagesReplyRelations() {
     return privateMessagesReplyRelations;
+  }
+
+  public static HashMap<String, ChatState> getPlayerChatStates() {
+    return playerChatStates;
   }
 
   @Override
@@ -62,9 +68,10 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commands, this);
 
     privateMessagesReplyRelations = new HashMap<>();
+    playerChatStates = new HashMap<>();
 
     registerCommands(HelpOPCommand.class, ServerCommands.class, PrivateMessageCommands.class);
-    registerEvents(new PrivateMessagesManager());
+    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
   }
 
   private void registerCommands(Class<?>... commandClasses) {

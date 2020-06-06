@@ -55,7 +55,8 @@ public enum ChatConstant {
   HELPOP_SENT("Your message has been sent to the server staff."),
 
   // Misc
-  ARROW("➔");
+  ARROW("➔"),
+  DOUBLE_ARROWS("»");
 
   private String text;
 

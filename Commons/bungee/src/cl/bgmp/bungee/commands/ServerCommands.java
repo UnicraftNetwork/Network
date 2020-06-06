@@ -30,7 +30,20 @@ public class ServerCommands {
       return;
     }
 
-    Util.sendProxiedPlayerToLobby((ProxiedPlayer) sender);
+    final ProxiedPlayer player = (ProxiedPlayer) sender;
+    final ServerInfo suitableLobby = Util.resolveSuitableLobbyForPlayer(player);
+
+    if (suitableLobby == null) {
+      player.sendMessage(
+          BungeeMessages.colourify(
+              ChatColor.RED, ChatConstant.NO_LOBBIES_AVAILABLE.getAsTextComponent()));
+    } else {
+      player.sendMessage(
+          BungeeMessages.append(
+              Util.resolveServerName(suitableLobby),
+              ChatColor.DARK_PURPLE + ChatConstant.TELEPORTING.getAsString()));
+      player.connect(suitableLobby);
+    }
   }
 
   @Command(

@@ -63,7 +63,7 @@ public class Util {
    *
    * @param player The proxied player to be sent to a Lobby
    */
-  public static void sendProxiedPlayerToLobby(final ProxiedPlayer player) {
+  public static ServerInfo resolveSuitableLobbyForPlayer(final ProxiedPlayer player) {
     final Set<ServerInfo> servers =
         new HashSet<>(CommonsBungee.get().getProxy().getServers().values());
     final List<ServerInfo> availableLobbies =
@@ -72,17 +72,10 @@ public class Util {
             .collect(Collectors.toList());
 
     if (availableLobbies.isEmpty()) {
-      player.sendMessage(
-          BungeeMessages.colourify(
-              ChatColor.RED, ChatConstant.NO_LOBBIES_AVAILABLE.getAsTextComponent()));
+      return null;
     } else {
       availableLobbies.sort(Comparator.comparingInt(serverInfo -> serverInfo.getPlayers().size()));
-
-      player.connect(availableLobbies.get(0));
-      player.sendMessage(
-          BungeeMessages.append(
-              resolveServerName(availableLobbies.get(0)),
-              ChatColor.DARK_PURPLE + ChatConstant.TELEPORTING.getAsString()));
+      return availableLobbies.get(0);
     }
   }
 }

@@ -31,7 +31,7 @@ public class ServerCommands {
     }
 
     final ProxiedPlayer player = (ProxiedPlayer) sender;
-    final ServerInfo suitableLobby = Util.resolveSuitableLobbyForPlayer(player);
+    final ServerInfo suitableLobby = Util.resolveSuitableLobby();
 
     if (suitableLobby == null) {
       player.sendMessage(

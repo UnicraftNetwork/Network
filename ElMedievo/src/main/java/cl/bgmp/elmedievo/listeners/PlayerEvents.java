@@ -26,24 +26,21 @@ public class PlayerEvents implements Listener {
     event.setMessage(Chat.colourify(event.getMessage()));
   }
 
-  //prevent players place custom runes
+  // prevent players place custom runes
   @SuppressWarnings({"ConstantConditions", "deprecation"})
   private boolean ItemIsRune(final @NotNull ItemStack itemStack) {
-    if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore())
-      return false;
+    if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
     if (itemStack.getItemMeta() instanceof SkullMeta) {
       final SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
       return skullMeta.getOwner().equals(luckRune) || skullMeta.getOwner().equals(speedRune);
-    } else
-      return false;
+    } else return false;
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBlockPlace(BlockPlaceEvent event) {
     Player p = event.getPlayer();
     final PlayerInventory inventory = event.getPlayer().getInventory();
-    if (!ItemIsRune(inventory.getItemInMainHand())
-            && !ItemIsRune(inventory.getItemInOffHand()))
+    if (!ItemIsRune(inventory.getItemInMainHand()) && !ItemIsRune(inventory.getItemInOffHand()))
       return;
     event.setCancelled(true);
     p.sendMessage(ChatColor.RED + "¡No puedes poner runas en el suelo!");

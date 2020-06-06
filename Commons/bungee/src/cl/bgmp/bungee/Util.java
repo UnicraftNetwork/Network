@@ -59,11 +59,11 @@ public class Util {
   }
 
   /**
-   * Sends a given proxied player to a suitable lobby instance
+   * Resolves the lobby with the least amount of players, and deems it suitable to be returned
    *
-   * @param player The proxied player to be sent to a Lobby
+   * @return The suitable lobby instance, or null if not found
    */
-  public static ServerInfo resolveSuitableLobbyForPlayer(final ProxiedPlayer player) {
+  public static ServerInfo resolveSuitableLobby() {
     final Set<ServerInfo> servers =
         new HashSet<>(CommonsBungee.get().getProxy().getServers().values());
     final List<ServerInfo> availableLobbies =

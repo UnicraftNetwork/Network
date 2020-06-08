@@ -9,7 +9,6 @@ public enum ChatConstant {
   NO_PERMISSION("You do not have permission."),
   NUMBER_STRING_EXCEPTION("Number expected, string received instead."),
   ERROR("An error has occurred. See console."),
-  SERVER_NOT_FOUND("Could not find server "),
   NOTHING_TO_REPLY("Nothing to reply to."),
   PLAYER_NOT_FOUND("No player matched query."),
   NO_LOBBIES_AVAILABLE("No lobbies are available at this moment."),
@@ -27,8 +26,7 @@ public enum ChatConstant {
           + "] "
           + ChatColor.GRAY
           + "From "
-          + ChatColor.RESET
-  ),
+          + ChatColor.RESET),
   MSG_PREFIX_TO(
       ChatColor.WHITE
           + "["
@@ -44,8 +42,6 @@ public enum ChatConstant {
 
   // ServerCommands strings
   TELEPORTING("Teleporting..."),
-  ADDED_SERVER("Added Server "),
-  REMOVED_SERVER("Removed Server "),
 
   // Success messages
   HELPOP_SENT("Your message has been sent to the server staff."),

@@ -1,7 +1,8 @@
 package cl.bgmp.bungee;
 
 public enum Permission {
-  HELPOP_SEE("commons.bungee.helpop.see");
+  HELPOP_SEE("commons.bungee.helpop.see"),
+  STAFF_CHAT_SEE("commons.bungee.staffchat.see");
 
   private String node;
 

@@ -38,15 +38,7 @@ public enum ChatConstant {
           + "To "
           + ChatColor.RESET),
   STAFF_CHAT_PREFIX(
-      ChatColor.WHITE
-          + "["
-          + ChatColor.GOLD
-          + "A"
-          + ChatColor.WHITE
-          + "] "
-          + ChatColor.GRAY
-          + "To "
-          + ChatColor.RESET),
+      ChatColor.WHITE + "[" + ChatColor.GOLD + "A" + ChatColor.WHITE + "] " + ChatColor.RESET),
 
   // ServerCommands strings
   TELEPORTING("Teleporting..."),
@@ -57,6 +49,8 @@ public enum ChatConstant {
   HELPOP_SENT("Your message has been sent to the server staff."),
   CHANGED_SERVERS("changed servers"),
   JOINED_THE_GAME("joined the game"),
+  LOCKED_STAFF_CHAT("Now locked into staff chat mode"),
+  LOCKED_GLOBAL_CHAT("Now locked into global chat mode"),
 
   // Misc
   ARROW("➔"),

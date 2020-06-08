@@ -4,6 +4,8 @@ import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.ServerCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
+import cl.bgmp.bungee.commands.staffchat.StaffChatCommands;
+import cl.bgmp.bungee.commands.staffchat.StaffChatManager;
 import cl.bgmp.bungee.listeners.PlayerEvents;
 import com.sk89q.bungee.util.BungeeCommandsManager;
 import com.sk89q.bungee.util.CommandExecutor;
@@ -70,8 +72,12 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     privateMessagesReplyRelations = new HashMap<>();
     playerChatStates = new HashMap<>();
 
-    registerCommands(HelpOPCommand.class, ServerCommands.class, PrivateMessageCommands.class);
-    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
+    registerCommands(
+        HelpOPCommand.class,
+        ServerCommands.class,
+        PrivateMessageCommands.class,
+        StaffChatCommands.class);
+    registerEvents(new PrivateMessagesManager(), new StaffChatManager(), new PlayerEvents());
   }
 
   private void registerCommands(Class<?>... commandClasses) {

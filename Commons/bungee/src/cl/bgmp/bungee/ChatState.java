@@ -1,4 +1,6 @@
 package cl.bgmp.bungee;
 
-public class ChatState {
+public enum ChatState {
+  GLOBAL,
+  STAFF
 }

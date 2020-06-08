@@ -10,6 +10,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Util {
 
@@ -56,6 +58,45 @@ public class Util {
 
   public static TextComponent resolveServerName(final Server server) {
     return resolveServerName(server.getInfo());
+  }
+
+  /**
+   * Resolves a server switch message in the [Server » Server2] fashion
+   *
+   * @param from Origin server, ignored if null
+   * @param to Target server (where the player ends up at)
+   * @param player Player switching servers
+   * @return Formatted transition message [Server » Server2], or just [Server] if from is null
+   */
+  public static TextComponent resolveServerSwitchString(
+      @Nullable final ServerInfo from, @NotNull final ServerInfo to, final ProxiedPlayer player) {
+    TextComponent serverSwitchString;
+    serverSwitchString =
+        from == null
+            ? BungeeMessages.append(
+                resolveServerName(to),
+                resolveProxiedPlayerNick(player, player).getText()
+                    + ChatColor.YELLOW
+                    + " "
+                    + ChatConstant.JOINED_THE_GAME.getAsString())
+            : BungeeMessages.append(
+                new TextComponent(
+                    ChatColor.WHITE
+                        + "["
+                        + ChatColor.GOLD
+                        + from.getName()
+                        + " "
+                        + ChatColor.YELLOW
+                        + ChatConstant.DOUBLE_ARROWS
+                        + ChatColor.GOLD
+                        + " "
+                        + to.getName()
+                        + ChatColor.WHITE
+                        + "] "),
+                resolveProxiedPlayerNick(player, player).getText()
+                    + ChatColor.YELLOW
+                    + ChatConstant.CHANGED_SERVERS.getAsString());
+    return serverSwitchString;
   }
 
   /**

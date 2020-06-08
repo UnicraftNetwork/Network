@@ -7,7 +7,6 @@ import cl.bgmp.bungee.Util;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerKickEvent;
@@ -23,16 +22,7 @@ public class PlayerEvents implements Listener {
     final ServerInfo to = event.getPlayer().getServer().getInfo();
     final ProxiedPlayer player = event.getPlayer();
 
-    final String serverSwitchString =
-        Util.resolveServerName(from).getText()
-            + ChatColor.YELLOW
-            + ChatConstant.DOUBLE_ARROWS.getAsString()
-            + " "
-            + Util.resolveServerName(to).getText();
-    player.sendMessage(
-        BungeeMessages.append(
-            new TextComponent(serverSwitchString),
-            Util.resolveProxiedPlayerNick(player, player).getText()));
+    player.sendMessage(Util.resolveServerSwitchString(from, to, player));
   }
 
   @EventHandler

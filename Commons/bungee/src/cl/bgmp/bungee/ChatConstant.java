@@ -55,6 +55,8 @@ public enum ChatConstant {
 
   // Success messages
   HELPOP_SENT("Your message has been sent to the server staff."),
+  CHANGED_SERVERS("changed servers"),
+  JOINED_THE_GAME("joined the game"),
 
   // Misc
   ARROW("➔"),

@@ -49,6 +49,7 @@ public enum ChatConstant {
   HELPOP_SENT("Your message has been sent to the server staff."),
   CHANGED_SERVERS("changed servers"),
   JOINED_THE_GAME("joined the game"),
+  LEFT_THE_GAME("left the game"),
   LOCKED_STAFF_CHAT("Now locked into staff chat mode"),
   LOCKED_GLOBAL_CHAT("Now locked into global chat mode"),
 

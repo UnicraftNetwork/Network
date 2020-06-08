@@ -9,6 +9,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -23,6 +24,21 @@ public class PlayerEvents implements Listener {
     final ProxiedPlayer player = event.getPlayer();
 
     player.sendMessage(Util.resolveServerSwitchString(from, to, player));
+  }
+
+  // Just a reminder of how it should look/work like. As the user disconnects, they won't be able to
+  // see the message, but in the future, this will be sent to other players as well, players who
+  // will be able to see it
+  @EventHandler
+  public void onPlayerDisconnect(PlayerDisconnectEvent event) {
+    ProxiedPlayer player = event.getPlayer();
+    player.sendMessage(
+        BungeeMessages.append(
+            Util.resolveServerName(player.getServer()),
+            ChatColor.DARK_AQUA
+                + player.getName()
+                + " "
+                + ChatConstant.LEFT_THE_GAME.getAsString()));
   }
 
   @EventHandler

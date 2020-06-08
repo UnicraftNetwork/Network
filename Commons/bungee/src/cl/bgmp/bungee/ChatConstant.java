@@ -26,7 +26,9 @@ public enum ChatConstant {
           + ChatColor.WHITE
           + "] "
           + ChatColor.GRAY
-          + "From "),
+          + "From "
+          + ChatColor.RESET
+  ),
   MSG_PREFIX_TO(
       ChatColor.WHITE
           + "["

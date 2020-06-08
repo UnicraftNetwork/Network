@@ -28,7 +28,7 @@ public class Util {
     final Server targetServer = target.getServer();
     final Server enquirerServer = enquirer.getServer();
 
-    if (!targetServer.equals(enquirerServer))
+    if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName()))
       return BungeeMessages.colourify(ChatColor.DARK_AQUA, new TextComponent(target.getName()));
     else return new TextComponent(target.getDisplayName());
   }

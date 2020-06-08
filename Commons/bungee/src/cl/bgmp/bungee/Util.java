@@ -87,7 +87,7 @@ public class Util {
                         + from.getName()
                         + " "
                         + ChatColor.YELLOW
-                        + ChatConstant.DOUBLE_ARROWS
+                        + ChatConstant.DOUBLE_ARROWS.getAsString()
                         + ChatColor.GOLD
                         + " "
                         + to.getName()
@@ -95,6 +95,7 @@ public class Util {
                         + "] "),
                 resolveProxiedPlayerNick(player, player).getText()
                     + ChatColor.YELLOW
+                    + " "
                     + ChatConstant.CHANGED_SERVERS.getAsString());
     return serverSwitchString;
   }

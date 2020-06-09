@@ -10,14 +10,11 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * A class to wrap up the main functionality of BungeeCord's {@link TextComponent}s You can build
  * and stylise components, while also being able to add Click & Hover events with no weird
  * side-effects.
- *
- * <p>Check out {@link Example} to see the usage in practice.
  *
  * @author https://gist.github.com/BGMP/8e7e9af9654e0d7119290e3fb5869d46
  */
@@ -120,22 +117,5 @@ public class FlashComponent {
 
   private BaseComponent getHeadFlash() {
     return queue.get(queue.size() - 1);
-  }
-
-  private class Example {
-
-    /** Would send a greeting message to the player. */
-    public void greet(ProxiedPlayer player) {
-      player.sendMessage(
-          new FlashComponent("boop")
-              .color(ChatColor.RED)
-              .append("different Text")
-              .color(ChatColor.GREEN)
-              .clickCommand("gamemode 1")
-              .append("new string")
-              .color(ChatColor.YELLOW)
-              .bold(true)
-              .build());
-    }
   }
 }

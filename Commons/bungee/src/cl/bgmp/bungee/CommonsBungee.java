@@ -16,6 +16,7 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import java.util.HashMap;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -45,20 +46,28 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     try {
       this.commands.execute(commandName, args, sender, sender);
     } catch (CommandPermissionsException e) {
-      BungeeMessages.commandPermissionsException(sender);
+      sender.sendMessage(
+          new FlashComponent(ChatConstant.NO_PERMISSION.getAsString())
+              .color(ChatColor.RED)
+              .build());
     } catch (MissingNestedCommandException e) {
-      BungeeMessages.nestedCommandUsageException(sender, e.getUsage());
+      sender.sendMessage(new FlashComponent(e.getUsage()).color(ChatColor.RED).build());
     } catch (CommandUsageException e) {
-      BungeeMessages.commandUsageException(sender, e.getMessage(), e.getUsage());
+      sender.sendMessage(new FlashComponent(e.getMessage()).color(ChatColor.RED).build());
+      sender.sendMessage(new FlashComponent(e.getUsage()).color(ChatColor.RED).build());
     } catch (WrappedCommandException e) {
       if (e.getCause() instanceof NumberFormatException) {
-        BungeeMessages.numberFormatException(sender);
+        sender.sendMessage(
+            new FlashComponent(ChatConstant.NUMBER_STRING_EXCEPTION.getAsString())
+                .color(ChatColor.RED)
+                .build());
       } else {
-        BungeeMessages.consoleError(sender);
+        sender.sendMessage(
+            new FlashComponent(ChatConstant.ERROR.getAsString()).color(ChatColor.RED).build());
         e.printStackTrace();
       }
     } catch (CommandException e) {
-      BungeeMessages.commandException(sender, e.getMessage());
+      sender.sendMessage(new FlashComponent(e.getMessage()).color(ChatColor.RED).build());
     }
   }
 

@@ -6,12 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Util {
 
@@ -23,81 +20,30 @@ public class Util {
    * @return formatted, colourful nickname if both target & enquirer share servers at that moment,
    *     or dark aqua colour nickname if not.
    */
-  public static TextComponent resolveProxiedPlayerNick(
+  public static FlashComponent resolveProxiedPlayerNick(
       ProxiedPlayer target, ProxiedPlayer enquirer) {
     final Server targetServer = target.getServer();
     final Server enquirerServer = enquirer.getServer();
 
-    if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName()))
-      return BungeeMessages.colourify(ChatColor.DARK_AQUA, new TextComponent(target.getName()));
-    else return new TextComponent(target.getDisplayName());
+    if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName())) {
+      return new FlashComponent(target.getName()).color(ChatColor.DARK_AQUA);
+    } else return new FlashComponent(target.getDisplayName());
   }
 
-  /**
-   * Resolves a server name in the [Server] fashion.
-   *
-   * @param serverInfo Server's info which's name will be resolved
-   * @return Formatted server name: [Server], or [Unknown] if server is null.
-   */
-  public static TextComponent resolveServerName(final ServerInfo serverInfo) {
-    // TODO: Make server name clickable so players can directly teleport to it
-    TextComponent networkServerName;
-    networkServerName =
-        serverInfo == null
-            ? new TextComponent(
-                ChatColor.WHITE + "[" + ChatColor.GOLD + "Unknown" + ChatColor.WHITE + "] ")
-            : new TextComponent(
-                ChatColor.WHITE
-                    + "["
-                    + ChatColor.GOLD
-                    + serverInfo.getName()
-                    + ChatColor.WHITE
-                    + "] ");
-    return networkServerName;
+  public static FlashComponent resolveServerName(final Server server) {
+    FlashComponent serverName;
+    serverName =
+        server == null
+            ? new FlashComponent("Unknown").color(ChatColor.GOLD)
+            : resolveServerName(server.getInfo());
+    return serverName;
   }
 
-  public static TextComponent resolveServerName(final Server server) {
-    return resolveServerName(server.getInfo());
-  }
-
-  /**
-   * Resolves a server switch message in the [Server » Server2] fashion
-   *
-   * @param from Origin server, ignored if null
-   * @param to Target server (where the player ends up at)
-   * @param player Player switching servers
-   * @return Formatted transition message [Server » Server2], or just [Server] if from is null
-   */
-  public static TextComponent resolveServerSwitchString(
-      @Nullable final ServerInfo from, @NotNull final ServerInfo to, final ProxiedPlayer player) {
-    TextComponent serverSwitchString;
-    serverSwitchString =
-        from == null
-            ? BungeeMessages.append(
-                resolveServerName(to),
-                resolveProxiedPlayerNick(player, player).getText()
-                    + ChatColor.YELLOW
-                    + " "
-                    + ChatConstant.JOINED_THE_GAME.getAsString())
-            : BungeeMessages.append(
-                new TextComponent(
-                    ChatColor.WHITE
-                        + "["
-                        + ChatColor.GOLD
-                        + from.getName()
-                        + " "
-                        + ChatColor.YELLOW
-                        + ChatConstant.DOUBLE_ARROWS.getAsString()
-                        + ChatColor.GOLD
-                        + " "
-                        + to.getName()
-                        + ChatColor.WHITE
-                        + "] "),
-                resolveProxiedPlayerNick(player, player).getText()
-                    + ChatColor.YELLOW
-                    + " "
-                    + ChatConstant.CHANGED_SERVERS.getAsString());
-    return serverSwitchString;
+  public static FlashComponent resolveServerName(final ServerInfo serverInfo) {
+    return new FlashComponent(serverInfo.getName())
+        .color(ChatColor.GOLD)
+        .hoverText(new FlashComponent("Click to connect").color(ChatColor.YELLOW).build())
+        .clickCommand("server " + serverInfo.getName());
   }
 
   /**

@@ -1,16 +1,14 @@
 package cl.bgmp.bungee.commands.staffchat;
 
-import cl.bgmp.bungee.BungeeMessages;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.ChatState;
 import cl.bgmp.bungee.CommonsBungee;
+import cl.bgmp.bungee.FlashComponent;
 import cl.bgmp.bungee.Permission;
 import cl.bgmp.bungee.Util;
 import java.util.HashMap;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
@@ -36,8 +34,9 @@ public class StaffChatManager implements Listener {
 
     getPlayerChatStates().put(player.getName(), alternation);
     player.sendMessage(
-        BungeeMessages.append(
-            ChatConstant.STAFF_CHAT_PREFIX.getAsTextComponent(), message.getAsString()));
+        new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
+            .append(message.getAsString())
+            .build());
   }
 
   public static void sendStaffChatMsg(@NotNull ProxiedPlayer sender, @NotNull String message) {
@@ -80,13 +79,21 @@ public class StaffChatManager implements Listener {
    */
   private static BaseComponent[] constructStaffChatMessage(
       ProxiedPlayer sender, ProxiedPlayer receiver, String message) {
-    TextComponent prefix =
-        BungeeMessages.append(
-            ChatConstant.STAFF_CHAT_PREFIX.getAsTextComponent(),
-            Util.resolveServerName(sender.getServer()).getText());
-    ComponentBuilder formattedStaffChatMessage = new ComponentBuilder(prefix);
-    formattedStaffChatMessage.append(Util.resolveProxiedPlayerNick(sender, receiver));
-    formattedStaffChatMessage.append(ChatColor.WHITE + ": " + message);
-    return formattedStaffChatMessage.create();
+
+    final FlashComponent resolvedServerName = Util.resolveServerName(sender.getServer());
+    final FlashComponent resolvedSenderNick = Util.resolveProxiedPlayerNick(sender, receiver);
+
+    return new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
+        .append("[")
+        .color(ChatColor.WHITE)
+        .append(resolvedServerName)
+        .append("] ")
+        .color(ChatColor.WHITE)
+        .append(resolvedSenderNick)
+        .append(": ")
+        .color(ChatColor.WHITE)
+        .append(message)
+        .color(ChatColor.WHITE)
+        .build();
   }
 }

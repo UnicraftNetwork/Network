@@ -1,13 +1,11 @@
 package cl.bgmp.bungee.commands;
 
-import cl.bgmp.bungee.BungeeMessages;
 import cl.bgmp.bungee.ChatConstant;
+import cl.bgmp.bungee.FlashComponent;
 import cl.bgmp.bungee.Util;
 import com.sk89q.minecraft.util.commands.*;
-import java.net.InetSocketAddress;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -26,7 +24,7 @@ public class ServerCommands {
   public static void hub(final CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
-          BungeeMessages.colourify(ChatColor.RED, ChatConstant.NO_CONSOLE.getAsTextComponent()));
+          new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
       return;
     }
 
@@ -34,14 +32,20 @@ public class ServerCommands {
     final ServerInfo suitableLobby = Util.resolveSuitableLobby();
 
     if (suitableLobby == null) {
-      player.sendMessage(
-          BungeeMessages.colourify(
-              ChatColor.RED, ChatConstant.NO_LOBBIES_AVAILABLE.getAsTextComponent()));
+      sender.sendMessage(
+          new FlashComponent(ChatConstant.NO_LOBBIES_AVAILABLE.getAsString())
+              .color(ChatColor.RED)
+              .build());
     } else {
-      player.sendMessage(
-          BungeeMessages.append(
-              Util.resolveServerName(suitableLobby),
-              ChatColor.DARK_PURPLE + ChatConstant.TELEPORTING.getAsString()));
+      sender.sendMessage(
+          new FlashComponent("[")
+              .color(ChatColor.WHITE)
+              .append(Util.resolveServerName(suitableLobby))
+              .append("] ")
+              .color(ChatColor.WHITE)
+              .append(ChatConstant.TELEPORTING.getAsString())
+              .color(ChatColor.YELLOW)
+              .build());
       player.connect(suitableLobby);
     }
   }

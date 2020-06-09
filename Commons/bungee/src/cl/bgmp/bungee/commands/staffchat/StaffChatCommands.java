@@ -1,7 +1,7 @@
 package cl.bgmp.bungee.commands.staffchat;
 
-import cl.bgmp.bungee.BungeeMessages;
 import cl.bgmp.bungee.ChatConstant;
+import cl.bgmp.bungee.FlashComponent;
 import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
@@ -20,7 +20,7 @@ public class StaffChatCommands {
   public static void admin(final CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
-          BungeeMessages.colourify(ChatColor.RED, ChatConstant.NO_CONSOLE.getAsTextComponent()));
+          new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
       return;
     }
 

@@ -1,8 +1,8 @@
 package cl.bgmp.bungee.listeners;
 
-import cl.bgmp.bungee.BungeeMessages;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
+import cl.bgmp.bungee.FlashComponent;
 import cl.bgmp.bungee.Util;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
@@ -23,7 +23,33 @@ public class PlayerEvents implements Listener {
     final ServerInfo to = event.getPlayer().getServer().getInfo();
     final ProxiedPlayer player = event.getPlayer();
 
-    player.sendMessage(Util.resolveServerSwitchString(from, to, player));
+    if (from == null) {
+      player.sendMessage(
+          new FlashComponent("[")
+              .color(ChatColor.WHITE)
+              .append(Util.resolveServerName(to))
+              .append("] ")
+              .color(ChatColor.WHITE)
+              .append(player.getDisplayName())
+              .append(" " + ChatConstant.JOINED_THE_GAME.getAsString())
+              .color(ChatColor.YELLOW)
+              .build());
+    } else {
+      player.sendMessage(
+          new FlashComponent("[")
+              .color(ChatColor.WHITE)
+              .append(Util.resolveServerName(from))
+              .append(" ")
+              .append(ChatConstant.DOUBLE_ARROWS.getAsString())
+              .append(" ")
+              .append(Util.resolveServerName(to))
+              .append("] ")
+              .color(ChatColor.WHITE)
+              .append(player.getDisplayName())
+              .append(" " + ChatConstant.CHANGED_SERVERS.getAsString())
+              .color(ChatColor.YELLOW)
+              .build());
+    }
   }
 
   // Just a reminder of how it should look/work like. As the user disconnects, they won't be able to
@@ -33,12 +59,15 @@ public class PlayerEvents implements Listener {
   public void onPlayerDisconnect(PlayerDisconnectEvent event) {
     ProxiedPlayer player = event.getPlayer();
     player.sendMessage(
-        BungeeMessages.append(
-            Util.resolveServerName(player.getServer()),
-            ChatColor.DARK_AQUA
-                + player.getName()
-                + " "
-                + ChatConstant.LEFT_THE_GAME.getAsString()));
+        new FlashComponent("[")
+            .color(ChatColor.WHITE)
+            .append(
+                Util.resolveServerName(player.getServer())
+                    .append(player.getName())
+                    .color(ChatColor.DARK_AQUA)
+                    .append(" " + ChatConstant.LEFT_THE_GAME.getAsString())
+                    .color(ChatColor.YELLOW))
+            .build());
   }
 
   @EventHandler
@@ -65,6 +94,6 @@ public class PlayerEvents implements Listener {
     event.setCancelServer(to);
 
     player.sendMessage(
-        BungeeMessages.colourify(ChatColor.RED, ChatConstant.SERVER_KICK.getAsTextComponent()));
+        new FlashComponent(ChatConstant.SERVER_KICK.getAsString()).color(ChatColor.RED).build());
   }
 }

@@ -30,7 +30,6 @@ public class HelpOPCommand {
     final ProxiedPlayer player = (ProxiedPlayer) sender;
     final String message = args.getJoinedStrings(0);
 
-    // TODO: Probably optimise this
     for (final ProxiedPlayer onlinePlayer : CommonsBungee.get().getProxy().getPlayers()) {
       if (onlinePlayer.hasPermission(Permission.HELPOP_SEE.getNode())) {
         onlinePlayer.sendMessage(

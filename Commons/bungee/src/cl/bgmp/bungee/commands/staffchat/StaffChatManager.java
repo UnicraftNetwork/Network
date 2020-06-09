@@ -17,9 +17,10 @@ import net.md_5.bungee.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class StaffChatManager implements Listener {
+  public static HashMap<String, ChatState> playerChatStates;
 
   public static HashMap<String, ChatState> getPlayerChatStates() {
-    return CommonsBungee.getPlayerChatStates();
+    return playerChatStates;
   }
 
   public static void alternatePlayerChat(ProxiedPlayer player) {

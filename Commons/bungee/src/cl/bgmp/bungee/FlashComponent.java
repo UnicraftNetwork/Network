@@ -17,7 +17,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * and stylise components, while also being able to add Click & Hover events with no weird
  * side-effects.
  *
- * Check out {@link Example} to see the usage in practice.
+ * <p>Check out {@link Example} to see the usage in practice.
  *
  * @author https://gist.github.com/BGMP/8e7e9af9654e0d7119290e3fb5869d46
  */

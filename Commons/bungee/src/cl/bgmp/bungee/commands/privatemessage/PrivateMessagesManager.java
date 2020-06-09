@@ -14,9 +14,10 @@ import org.jetbrains.annotations.NotNull;
 
 // TODO: Sounds
 public class PrivateMessagesManager implements Listener {
+  public static HashMap<String, String> privateMessagesReplyRelations;
 
   public static HashMap<String, String> getReplyRelations() {
-    return CommonsBungee.getPrivateMessagesReplyRelations();
+    return privateMessagesReplyRelations;
   }
 
   public static void sendMsg(

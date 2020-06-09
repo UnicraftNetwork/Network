@@ -23,22 +23,11 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 public class CommonsBungee extends Plugin implements CommandExecutor<CommandSender> {
   private static CommonsBungee commonsBungee;
-  private static HashMap<String, String> privateMessagesReplyRelations;
-  private static HashMap<String, ChatState> playerChatStates;
-
   private BungeeCommandsManager commands;
   private CommandRegistration registrar;
 
   public static CommonsBungee get() {
     return commonsBungee;
-  }
-
-  public static HashMap<String, String> getPrivateMessagesReplyRelations() {
-    return privateMessagesReplyRelations;
-  }
-
-  public static HashMap<String, ChatState> getPlayerChatStates() {
-    return playerChatStates;
   }
 
   @Override
@@ -78,8 +67,8 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     commands = new BungeeCommandsManager();
     registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commands, this);
 
-    privateMessagesReplyRelations = new HashMap<>();
-    playerChatStates = new HashMap<>();
+    PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
+    StaffChatManager.playerChatStates = new HashMap<>();
 
     registerCommands(
         HelpOPCommand.class,

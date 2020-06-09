@@ -15,7 +15,7 @@ public class Util {
   /**
    * Resolves a player nickname throughout the Network.
    *
-   * @param target player whom's nick will be resolved for the third party
+   * @param target player owner of the queried nickname
    * @param enquirer third party requiring the resolved nick
    * @return formatted, colourful nickname if both target & enquirer share servers at that moment,
    *     or dark aqua colour nickname if not.

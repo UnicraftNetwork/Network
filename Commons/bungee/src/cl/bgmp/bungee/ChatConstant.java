@@ -16,7 +16,8 @@ public enum ChatConstant {
       "The server you were previously on went offline. You have been connected to a fallback server."),
 
   // Prefixes
-  HELPOP_PREFIX(ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] "),
+  HELPOP_PREFIX(
+      ChatColor.WHITE + "[" + ChatColor.GOLD + "H" + ChatColor.WHITE + "] " + ChatColor.RESET),
   MSG_PREFIX_FROM(
       ChatColor.WHITE
           + "["

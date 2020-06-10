@@ -9,6 +9,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
+import org.jetbrains.annotations.NotNull;
 
 public class Util {
 
@@ -39,7 +40,7 @@ public class Util {
     return serverName;
   }
 
-  public static FlashComponent resolveServerName(final ServerInfo serverInfo) {
+  public static FlashComponent resolveServerName(final @NotNull ServerInfo serverInfo) {
     return new FlashComponent(serverInfo.getName())
         .color(ChatColor.GOLD)
         .hoverText(new FlashComponent("Click to connect").color(ChatColor.YELLOW).build())

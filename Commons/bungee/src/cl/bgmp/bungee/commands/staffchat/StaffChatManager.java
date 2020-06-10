@@ -57,12 +57,7 @@ public class StaffChatManager implements Listener {
 
     event.setCancelled(true);
 
-    for (ProxiedPlayer onlinePlayer : CommonsBungee.get().getProxy().getPlayers()) {
-      if (onlinePlayer.hasPermission(Permission.STAFF_CHAT_SEE.getNode())) {
-        onlinePlayer.sendMessage(
-            constructStaffChatMessage(player, onlinePlayer, event.getMessage()));
-      }
-    }
+    sendStaffChatMsg(player, event.getMessage());
   }
 
   @EventHandler

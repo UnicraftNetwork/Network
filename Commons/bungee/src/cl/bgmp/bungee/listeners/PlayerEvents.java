@@ -87,7 +87,7 @@ public class PlayerEvents implements Listener {
                 .getServerInfo(player.getPendingConnection().getListener().getDefaultServer());
     }
 
-    ServerInfo to = Util.resolveSuitableLobby();
+    final ServerInfo to = Util.resolveSuitableLobby();
     if (from != null && from.equals(to)) return;
 
     event.setCancelled(true);

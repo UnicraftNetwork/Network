@@ -56,7 +56,7 @@ public enum ChatConstant {
   ARROW("➔"),
   DOUBLE_ARROWS("»");
 
-  private String text;
+  private final String text;
 
   ChatConstant(final String text) {
     this.text = text;

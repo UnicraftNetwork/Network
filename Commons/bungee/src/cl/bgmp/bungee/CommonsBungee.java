@@ -1,7 +1,7 @@
 package cl.bgmp.bungee;
 
 import cl.bgmp.bungee.commands.HelpOPCommand;
-import cl.bgmp.bungee.commands.ServerCommands;
+import cl.bgmp.bungee.commands.LobbyCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
 import cl.bgmp.bungee.commands.staffchat.StaffChatCommands;
@@ -72,7 +72,7 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
 
     registerCommands(
         HelpOPCommand.class,
-        ServerCommands.class,
+        LobbyCommand.class,
         PrivateMessageCommands.class,
         StaffChatCommands.class);
     registerEvents(new PrivateMessagesManager(), new StaffChatManager(), new PlayerEvents());

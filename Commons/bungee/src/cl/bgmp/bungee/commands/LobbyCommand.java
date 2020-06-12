@@ -9,12 +9,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-/**
- * Only minor tweaks for organising {@link LobbyCommand} have been made. Credit goes to the
- * original resource listed beneath
- *
- * @author https://github.com/applenick/BungeeUtils
- */
 public class LobbyCommand {
 
   @Command(

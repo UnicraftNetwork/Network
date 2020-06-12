@@ -2,6 +2,7 @@ package cl.bgmp.bungee;
 
 import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.LobbyCommand;
+import cl.bgmp.bungee.commands.ServersCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
 import cl.bgmp.bungee.commands.staffchat.StaffChatCommands;
@@ -16,6 +17,7 @@ import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
 import com.sk89q.minecraft.util.commands.WrappedCommandException;
 import java.util.HashMap;
+import java.util.HashSet;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Listener;
@@ -25,9 +27,14 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   private static CommonsBungee commonsBungee;
   private BungeeCommandsManager commands;
   private CommandRegistration registrar;
+  private NetworkInfoProvider networkInfoProvider;
 
   public static CommonsBungee get() {
     return commonsBungee;
+  }
+
+  public NetworkInfoProvider getNetworkInfoProvider() {
+    return networkInfoProvider;
   }
 
   @Override
@@ -69,12 +76,14 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
 
     PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
     StaffChatManager.playerChatStates = new HashMap<>();
+    networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
 
     registerCommands(
         HelpOPCommand.class,
         LobbyCommand.class,
         PrivateMessageCommands.class,
-        StaffChatCommands.class);
+        StaffChatCommands.class,
+        ServersCommand.class);
     registerEvents(new PrivateMessagesManager(), new StaffChatManager(), new PlayerEvents());
   }
 

@@ -22,13 +22,17 @@ public class Util {
    *     or dark aqua colour nickname if not.
    */
   public static FlashComponent resolveProxiedPlayerNick(
-      ProxiedPlayer target, ProxiedPlayer enquirer) {
-    final Server targetServer = target.getServer();
-    final Server enquirerServer = enquirer.getServer();
+      ProxiedPlayer target /* ProxiedPlayer enquirer */) {
+    // final Server targetServer = target.getServer();
+    // final Server enquirerServer = enquirer.getServer();
 
+    return new FlashComponent(target.getName()).color(ChatColor.DARK_AQUA);
+
+    /* FIXME: This below requires a reliable method to set the user's nickname colours and such. Commenting until that's worked out.
     if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName())) {
       return new FlashComponent(target.getName()).color(ChatColor.DARK_AQUA);
     } else return new FlashComponent(target.getDisplayName());
+    */
   }
 
   public static FlashComponent resolveServerName(final Server server) {

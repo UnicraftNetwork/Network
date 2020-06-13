@@ -30,14 +30,14 @@ public class PrivateMessagesManager implements Listener {
 
     final FlashComponent toMessage =
         new FlashComponent()
-            .append(Util.resolveProxiedPlayerNick(receiver, sender))
+            .append(Util.resolveProxiedPlayerNick(receiver))
             .append(": ")
             .color(ChatColor.GRAY)
             .append(message)
             .color(ChatColor.WHITE);
     final FlashComponent fromMessage =
         new FlashComponent()
-            .append(Util.resolveProxiedPlayerNick(sender, receiver))
+            .append(Util.resolveProxiedPlayerNick(sender))
             .append(": ")
             .color(ChatColor.GRAY)
             .append(message)

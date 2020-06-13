@@ -7,6 +7,7 @@ import cl.bgmp.bungee.Util;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -14,28 +15,30 @@ import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 
 public class PlayerEvents implements Listener {
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerSwitchServer(ServerSwitchEvent event) {
     final ServerInfo from = event.getFrom();
     final ServerInfo to = event.getPlayer().getServer().getInfo();
     final ProxiedPlayer player = event.getPlayer();
 
+    final BaseComponent[] prefix;
+    final String action;
+
     if (from == null) {
-      player.sendMessage(
+      prefix =
           new FlashComponent("[")
               .color(ChatColor.WHITE)
               .append(Util.resolveServerName(to))
               .append("] ")
               .color(ChatColor.WHITE)
-              .append(player.getDisplayName())
-              .append(" " + ChatConstant.JOINED_THE_GAME.getAsString())
-              .color(ChatColor.YELLOW)
-              .build());
+              .build();
+      action = ChatConstant.JOINED_THE_GAME.getAsString();
     } else {
-      player.sendMessage(
+      prefix =
           new FlashComponent("[")
               .color(ChatColor.WHITE)
               .append(Util.resolveServerName(from))
@@ -45,11 +48,18 @@ public class PlayerEvents implements Listener {
               .append(Util.resolveServerName(to))
               .append("] ")
               .color(ChatColor.WHITE)
-              .append(player.getDisplayName())
-              .append(" " + ChatConstant.CHANGED_SERVERS.getAsString())
-              .color(ChatColor.YELLOW)
-              .build());
+              .build();
+      action = ChatConstant.CHANGED_SERVERS.getAsString();
     }
+
+    player.sendMessage(
+        new FlashComponent()
+            .append(prefix)
+            .append(player.getDisplayName())
+            .color(ChatColor.DARK_AQUA)
+            .append(" " + action)
+            .color(ChatColor.YELLOW)
+            .build());
   }
 
   // Just a reminder of how it should look/work like. As the user disconnects, they won't be able to

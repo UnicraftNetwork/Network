@@ -77,7 +77,7 @@ public class StaffChatManager implements Listener {
       ProxiedPlayer sender, ProxiedPlayer receiver, String message) {
 
     final FlashComponent resolvedServerName = Util.resolveServerName(sender.getServer());
-    final FlashComponent resolvedSenderNick = Util.resolveProxiedPlayerNick(sender, receiver);
+    final FlashComponent resolvedSenderNick = Util.resolveProxiedPlayerNick(sender);
 
     return new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
         .append("[")

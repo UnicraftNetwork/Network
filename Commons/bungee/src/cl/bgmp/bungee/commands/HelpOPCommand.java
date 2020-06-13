@@ -39,7 +39,7 @@ public class HelpOPCommand {
                 .append(Util.resolveServerName(player.getServer()))
                 .append("] ")
                 .color(ChatColor.WHITE)
-                .append(Util.resolveProxiedPlayerNick(player, onlinePlayer))
+                .append(Util.resolveProxiedPlayerNick(player))
                 .append(" ")
                 .append(ChatConstant.ARROW.getAsString())
                 .color(ChatColor.WHITE)

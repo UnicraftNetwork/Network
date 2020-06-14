@@ -20,7 +20,7 @@ public class EveryoneChannelCommand {
       usage = "<msg>",
       help =
           "Use alone to set your chat mode to everyone. More arguments will just send the message through this channel.")
-  public static void global(CommandContext args, CommandSender sender) {
+  public static void everyone(CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
           new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());

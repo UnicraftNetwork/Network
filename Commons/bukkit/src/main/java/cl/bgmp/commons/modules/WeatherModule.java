@@ -5,7 +5,6 @@ import cl.bgmp.commons.Config;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
-// FIXME: Module is quite ambiguous. Needs rework
 public class WeatherModule extends Module {
 
   public WeatherModule() {

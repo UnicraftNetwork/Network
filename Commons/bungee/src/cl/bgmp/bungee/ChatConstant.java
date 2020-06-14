@@ -14,6 +14,7 @@ public enum ChatConstant {
   NO_LOBBIES_AVAILABLE("No lobbies are available at this moment."),
   SERVER_KICK(
       "The server you were previously on went offline. You have been connected to a fallback server."),
+  CHAT_ALREADY_SET_TO("Your chat mode is already set to "),
 
   // Prefixes
   HELPOP_PREFIX(
@@ -49,8 +50,7 @@ public enum ChatConstant {
   CHANGED_SERVERS("changed servers"),
   JOINED_THE_GAME("joined the game"),
   LEFT_THE_GAME("left the game"),
-  LOCKED_STAFF_CHAT("Now locked into staff chat mode"),
-  LOCKED_GLOBAL_CHAT("Now locked into global chat mode"),
+  CHAT_MODE_SWITCH("Your chat mode has been set to "),
 
   // Misc
   ARROW("➔"),

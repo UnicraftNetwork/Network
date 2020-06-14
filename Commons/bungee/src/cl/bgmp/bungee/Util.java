@@ -47,7 +47,16 @@ public class Util {
   public static FlashComponent resolveServerName(final @NotNull ServerInfo serverInfo) {
     return new FlashComponent(serverInfo.getName())
         .color(ChatColor.GOLD)
-        .hoverText(new FlashComponent("Click to connect").color(ChatColor.YELLOW).build())
+        .hoverText(
+            new FlashComponent("[")
+                .color(ChatColor.WHITE)
+                .append(serverInfo.getName())
+                .color(ChatColor.GOLD)
+                .append("] ")
+                .color(ChatColor.WHITE)
+                .append("Click to connect")
+                .color(ChatColor.GREEN)
+                .build())
         .clickCommand("server " + serverInfo.getName());
   }
 

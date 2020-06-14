@@ -1,12 +1,15 @@
 package cl.bgmp.bungee;
 
+import cl.bgmp.bungee.Channels.ChannelsManager;
+import cl.bgmp.bungee.Channels.EveryoneChannel;
+import cl.bgmp.bungee.Channels.StaffChannel;
+import cl.bgmp.bungee.commands.ChannelCommands.EveryoneChannelCommand;
+import cl.bgmp.bungee.commands.ChannelCommands.StaffChannelCommand;
 import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.LobbyCommand;
 import cl.bgmp.bungee.commands.ServersCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
-import cl.bgmp.bungee.commands.staffchat.StaffChatCommands;
-import cl.bgmp.bungee.commands.staffchat.StaffChatManager;
 import cl.bgmp.bungee.listeners.PlayerEvents;
 import com.sk89q.bungee.util.BungeeCommandsManager;
 import com.sk89q.bungee.util.CommandExecutor;
@@ -28,6 +31,7 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   private BungeeCommandsManager commands;
   private CommandRegistration registrar;
   private NetworkInfoProvider networkInfoProvider;
+  private ChannelsManager channelsManager;
 
   public static CommonsBungee get() {
     return commonsBungee;
@@ -35,6 +39,10 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
 
   public NetworkInfoProvider getNetworkInfoProvider() {
     return networkInfoProvider;
+  }
+
+  public ChannelsManager getChannelsManager() {
+    return channelsManager;
   }
 
   @Override
@@ -75,19 +83,20 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commands, this);
 
     PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
-    StaffChatManager.playerChatStates = new HashMap<>();
     networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
+    channelsManager = new ChannelsManager(new StaffChannel(), new EveryoneChannel());
 
     registerCommands(
         HelpOPCommand.class,
         LobbyCommand.class,
         PrivateMessageCommands.class,
-        StaffChatCommands.class,
-        ServersCommand.class);
-    registerEvents(new PrivateMessagesManager(), new StaffChatManager(), new PlayerEvents());
+        ServersCommand.class,
+        EveryoneChannelCommand.class,
+        StaffChannelCommand.class);
+    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
   }
 
-  private void registerCommands(Class<?>... commandClasses) {
+  public void registerCommands(Class<?>... commandClasses) {
     for (Class<?> commandClass : commandClasses) {
       registrar.register(commandClass);
     }

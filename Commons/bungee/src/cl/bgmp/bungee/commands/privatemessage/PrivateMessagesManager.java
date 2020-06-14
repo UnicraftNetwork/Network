@@ -45,7 +45,7 @@ public class PrivateMessagesManager implements Listener {
 
     sender.sendMessage(
         new FlashComponent(ChatConstant.MSG_PREFIX_TO.getAsString()).append(toMessage).build());
-    sender.sendMessage(
+    receiver.sendMessage(
         new FlashComponent(ChatConstant.MSG_PREFIX_FROM.getAsString()).append(fromMessage).build());
   }
 

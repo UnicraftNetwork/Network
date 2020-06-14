@@ -96,7 +96,7 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     registerEvents(new PrivateMessagesManager(), new PlayerEvents());
   }
 
-  public void registerCommands(Class<?>... commandClasses) {
+  private void registerCommands(Class<?>... commandClasses) {
     for (Class<?> commandClass : commandClasses) {
       registrar.register(commandClass);
     }

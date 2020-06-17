@@ -1,4 +1,4 @@
-package cl.bgmp.bungee.Channels;
+package cl.bgmp.bungee.channels;
 
 public enum ChannelName {
   EVERYONE("everyone"),

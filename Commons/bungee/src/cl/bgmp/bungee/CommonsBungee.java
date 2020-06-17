@@ -1,8 +1,8 @@
 package cl.bgmp.bungee;
 
-import cl.bgmp.bungee.Channels.ChannelsManager;
-import cl.bgmp.bungee.Channels.EveryoneChannel;
-import cl.bgmp.bungee.Channels.StaffChannel;
+import cl.bgmp.bungee.channels.ChannelsManager;
+import cl.bgmp.bungee.channels.EveryoneChannel;
+import cl.bgmp.bungee.channels.StaffChannel;
 import cl.bgmp.bungee.commands.ChannelCommands.EveryoneChannelCommand;
 import cl.bgmp.bungee.commands.ChannelCommands.StaffChannelCommand;
 import cl.bgmp.bungee.commands.HelpOPCommand;

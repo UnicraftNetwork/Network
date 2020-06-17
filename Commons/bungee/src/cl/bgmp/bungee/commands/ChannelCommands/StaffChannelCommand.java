@@ -1,8 +1,8 @@
 package cl.bgmp.bungee.commands.ChannelCommands;
 
-import cl.bgmp.bungee.Channels.Channel;
-import cl.bgmp.bungee.Channels.ChannelName;
-import cl.bgmp.bungee.Channels.ChannelsManager;
+import cl.bgmp.bungee.channels.Channel;
+import cl.bgmp.bungee.channels.ChannelName;
+import cl.bgmp.bungee.channels.ChannelsManager;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.FlashComponent;

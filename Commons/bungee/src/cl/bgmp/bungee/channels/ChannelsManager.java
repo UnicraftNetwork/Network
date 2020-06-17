@@ -1,4 +1,4 @@
-package cl.bgmp.bungee.Channels;
+package cl.bgmp.bungee.channels;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;

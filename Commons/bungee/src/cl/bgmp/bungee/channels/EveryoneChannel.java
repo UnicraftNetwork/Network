@@ -1,4 +1,4 @@
-package cl.bgmp.bungee.Channels;
+package cl.bgmp.bungee.channels;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

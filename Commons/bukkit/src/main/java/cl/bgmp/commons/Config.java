@@ -170,20 +170,26 @@ public class Config {
         final String gamemodeString = getConfig().getString(forcedGamemodePath);
         assert gamemodeString != null;
 
-        if (gamemodeString.equals("0") || gamemodeString.equalsIgnoreCase("survival"))
-          return GameMode.SURVIVAL;
-        if (gamemodeString.equals("1") || gamemodeString.equalsIgnoreCase("creative"))
-          return GameMode.CREATIVE;
-        if (gamemodeString.equals("2") || gamemodeString.equalsIgnoreCase("adventure"))
-          return GameMode.ADVENTURE;
-        if (gamemodeString.equals("3") || gamemodeString.equalsIgnoreCase("spectator"))
-          return GameMode.SPECTATOR;
-
-        Commons.get()
-            .getLogger()
-            .warning("Unable to parse default gamemode. Check your config.yml.");
-        Commons.get().getLogger().warning("Default gamemode was default to SURVIVAL.");
-        return GameMode.SURVIVAL;
+        switch (gamemodeString.toLowerCase()) {
+          case "0":
+          case "survival":
+            return GameMode.SURVIVAL;
+          case "1":
+          case "creative":
+            return GameMode.CREATIVE;
+          case "2":
+          case "adventure":
+            return GameMode.ADVENTURE;
+          case "3":
+          case "spectator":
+            return GameMode.SPECTATOR;
+          default:
+            Commons.get()
+                .getLogger()
+                .warning("Unable to parse default gamemode. Check your config.yml.");
+            Commons.get().getLogger().warning("Default gamemode was default to SURVIVAL.");
+            return GameMode.SURVIVAL;
+        }
       }
     }
   }

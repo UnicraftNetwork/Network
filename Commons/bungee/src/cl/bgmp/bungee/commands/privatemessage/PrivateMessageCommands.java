@@ -12,7 +12,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class PrivateMessageCommands {
   @Command(
-      aliases = {"message", "msg", "pm"},
+      aliases = {"message", "msg", "pm", "tell"},
       desc = "Send a private message to another player.",
       usage = "<player> <msg>",
       min = 2)

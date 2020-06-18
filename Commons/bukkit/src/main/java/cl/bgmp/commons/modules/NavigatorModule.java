@@ -77,5 +77,8 @@ public class NavigatorModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.Navigator.isEnabled());
+    Commons.get().unregisterEvents(this);
+  }
 }

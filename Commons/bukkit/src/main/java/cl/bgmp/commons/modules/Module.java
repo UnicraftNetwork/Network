@@ -22,6 +22,10 @@ public abstract class Module implements Listener {
     return enabled;
   }
 
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
   public abstract void load();
 
   public abstract void unload();

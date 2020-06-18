@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -125,6 +126,10 @@ public final class Commons extends JavaPlugin implements ModuleManager {
     for (Listener listener : listeners) pluginManager.registerEvents(listener, this);
   }
 
+  public void unregisterEvents(Listener... listeners) {
+    for (Listener listener : listeners) HandlerList.unregisterAll(listener);
+  }
+
   private void loadConfiguration() {
     getConfig().options().copyDefaults(true);
     saveConfig();
@@ -141,6 +146,12 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         .filter(Module::isEnabled)
         .collect(Collectors.toSet())
         .forEach(Module::load);
+  }
+
+  @Override
+  public void reloadModules() {
+    this.modules.forEach(Module::unload);
+    this.loadModules();
   }
 
   @Override

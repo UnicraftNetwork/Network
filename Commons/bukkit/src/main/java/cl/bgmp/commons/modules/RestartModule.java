@@ -16,18 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class RestartModule extends Module {
   private Time interval = Config.Restart.getInterval().getAs(TimeUnit.SECONDS);
-  private BukkitRunnable restartTask =
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          interval = new Time(interval.getValue() - 1, TimeUnit.SECONDS);
-          broadcastProgressToPlayers(Bukkit.getOnlinePlayers());
-          if (interval.toMinimalString().equals("0s")) {
-            sendPlayersToLobby();
-            Bukkit.shutdown();
-          }
-        }
-      };
+  private BukkitRunnable restartTask = getNewRestartTask();
 
   public RestartModule() {
     super(ModuleId.RESTART, Config.Restart.isEnabled());
@@ -42,20 +31,27 @@ public class RestartModule extends Module {
   }
 
   public void runNewRestartTask() {
-    this.restartTask.cancel();
-    this.restartTask =
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            interval = new Time(interval.getValue() - 1, TimeUnit.SECONDS);
-            broadcastProgressToPlayers(Bukkit.getOnlinePlayers());
-            if (interval.toMinimalString().equals("0s")) {
-              sendPlayersToLobby();
-              Bukkit.shutdown();
-            }
-          }
-        };
+    resetRestartTask();
     this.restartTask.runTaskTimer(Commons.get(), 0L, Time.fromString("1s").ticks());
+  }
+
+  public void resetRestartTask() {
+    this.restartTask.cancel();
+    this.restartTask = getNewRestartTask();
+  }
+
+  private BukkitRunnable getNewRestartTask() {
+    return new BukkitRunnable() {
+      @Override
+      public void run() {
+        interval = new Time(interval.getValue() - 1, TimeUnit.SECONDS);
+        broadcastProgressToPlayers(Bukkit.getOnlinePlayers());
+        if (interval.toMinimalString().equals("0s")) {
+          sendPlayersToLobby();
+          Bukkit.shutdown();
+        }
+      }
+    };
   }
 
   private void broadcastProgressToPlayers(final Collection<? extends Player> players) {
@@ -118,5 +114,10 @@ public class RestartModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.Restart.isEnabled());
+    restartTask.cancel();
+    setInterval(Config.Restart.getInterval().getAs(TimeUnit.SECONDS));
+    resetRestartTask();
+  }
 }

@@ -1,5 +1,6 @@
 package cl.bgmp.commons.commands;
 
+import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
 import cl.bgmp.utilsbukkit.translations.Translations;
 import com.sk89q.minecraft.util.commands.Command;
@@ -17,6 +18,7 @@ public class CommonsCommand {
   @CommandPermissions("commons.reload")
   public static void reload(final CommandContext args, final CommandSender sender) {
     Config.reload();
+    Commons.get().reloadModules();
     sender.sendMessage(ChatColor.GREEN + Translations.get("misc.configuration.reloaded", sender));
   }
 

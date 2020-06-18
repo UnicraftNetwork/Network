@@ -26,10 +26,6 @@ public class ChatFormatModule extends Module {
 
   public ChatFormatModule() {
     super(ModuleId.CHAT_FORMAT, Config.ChatFormat.isEnabled());
-    if (!enabled) return;
-
-    refreshVault();
-    reloadConfigValues();
   }
 
   public String getPlayerPrefix(final Player player) {
@@ -94,9 +90,16 @@ public class ChatFormatModule extends Module {
 
   @Override
   public void load() {
-    if (enabled) Commons.get().registerEvents(this);
+    if (enabled) {
+      refreshVault();
+      reloadConfigValues();
+      Commons.get().registerEvents(this);
+    }
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.ChatFormat.isEnabled());
+    Commons.get().unregisterEvents(this);
+  }
 }

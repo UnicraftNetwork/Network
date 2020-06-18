@@ -25,5 +25,8 @@ public class ForceGamemodeModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.ForceGamemode.isEnabled());
+    Commons.get().unregisterEvents(this);
+  }
 }

@@ -48,5 +48,8 @@ public class JoinToolsModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.Tools.areEnabled());
+    Commons.get().unregisterEvents(this);
+  }
 }

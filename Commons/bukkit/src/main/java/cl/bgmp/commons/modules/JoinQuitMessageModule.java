@@ -67,7 +67,10 @@ public class JoinQuitMessageModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.JoinQuitMessages.isEnabled());
+    Commons.get().unregisterEvents(this);
+  }
 
   // Suppresses join & quit messages. A quick workaround to allow Commons-Bungee to handle them
   // instead

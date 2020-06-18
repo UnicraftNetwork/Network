@@ -23,5 +23,8 @@ public class WeatherModule extends Module {
   }
 
   @Override
-  public void unload() {}
+  public void unload() {
+    setEnabled(Config.Weather.isDisabled());
+    Commons.get().unregisterEvents(this);
+  }
 }

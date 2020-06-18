@@ -6,5 +6,7 @@ public interface ModuleManager {
 
   void loadModules();
 
+  void reloadModules();
+
   Module getModule(ModuleId id);
 }

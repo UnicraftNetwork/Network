@@ -5,6 +5,7 @@ import cl.bgmp.lobby.Lobby;
 import cl.bgmp.lobby.portals.BungeePortal;
 import cl.bgmp.lobby.portals.PortalType;
 import cl.bgmp.utilsbukkit.Server;
+import com.google.common.collect.ImmutableList;
 import net.jitse.npclib.api.events.NPCInteractEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,9 +20,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class SignPortal extends BungeePortal implements Listener {
   private Sign sign;
   private SignRefreshTask signRefreshTask;
+  private ImmutableList<String> lines;
 
-  public SignPortal(String id, Server server, Location location) {
+  public SignPortal(String id, Server server, Location location, ImmutableList<String> lines) {
     super(id, server, location, PortalType.SIGN);
+    this.lines = lines;
 
     final BlockState blockState = Config.Spawn.getWorld().getBlockAt(this.getLocation()).getState();
     if (!(blockState instanceof Sign)) return;
@@ -31,18 +34,20 @@ public class SignPortal extends BungeePortal implements Listener {
     Lobby.get().registerEvents(this);
   }
 
-  public SignRefreshTask getSignRefreshTask() {
-    return signRefreshTask;
-  }
-
-  public void update(String line3) {
+  public void update() {
     final String line0 = ChatColor.GRAY + "Connect to:";
     final String line1 =
         ChatColor.WHITE + "[" + ChatColor.GOLD + server.getName() + ChatColor.WHITE + "]";
 
     sign.setLine(0, line0);
     sign.setLine(1, line1);
-    sign.setLine(3, line3);
+
+    int count = 2;
+    for (final String line : this.lines) {
+      sign.setLine(count, line);
+      count++;
+    }
+
     sign.update(true);
   }
 

@@ -5,6 +5,7 @@ import cl.bgmp.lobby.portals.NPCPortal.NPCPortal;
 import cl.bgmp.lobby.portals.SignPortal.SignPortal;
 import cl.bgmp.utilsbukkit.Locations;
 import cl.bgmp.utilsbukkit.Server;
+import com.google.common.collect.ImmutableList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,8 +42,13 @@ public class PortalFactory {
         if (element.getName().equals(PortalType.SIGN.getId())) {
           final Location location =
               Locations.parseLocationFromSplit(locationString.split(","), false);
+          final ImmutableList<String> lines =
+              ImmutableList.copyOf(
+                  element.getChildren().stream()
+                      .map(line -> ChatColor.translateAlternateColorCodes('$', line.getText()))
+                      .collect(Collectors.toList()));
 
-          portalRegistry.add(new SignPortal(id, new Server(serverName, ip, port), location));
+          portalRegistry.add(new SignPortal(id, new Server(serverName, ip, port), location, lines));
         } else if (element.getName().equals(PortalType.NPC.getId())) {
           final Location location =
               Locations.parseLocationFromSplit(locationString.split(","), true);

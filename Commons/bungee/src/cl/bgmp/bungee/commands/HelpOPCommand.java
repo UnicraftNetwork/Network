@@ -32,21 +32,39 @@ public class HelpOPCommand {
 
     for (final ProxiedPlayer onlinePlayer : CommonsBungee.get().getProxy().getPlayers()) {
       if (onlinePlayer.hasPermission(Permission.HELPOP_SEE.getNode())) {
-        onlinePlayer.sendMessage(
-            new FlashComponent(ChatConstant.HELPOP_PREFIX.getAsString())
-                .append("[")
-                .color(ChatColor.WHITE)
-                .append(Util.resolveServerName(player.getServer()))
-                .append("] ")
-                .color(ChatColor.WHITE)
-                .append(Util.resolveProxiedPlayerNick(player))
-                .append(" ")
-                .append(ChatConstant.ARROW.getAsString())
-                .color(ChatColor.WHITE)
-                .append(" ")
-                .append(message)
-                .color(ChatColor.WHITE)
-                .build());
+
+        if (!onlinePlayer
+            .getServer()
+            .getInfo()
+            .getName()
+            .equals(player.getServer().getInfo().getName())) {
+          onlinePlayer.sendMessage(
+              new FlashComponent(ChatConstant.HELPOP_PREFIX.getAsString())
+                  .append("[")
+                  .color(ChatColor.WHITE)
+                  .append(Util.resolveServerName(player.getServer()))
+                  .append("] ")
+                  .color(ChatColor.WHITE)
+                  .append(Util.resolveProxiedPlayerNick(player))
+                  .append(" ")
+                  .append(ChatConstant.ARROW.getAsString())
+                  .color(ChatColor.WHITE)
+                  .append(" ")
+                  .append(message)
+                  .color(ChatColor.WHITE)
+                  .build());
+        } else {
+          onlinePlayer.sendMessage(
+              new FlashComponent(ChatConstant.HELPOP_PREFIX.getAsString())
+                  .append(Util.resolveProxiedPlayerNick(player))
+                  .append(" ")
+                  .append(ChatConstant.ARROW.getAsString())
+                  .color(ChatColor.WHITE)
+                  .append(" ")
+                  .append(message)
+                  .color(ChatColor.WHITE)
+                  .build());
+        }
       }
     }
 

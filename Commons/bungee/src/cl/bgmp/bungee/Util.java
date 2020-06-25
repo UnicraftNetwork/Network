@@ -44,6 +44,13 @@ public class Util {
     return serverName;
   }
 
+  /**
+   * Resolves a server name, with a hover text of "[Server] Click to connect" & a click command to
+   * connect to it
+   *
+   * @param serverInfo The server with the name to be resolved
+   * @return The server name "Server" with hover and click events applied
+   */
   public static FlashComponent resolveServerName(final @NotNull ServerInfo serverInfo) {
     return new FlashComponent(serverInfo.getName())
         .color(ChatColor.GOLD)

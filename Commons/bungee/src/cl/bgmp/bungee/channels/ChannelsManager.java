@@ -29,6 +29,7 @@ public final class ChannelsManager implements Listener {
 
   /**
    * Switch the chat {@link Channel} of a player to another
+   *
    * @param player The player whom's chat {@link Channel} will be changed
    * @param to The {@link Channel} to which the player will be changed to
    */
@@ -39,6 +40,7 @@ public final class ChannelsManager implements Listener {
 
   /**
    * Checks for the chat {@link Channel} a player is in
+   *
    * @param player Player in question
    * @return The chat {@link Channel} the provided player is using, or null of not using any.
    */
@@ -104,6 +106,7 @@ public final class ChannelsManager implements Listener {
 
   @EventHandler
   public void onPlayerJoin(ServerSwitchEvent event) {
-    if (getChannelOf(event.getPlayer()) == null) switchChannelFor(event.getPlayer(), getChannelByName(ChannelName.EVERYONE));
+    if (getChannelOf(event.getPlayer()) == null)
+      switchChannelFor(event.getPlayer(), getChannelByName(ChannelName.EVERYONE));
   }
 }

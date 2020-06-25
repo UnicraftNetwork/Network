@@ -20,17 +20,26 @@ public final class StaffChannel extends Channel {
     final FlashComponent resolvedServerName = Util.resolveServerName(sender.getServer());
     final FlashComponent resolvedSenderNick = Util.resolveProxiedPlayerNick(sender);
 
-    return new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
-        .append("[")
-        .color(ChatColor.WHITE)
-        .append(resolvedServerName)
-        .append("] ")
-        .color(ChatColor.WHITE)
-        .append(resolvedSenderNick)
-        .append(": ")
-        .color(ChatColor.WHITE)
-        .append(message)
-        .color(ChatColor.WHITE)
-        .build();
+    if (!sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {
+      return new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
+          .append("[")
+          .color(ChatColor.WHITE)
+          .append(resolvedServerName)
+          .append("] ")
+          .color(ChatColor.WHITE)
+          .append(resolvedSenderNick)
+          .append(": ")
+          .color(ChatColor.WHITE)
+          .append(message)
+          .color(ChatColor.WHITE)
+          .build();
+    } else
+      return new FlashComponent(ChatConstant.STAFF_CHAT_PREFIX.getAsString())
+          .append(resolvedSenderNick)
+          .append(": ")
+          .color(ChatColor.WHITE)
+          .append(message)
+          .color(ChatColor.WHITE)
+          .build();
   }
 }

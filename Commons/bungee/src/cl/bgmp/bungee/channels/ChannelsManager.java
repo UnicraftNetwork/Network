@@ -16,6 +16,9 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents a manager for all {@link Channel}s, handling the players using them, commands, etc.
+ */
 public final class ChannelsManager implements Listener {
   private Set<Channel> channels;
 
@@ -24,11 +27,21 @@ public final class ChannelsManager implements Listener {
     CommonsBungee.get().registerEvents(this);
   }
 
+  /**
+   * Switch the chat {@link Channel} of a player to another
+   * @param player The player whom's chat {@link Channel} will be changed
+   * @param to The {@link Channel} to which the player will be changed to
+   */
   public void switchChannelFor(@NotNull ProxiedPlayer player, @NotNull Channel to) {
     if (getChannelOf(player) != null) getChannelOf(player).disableFor(player);
     to.enableFor(player);
   }
 
+  /**
+   * Checks for the chat {@link Channel} a player is in
+   * @param player Player in question
+   * @return The chat {@link Channel} the provided player is using, or null of not using any.
+   */
   public Channel getChannelOf(@NotNull ProxiedPlayer player) {
     return channels.stream()
         .filter(channel -> channel.isEnabledFor(player))
@@ -91,6 +104,6 @@ public final class ChannelsManager implements Listener {
 
   @EventHandler
   public void onPlayerJoin(ServerSwitchEvent event) {
-    switchChannelFor(event.getPlayer(), getChannelByName(ChannelName.EVERYONE));
+    if (getChannelOf(event.getPlayer()) == null) switchChannelFor(event.getPlayer(), getChannelByName(ChannelName.EVERYONE));
   }
 }

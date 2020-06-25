@@ -1,5 +1,8 @@
 package cl.bgmp.bungee.channels;
 
+/**
+ * A chat {@link Channel} enum class for their names
+ */
 public enum ChannelName {
   EVERYONE("everyone"),
   STAFF("admin");

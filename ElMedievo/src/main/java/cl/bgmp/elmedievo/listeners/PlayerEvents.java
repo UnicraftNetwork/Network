@@ -1,30 +1,21 @@
 package cl.bgmp.elmedievo.listeners;
 
-import cl.bgmp.utilsbukkit.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
+// FIXME: The whole class should be removed. This is not a final solution at all.
 public class PlayerEvents implements Listener {
 
   private static String luckRune = "Pandasaurus_R";
   private static String speedRune = "Sugar_Cane_";
-
-  @EventHandler
-  public void onPlayerChat(AsyncPlayerChatEvent event) {
-    Player player = event.getPlayer();
-    if (!player.hasPermission("elmedievo.chat.color")) return;
-
-    event.setMessage(Chat.colourify(event.getMessage()));
-  }
 
   // prevent players place custom runes
   @SuppressWarnings({"ConstantConditions", "deprecation"})

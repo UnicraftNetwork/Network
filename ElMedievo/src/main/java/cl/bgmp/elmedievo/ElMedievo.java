@@ -6,7 +6,6 @@ import cl.bgmp.elmedievo.commands.Reciper.Furnace.FurnaceCommand;
 import cl.bgmp.elmedievo.commands.Reciper.ReciperCommand;
 import cl.bgmp.elmedievo.commands.SpawnCommand;
 import cl.bgmp.elmedievo.listeners.PlayerEvents;
-import cl.bgmp.elmedievo.listeners.WeatherEvents;
 import cl.bgmp.elmedievo.reciper.Furnace.FurnaceRecipesManager;
 import cl.bgmp.elmedievo.teleport.TPAManager;
 import cl.bgmp.utilsbukkit.Chat;
@@ -86,7 +85,7 @@ public final class ElMedievo extends JavaPlugin {
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
 
     registerCommands();
-    registerEvents(new WeatherEvents(), new PlayerEvents());
+    registerEvents(new PlayerEvents());
   }
 
   private void loadConfiguaration() {

@@ -4,3 +4,4 @@ main: cl.bgmp.commons.Commons
 api-version: '1.13'
 authors: [BGMP]
 softdepend: [Vault]
+website: https://elmedievo.org/

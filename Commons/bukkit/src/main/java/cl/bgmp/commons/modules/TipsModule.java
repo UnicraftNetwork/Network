@@ -26,6 +26,10 @@ public class TipsModule extends Module {
     this.interval = interval;
   }
 
+  public void setMessages(ImmutableList<String> messages) {
+    this.messages = messages;
+  }
+
   public void resetTipsTask() {
     this.tipsTask.cancel();
     this.tipsTask = getNewTipsTask();
@@ -58,6 +62,8 @@ public class TipsModule extends Module {
   public void unload() {
     setEnabled(Config.Tips.isEnabled());
     setInterval(Config.Tips.getInterval().getAs(TimeUnit.SECONDS));
+    setMessages(Config.Tips.getMessages());
+
     resetTipsTask();
     Commons.get().unregisterEvents(this);
   }

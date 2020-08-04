@@ -210,10 +210,13 @@ public class Config {
   public static class JoinQuitMessages {
     private static final String joinQuitMessagesPath = "joinquit-messages";
     private static final String joinQuitMessagesEnabledPath = joinQuitMessagesPath + ".enabled";
+    private static final String joinQuitMessagesSuppressedPath =
+        joinQuitMessagesPath + ".suppressed";
     private static final String joinQuitMessageJoinPath = joinQuitMessagesPath + ".join";
     private static final String joinQuitMessageQuitPath = joinQuitMessagesPath + ".quit";
 
     private static final boolean joinQuitMessagesDefaultState = false;
+    private static final boolean joinQuitMessagesDefaultSuppressed = false;
     private static final String joinQuitMessagesDefaultJoin = "<%player%> joined the game";
     private static final String joinQuitMessagesDefaultQuit = "<%player%> left the game";
 
@@ -221,6 +224,13 @@ public class Config {
       if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessagesEnabledPath)))
         return joinQuitMessagesDefaultState;
       else return getConfig().getBoolean(joinQuitMessagesEnabledPath);
+    }
+
+    public static boolean areSuppressed() {
+      if (!Validate.pathsAreValid(
+          getConfig().getConfigurationSection(joinQuitMessagesSuppressedPath))) {
+        return joinQuitMessagesDefaultSuppressed;
+      } else return getConfig().getBoolean(joinQuitMessagesSuppressedPath);
     }
 
     public static String getJoinMessage() {

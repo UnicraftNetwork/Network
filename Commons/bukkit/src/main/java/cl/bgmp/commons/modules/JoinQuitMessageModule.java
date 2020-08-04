@@ -6,7 +6,6 @@ import cl.bgmp.utilsbukkit.Chat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -18,6 +17,11 @@ public class JoinQuitMessageModule extends Module {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerJoin(final PlayerJoinEvent event) {
+    if (Config.JoinQuitMessages.areSuppressed()) {
+      event.setJoinMessage(null);
+      return;
+    }
+
     final Module module = Commons.get().getModule(ModuleId.CHAT_FORMAT);
     final Player player = event.getPlayer();
 
@@ -40,6 +44,11 @@ public class JoinQuitMessageModule extends Module {
 
   @EventHandler
   public void onPlayerQuit(final PlayerQuitEvent event) {
+    if (Config.JoinQuitMessages.areSuppressed()) {
+      event.setQuitMessage(null);
+      return;
+    }
+
     final Module module = Commons.get().getModule(ModuleId.CHAT_FORMAT);
     final Player player = event.getPlayer();
 
@@ -63,27 +72,11 @@ public class JoinQuitMessageModule extends Module {
   @Override
   public void load() {
     if (enabled) Commons.get().registerEvents(this);
-    else Commons.get().registerEvents(new JoinQuitMessagesSuppressor());
   }
 
   @Override
   public void unload() {
     setEnabled(Config.JoinQuitMessages.isEnabled());
     Commons.get().unregisterEvents(this);
-  }
-
-  // Suppresses join & quit messages. A quick workaround to allow Commons-Bungee to handle them
-  // instead
-  private class JoinQuitMessagesSuppressor implements Listener {
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerJoin(final PlayerJoinEvent event) {
-      event.setJoinMessage(null);
-    }
-
-    @EventHandler
-    public void onPlayerQuit(final PlayerQuitEvent event) {
-      event.setQuitMessage(null);
-    }
   }
 }

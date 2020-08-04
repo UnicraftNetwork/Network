@@ -38,7 +38,7 @@ public class LobbyCommand {
               .append("] ")
               .color(ChatColor.WHITE)
               .append(ChatConstant.TELEPORTING.getAsString())
-              .color(ChatColor.YELLOW)
+              .color(ChatColor.DARK_PURPLE)
               .build());
       player.connect(suitableLobby);
     }

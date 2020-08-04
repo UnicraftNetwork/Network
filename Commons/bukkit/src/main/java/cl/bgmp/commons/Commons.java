@@ -2,6 +2,7 @@ package cl.bgmp.commons;
 
 import cl.bgmp.commons.commands.ChatFormatterCommand;
 import cl.bgmp.commons.commands.CommonsCommand;
+import cl.bgmp.commons.commands.GamemodeCommand;
 import cl.bgmp.commons.commands.PurchaseNotificationCommand;
 import cl.bgmp.commons.commands.RestartCommand;
 import cl.bgmp.commons.modules.ChatFormatModule;
@@ -119,6 +120,7 @@ public final class Commons extends JavaPlugin implements ModuleManager {
     commandRegistry.register(RestartCommand.class);
     commandRegistry.register(CommonsCommand.CommonsParentCommand.class);
     commandRegistry.register(CommonsCommand.class);
+    commandRegistry.register(GamemodeCommand.class);
   }
 
   public void registerEvents(Listener... listeners) {

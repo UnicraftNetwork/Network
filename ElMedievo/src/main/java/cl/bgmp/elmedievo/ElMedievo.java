@@ -4,7 +4,7 @@ import cl.bgmp.elmedievo.commands.CoordsCommand;
 import cl.bgmp.elmedievo.commands.ElMedievoCommand;
 import cl.bgmp.elmedievo.commands.Reciper.Furnace.FurnaceCommand;
 import cl.bgmp.elmedievo.commands.Reciper.ReciperCommand;
-import cl.bgmp.elmedievo.commands.SpawnCommand;
+import cl.bgmp.elmedievo.listeners.EventManager;
 import cl.bgmp.elmedievo.listeners.PlayerEvents;
 import cl.bgmp.elmedievo.reciper.Furnace.FurnaceRecipesManager;
 import cl.bgmp.elmedievo.teleport.TPAManager;
@@ -26,6 +26,7 @@ public final class ElMedievo extends JavaPlugin {
   private static ElMedievo elMedievo;
   private TPAManager tpaManager;
   private FurnaceRecipesManager furnaceRecipesManager;
+  private EventManager eventManager;
   private CommandsManager commands;
   private CommandsManagerRegistration commandRegistry;
 
@@ -39,6 +40,10 @@ public final class ElMedievo extends JavaPlugin {
 
   public FurnaceRecipesManager getFurnaceRecipesManager() {
     return furnaceRecipesManager;
+  }
+
+  public EventManager getEventManager() {
+    return eventManager;
   }
 
   @SuppressWarnings("unchecked")
@@ -76,10 +81,11 @@ public final class ElMedievo extends JavaPlugin {
   @Override
   public void onEnable() {
     elMedievo = this;
-    loadConfiguaration();
+    loadConfiguration();
 
     tpaManager = new TPAManager();
     furnaceRecipesManager = new FurnaceRecipesManager();
+    eventManager = new EventManager();
 
     commands = new BukkitCommandsManager();
     commandRegistry = new CommandsManagerRegistration(this, this.commands);
@@ -88,7 +94,7 @@ public final class ElMedievo extends JavaPlugin {
     registerEvents(new PlayerEvents());
   }
 
-  private void loadConfiguaration() {
+  private void loadConfiguration() {
     getConfig().options().copyDefaults(true);
     saveConfig();
   }
@@ -96,7 +102,7 @@ public final class ElMedievo extends JavaPlugin {
   @Override
   public void onDisable() {}
 
-  private void registerEvents(Listener... listeners) {
+  public void registerEvents(Listener... listeners) {
     PluginManager pluginManager = Bukkit.getPluginManager();
     Arrays.stream(listeners).forEach(listener -> pluginManager.registerEvents(listener, this));
   }
@@ -106,7 +112,6 @@ public final class ElMedievo extends JavaPlugin {
     commandRegistry.register(ReciperCommand.class);
     commandRegistry.register(FurnaceCommand.FurnaceParentCommand.class);
     commandRegistry.register(FurnaceCommand.class);
-    commandRegistry.register(SpawnCommand.class);
     commandRegistry.register(ElMedievoCommand.ElMedievoParentCommand.class);
     commandRegistry.register(ElMedievoCommand.class);
   }

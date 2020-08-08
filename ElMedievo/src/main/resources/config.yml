@@ -1,5 +1,5 @@
-spawn:
-  world: "world"
-  point: "-295.5,66,-296.5"
-  yaw: "0.0"
-  pitch: "0.0"
+event:
+  initial-phase: true
+  grace: 15m
+  participants:
+    - "BGMP"

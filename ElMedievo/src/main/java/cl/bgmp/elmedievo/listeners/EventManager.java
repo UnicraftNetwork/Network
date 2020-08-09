@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -68,6 +69,25 @@ public class EventManager implements Listener {
     }
   }
 
+  @EventHandler
+  public void handleForfeit(PlayerQuitEvent event) {
+    if (!withinGracePeriod) participants.remove(event.getPlayer().getName());
+  }
+
+  @EventHandler
+  public void handleParticipantDeath(PlayerDeathEvent event) {
+    Player player = event.getEntity();
+    if (!withinGracePeriod) {
+      event.setCancelled(true);
+      player.setHealth(20);
+      participants.remove(player.getName());
+
+      SoundManager.playSoundAtPlayer(player, Sound.ENTITY_BLAZE_DEATH);
+      player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + "=> HAS MUERTO! :(");
+      applySpectatorTo(player);
+    }
+  }
+
   @EventHandler(priority = EventPriority.LOWEST)
   public void handleSpectators(PlayerJoinEvent event) {
     if (initialPhase) return;
@@ -75,16 +95,22 @@ public class EventManager implements Listener {
     Player player = event.getPlayer();
     if (participants.contains(player.getName())) return;
 
-    player.setGameMode(GameMode.SPECTATOR);
-    player.addAttachment(ElMedievo.get(), "minecraft.command.teleport", true);
-    player.sendMessage(ChatColor.GREEN + "=> Estás observando el evento de destrucción de Towny!");
-    player.sendMessage(
-        ChatColor.GREEN
-            + "=> Puedes usar "
-            + ChatColor.AQUA
-            + "/tp "
-            + ChatColor.GREEN
-            + "para teletransportarte a quien desees.");
+    applySpectatorTo(player);
+  }
+
+  public void scheduleWithinGracePeriodEventAlerts() {
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if (!withinGracePeriod) {
+          this.cancel();
+          return;
+        }
+
+        Bukkit.broadcastMessage(ChatColor.AQUA + "=> El evento de destrucción comenzará pronto!");
+        SoundManager.playSoundAtPlayers(Sound.BLOCK_NOTE_BLOCK_PLING, Bukkit.getOnlinePlayers());
+      }
+    }.runTaskTimer(ElMedievo.get(), 0L, Time.fromString("2m").ticks());
   }
 
   public void handleNoShowsIn(Time time) {
@@ -101,23 +127,21 @@ public class EventManager implements Listener {
     }.runTaskLater(ElMedievo.get(), time.ticks());
   }
 
-  public void scheduleWithinGracePeriodEventAlerts() {
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        if (!withinGracePeriod) {
-          this.cancel();
-          return;
-        }
-
-        Bukkit.broadcastMessage(
-            ChatColor.AQUA + "=> El evento de destrucción comenzará en breves!");
-        SoundManager.playSoundAtPlayers(Sound.BLOCK_NOTE_BLOCK_PLING, Bukkit.getOnlinePlayers());
-      }
-    }.runTaskTimer(ElMedievo.get(), 0L, Time.fromString("2m").ticks());
+  private void handleNoShows() {
+    participants.clear();
+    participants.addAll(onlineParticipants);
   }
 
-  private void handleNoShows() {
-    participants = onlineParticipants;
+  public void applySpectatorTo(Player player) {
+    player.setGameMode(GameMode.SPECTATOR);
+    player.addAttachment(ElMedievo.get(), "minecraft.command.teleport", true);
+    player.sendMessage(ChatColor.GREEN + "=> Estás observando el evento de destrucción de Towny!");
+    player.sendMessage(
+        ChatColor.GREEN
+            + "=> Puedes usar "
+            + ChatColor.AQUA
+            + "/tp "
+            + ChatColor.GREEN
+            + "para teletransportarte a quien desees.");
   }
 }

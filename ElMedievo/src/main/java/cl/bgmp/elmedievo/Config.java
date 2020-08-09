@@ -52,7 +52,7 @@ public class Config {
               + "=> Estás automáticamente registrado para el evento de destrucción de Towny.");
       player.sendMessage(
           ChatColor.GREEN
-              + "=> Recuerda que el evento comienza a las 21:00! Tienes hasta las 21:15 para entrar luego del reinicio!");
+              + "=> Recuerda que el evento comienza a las 21:15! Tienes hasta las 21:30 para entrar luego del reinicio!");
       save();
     }
   }

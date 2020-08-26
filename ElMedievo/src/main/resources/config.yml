@@ -1,5 +1,0 @@
-event:
-  initial-phase: true
-  grace: 15m
-  participants:
-    - "BGMP"

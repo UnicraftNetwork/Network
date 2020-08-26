@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<recipes>
-    <recipe id="test-furnace-recipe" experience="0.03" time="3">
-        <source>rotten flesh</source>
-        <result amount="10">leather</result>
-    </recipe>
-</recipes>

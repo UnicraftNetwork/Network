@@ -9,7 +9,6 @@ Minecraft plugins used by the UdeC Craft Network, in alliance with [@ElMedievo](
 * **Utils-Bukkit** ➔ Various Bukkit utilitary classes used throughout the entire project.
 * **Commons** ➔ From commands to features that should/could be present on the different servers of the network.
 * **Lobby** ➔ Everything related to the Network lobby is managed within this project module.
-* **ElMedievo** ➔ [@ElMedievo](https://github.com/ElMedievo)'s plugin, now factored into a modular project.
 
 ## Installation
 

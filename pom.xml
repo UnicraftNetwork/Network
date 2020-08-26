@@ -19,7 +19,6 @@
         <module>Utils-Bukkit</module>
         <module>Commons</module>
         <module>Lobby</module>
-        <module>ElMedievo</module>
     </modules>
 
     <repositories>

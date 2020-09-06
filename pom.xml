@@ -36,7 +36,7 @@
         </repository>
         <repository>
             <id>bgm</id>
-            <url>https://bgmp.cl/</url>
+            <url>https://maven.bgmp.cl/repo/</url>
         </repository>
     </repositories>
 

@@ -21,20 +21,23 @@ import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.translations.Translations;
 import com.sk89q.bukkit.util.BukkitCommandsManager;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
-import com.sk89q.minecraft.util.commands.ChatColor;
-import com.sk89q.minecraft.util.commands.CommandException;
-import com.sk89q.minecraft.util.commands.CommandPermissionsException;
-import com.sk89q.minecraft.util.commands.CommandUsageException;
 import com.sk89q.minecraft.util.commands.CommandsManager;
-import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
-import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import com.sk89q.minecraft.util.commands.annotations.TabCompletion;
+import com.sk89q.minecraft.util.commands.exceptions.CommandException;
+import com.sk89q.minecraft.util.commands.exceptions.CommandPermissionsException;
+import com.sk89q.minecraft.util.commands.exceptions.CommandUsageException;
+import com.sk89q.minecraft.util.commands.exceptions.MissingNestedCommandException;
+import com.sk89q.minecraft.util.commands.exceptions.ScopeMismatchException;
+import com.sk89q.minecraft.util.commands.exceptions.WrappedCommandException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -43,8 +46,11 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Commons extends JavaPlugin implements ModuleManager {
   private static Commons commons;
-  private CommandsManager commands;
-  private CommandsManagerRegistration commandRegistry;
+
+  @SuppressWarnings("rawtypes")
+  private CommandsManager commandsManager;
+
+  private CommandsManagerRegistration defaultRegistration;
 
   private Set<Module> modules = new HashSet<>();
 
@@ -60,7 +66,16 @@ public final class Commons extends JavaPlugin implements ModuleManager {
       @NotNull String label,
       @NotNull String[] args) {
     try {
-      this.commands.execute(command.getName(), args, sender, sender);
+      this.commandsManager.execute(command.getName(), args, sender, sender);
+    } catch (ScopeMismatchException exception) {
+      String[] scopes = exception.getScopes();
+      if (!Arrays.asList(scopes).contains("player")) {
+        sender.sendMessage(
+            Chat.getStringAsException(Translations.get("commands.no.player", sender)));
+      } else {
+        sender.sendMessage(
+            Chat.getStringAsException(Translations.get("commands.no.console", sender)));
+      }
     } catch (CommandPermissionsException exception) {
       sender.sendMessage(
           Chat.getStringAsException(Translations.get("commands.no.permission", sender)));
@@ -91,8 +106,8 @@ public final class Commons extends JavaPlugin implements ModuleManager {
 
     Channels.registerBungeeToPlugin(this);
 
-    commands = new BukkitCommandsManager();
-    commandRegistry = new CommandsManagerRegistration(this, this.commands);
+    commandsManager = new BukkitCommandsManager();
+    defaultRegistration = new CommandsManagerRegistration(this, commandsManager);
 
     registerModules(
         new NavigatorModule(),
@@ -104,24 +119,19 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         new RestartModule(),
         new TipsModule(getLogger()));
 
+    registerCommands(
+        ChatFormatterCommand.class,
+        CommonsCommand.class,
+        GamemodeCommand.class,
+        PurchaseNotificationCommand.class,
+        RestartCommand.class);
     loadModules();
 
     registerEvents();
-    registerCommands();
   }
 
   @Override
   public void onDisable() {}
-
-  private void registerCommands() {
-    commandRegistry.register(ChatFormatterCommand.ChatFormatterParentCommand.class);
-    commandRegistry.register(ChatFormatterCommand.class);
-    commandRegistry.register(PurchaseNotificationCommand.class);
-    commandRegistry.register(RestartCommand.class);
-    commandRegistry.register(CommonsCommand.CommonsParentCommand.class);
-    commandRegistry.register(CommonsCommand.class);
-    commandRegistry.register(GamemodeCommand.class);
-  }
 
   public void registerEvents(Listener... listeners) {
     final PluginManager pluginManager = Bukkit.getPluginManager();
@@ -162,5 +172,34 @@ public final class Commons extends JavaPlugin implements ModuleManager {
         .filter(module -> module.getId().equals(id))
         .findFirst()
         .orElse(null);
+  }
+
+  public void registerCommands(Class<?>... classes) {
+    for (Class<?> clazz : classes) {
+      final Class<?>[] subclasses = clazz.getClasses();
+
+      if (subclasses.length == 0) defaultRegistration.register(clazz);
+      else {
+        TabCompleter tabCompleter = null;
+        Class<?> nestNode = null;
+        for (Class<?> subclass : subclasses) {
+          if (subclass.isAnnotationPresent(TabCompletion.class)) {
+            try {
+              tabCompleter = (TabCompleter) subclass.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+              e.printStackTrace();
+            }
+          } else nestNode = subclass;
+        }
+
+        if (tabCompleter == null) defaultRegistration.register(subclasses[0]);
+        else {
+          CommandsManagerRegistration customRegistration =
+              new CommandsManagerRegistration(this, this, tabCompleter, commandsManager);
+          if (subclasses.length == 1) customRegistration.register(clazz);
+          else customRegistration.register(nestNode);
+        }
+      }
+    }
   }
 }

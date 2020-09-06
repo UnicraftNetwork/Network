@@ -41,6 +41,16 @@ public enum ChatConstant {
           + ChatColor.RESET),
   STAFF_CHAT_PREFIX(
       ChatColor.WHITE + "[" + ChatColor.GOLD + "A" + ChatColor.WHITE + "] " + ChatColor.RESET),
+  REF_CHAT_PREFIX(
+      ChatColor.WHITE + "[" + ChatColor.AQUA + "REF" + ChatColor.WHITE + "] " + ChatColor.RESET),
+  EC_CHAT_PREFIX(
+      ChatColor.WHITE
+          + "["
+          + ChatColor.DARK_AQUA
+          + "EC"
+          + ChatColor.WHITE
+          + "] "
+          + ChatColor.RESET),
 
   // ServerCommands strings
   TELEPORTING("Teleporting..."),

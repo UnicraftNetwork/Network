@@ -60,6 +60,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>command-framework-bungee</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

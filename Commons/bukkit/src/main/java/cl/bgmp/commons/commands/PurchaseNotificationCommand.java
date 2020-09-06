@@ -2,9 +2,9 @@ package cl.bgmp.commons.commands;
 
 import cl.bgmp.utilsbukkit.Chat;
 import cl.bgmp.utilsbukkit.translations.Translations;
-import com.sk89q.minecraft.util.commands.Command;
 import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
+import com.sk89q.minecraft.util.commands.annotations.Command;
+import com.sk89q.minecraft.util.commands.annotations.CommandPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -1,12 +1,16 @@
 package cl.bgmp.bungee;
 
 import cl.bgmp.bungee.channels.ChannelsManager;
+import cl.bgmp.bungee.channels.ECChannel;
 import cl.bgmp.bungee.channels.EveryoneChannel;
+import cl.bgmp.bungee.channels.RefChannel;
 import cl.bgmp.bungee.channels.StaffChannel;
 import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.LobbyCommand;
 import cl.bgmp.bungee.commands.ServersCommand;
+import cl.bgmp.bungee.commands.channelcommands.EventCoordChannelCommand;
 import cl.bgmp.bungee.commands.channelcommands.EveryoneChannelCommand;
+import cl.bgmp.bungee.commands.channelcommands.RefereeChannelCommand;
 import cl.bgmp.bungee.commands.channelcommands.StaffChannelCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
@@ -14,11 +18,11 @@ import cl.bgmp.bungee.listeners.PlayerEvents;
 import com.sk89q.bungee.util.BungeeCommandsManager;
 import com.sk89q.bungee.util.CommandExecutor;
 import com.sk89q.bungee.util.CommandRegistration;
-import com.sk89q.minecraft.util.commands.CommandException;
-import com.sk89q.minecraft.util.commands.CommandPermissionsException;
-import com.sk89q.minecraft.util.commands.CommandUsageException;
-import com.sk89q.minecraft.util.commands.MissingNestedCommandException;
-import com.sk89q.minecraft.util.commands.WrappedCommandException;
+import com.sk89q.minecraft.util.commands.exceptions.CommandException;
+import com.sk89q.minecraft.util.commands.exceptions.CommandPermissionsException;
+import com.sk89q.minecraft.util.commands.exceptions.CommandUsageException;
+import com.sk89q.minecraft.util.commands.exceptions.MissingNestedCommandException;
+import com.sk89q.minecraft.util.commands.exceptions.WrappedCommandException;
 import java.util.HashMap;
 import java.util.HashSet;
 import net.md_5.bungee.api.ChatColor;
@@ -84,7 +88,9 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
 
     PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
     networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
-    channelsManager = new ChannelsManager(new StaffChannel(), new EveryoneChannel());
+    channelsManager =
+        new ChannelsManager(
+            new StaffChannel(), new EveryoneChannel(), new ECChannel(), new RefChannel());
 
     registerCommands(
         HelpOPCommand.class,
@@ -92,7 +98,9 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
         PrivateMessageCommands.class,
         ServersCommand.class,
         EveryoneChannelCommand.class,
-        StaffChannelCommand.class);
+        StaffChannelCommand.class,
+        EventCoordChannelCommand.class,
+        RefereeChannelCommand.class);
     registerEvents(new PrivateMessagesManager(), new PlayerEvents());
   }
 

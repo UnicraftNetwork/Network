@@ -1,0 +1,7 @@
+name: LobbyX
+version: ${project.version}
+main: cl.bgmp.lobbyx.LobbyX
+api-version: '1.16'
+authors: [BGMP]
+description: LobbyX, the lobby plugin.
+website: https://unicraft.cl/

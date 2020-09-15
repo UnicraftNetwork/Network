@@ -1,0 +1,6 @@
+name: "Unicraft Network"
+website: "https://unicraft.cl/"
+bypass-permission: "lobby.bypass"
+spawn: "world,76.5,61.5,216.5"
+walk-speed: 0.2
+fly-speed: 0.1

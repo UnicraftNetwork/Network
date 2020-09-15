@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <global.version>1.15.2-SNAPSHOT</global.version>
+        <global.version>1.0.0-SNAPSHOT</global.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
     </properties>
 
     <groupId>cl.bgmp</groupId>
     <artifactId>Commons</artifactId>
-    <version>1.15.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>

@@ -88,6 +88,7 @@ public class PlayerEvents implements Listener {
     if (event.getPlayer().getServer() != null) {
       from = player.getServer().getInfo();
     } else if (CommonsBungee.get().getProxy().getReconnectHandler() == null) {
+
       from = CommonsBungee.get().getProxy().getReconnectHandler().getServer(player);
     } else {
       from = AbstractReconnectHandler.getForcedHost(player.getPendingConnection());
@@ -97,8 +98,10 @@ public class PlayerEvents implements Listener {
                 .getServerInfo(player.getPendingConnection().getListener().getDefaultServer());
     }
 
+    if (from == null) return;
+
     final ServerInfo to = Util.resolveSuitableLobby();
-    if (from != null && from.equals(to)) return;
+    if (from.equals(to)) return;
 
     event.setCancelled(true);
     event.setCancelServer(to);

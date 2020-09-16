@@ -1,10 +1,8 @@
 package cl.bgmp.lobbyx.listeners;
 
-import cl.bgmp.lobbyx.LobbyXConfig;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Boat;
+import cl.bgmp.lobbyx.Config;
+import cl.bgmp.lobbyx.LobbyX;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,14 +17,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerEvents implements Listener {
-  private LobbyXConfig config;
-
-  public PlayerEvents(LobbyXConfig config) {
-    this.config = config;
-  }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerJoin(PlayerJoinEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     final Player player = event.getPlayer();
 
     player.teleport(config.getSpawn());
@@ -36,22 +30,23 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onBlockBreak(BlockBreakEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onBlockPlace(BlockPlaceEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     final Entity attacker = event.getDamager();
     final Entity damaged = event.getEntity();
-    if (damaged instanceof ArmorStand || damaged instanceof ItemFrame || damaged instanceof Boat)
-      return;
     if (attacker instanceof Player || damaged instanceof Player) {
       if (attacker.hasPermission(config.getBypassPerm())) return;
       event.setCancelled(true);
@@ -70,12 +65,14 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onItemPickup(PlayerAttemptPickupItemEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onItemDrop(PlayerDropItemEvent event) {
+    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }

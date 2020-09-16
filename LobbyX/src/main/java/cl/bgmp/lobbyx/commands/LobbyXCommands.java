@@ -1,7 +1,7 @@
 package cl.bgmp.lobbyx.commands;
 
+import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.lobbyx.LobbyX;
-import cl.bgmp.lobbyx.translations.AllTranslations;
 import cl.bgmp.lobbyx.util.ChatUtil;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class LobbyXCommands {
 
   private static LobbyX lobbyX = LobbyX.get();
-  private static AllTranslations translations = (AllTranslations) lobbyX.getTranslations();
+  private static Translations translations = lobbyX.getTranslations();
 
   @Command(
       aliases = {"reload"},
@@ -29,8 +29,11 @@ public class LobbyXCommands {
       max = 0)
   @CommandPermissions("lobby.reload")
   public static void reload(final CommandContext args, final CommandSender sender) {
+    lobbyX = LobbyX.get();
+    translations = lobbyX.getTranslations();
+
     lobbyX.reloadConfig();
-    sender.sendMessage(ChatColor.GREEN + translations.get("misc.configuration.reloaded", sender));
+    ChatUtil.log(sender, ChatColor.GREEN + translations.get("misc.configuration.reloaded", sender));
   }
 
   public static class LobbyXParentCommand {

@@ -6,6 +6,8 @@ import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.lobbyx.commands.LobbyXCommands;
 import cl.bgmp.lobbyx.listeners.BlockEvents;
 import cl.bgmp.lobbyx.listeners.PlayerEvents;
+import cl.bgmp.lobbyx.lobbygames.LobbyGamesManager;
+import cl.bgmp.lobbyx.lobbygames.TargetShootingGame;
 import cl.bgmp.lobbyx.translations.AllTranslations;
 import cl.bgmp.minecraft.util.commands.CommandsManager;
 import cl.bgmp.minecraft.util.commands.annotations.TabCompletion;
@@ -34,6 +36,8 @@ public final class LobbyX extends JavaPlugin {
 
   private Config config;
   private Translations translations;
+
+  private LobbyGamesManager lobbyGamesManager;
 
   public static LobbyX get() {
     return lobbyX;
@@ -64,7 +68,10 @@ public final class LobbyX extends JavaPlugin {
     this.defaultRegistration = new CommandsManagerRegistration(this, commandsManager);
     this.registerCommands(LobbyXCommands.class);
 
-    this.registerEvents(new BlockEvents(), new PlayerEvents((LobbyXConfig) config));
+    this.lobbyGamesManager = new LobbyGamesManager();
+    this.lobbyGamesManager.registerGames(new TargetShootingGame());
+
+    this.registerEvents(new BlockEvents(), new PlayerEvents());
   }
 
   @Override
@@ -73,18 +80,18 @@ public final class LobbyX extends JavaPlugin {
 
     final boolean startup = config == null;
     try {
-      config = new LobbyXConfig(getConfig(), getDataFolder());
+      this.config = new LobbyXConfig(getConfig(), getDataFolder());
     } catch (RuntimeException e) {
       e.printStackTrace();
-      getLogger()
+      this.getLogger()
           .severe(
               translations.get("misc.configuration.load.failed", getServer().getConsoleSender()));
       return;
     }
 
     if (!startup)
-      getLogger()
-          .fine(translations.get("misc.configuration.reloaded", getServer().getConsoleSender()));
+      this.getLogger()
+          .info(translations.get("misc.configuration.reloaded", getServer().getConsoleSender()));
   }
 
   @SuppressWarnings("unchecked")

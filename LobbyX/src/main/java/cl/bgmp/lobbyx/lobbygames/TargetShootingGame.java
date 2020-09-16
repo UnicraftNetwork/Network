@@ -22,7 +22,7 @@ import org.bukkit.util.Vector;
 
 public class TargetShootingGame extends LobbyGame {
   private Plugin plugin = LobbyX.get();
-  private Map<Integer, ItemStack> prices =
+  private Map<Integer, ItemStack> prizes =
       ImmutableMap.<Integer, ItemStack>builder()
           .put(1, new ItemBuilder(Material.GUNPOWDER).setName("&4Basura").build())
           .put(
@@ -76,12 +76,12 @@ public class TargetShootingGame extends LobbyGame {
 
         final Player player = (Player) shooter;
         final AnaloguePowerable powerable = (AnaloguePowerable) hitBlock.getBlockData();
-        TargetShootingGame.this.givePrice(hitBlock, player, powerable.getPower());
+        TargetShootingGame.this.givePrize(hitBlock, player, powerable.getPower());
       }
     }.runTaskLater(this.plugin, 1L);
   }
 
-  private void givePrice(Block target, Player player, int score) {
+  private void givePrize(Block target, Player player, int score) {
     if (score < 3) return;
     FireworkBuilder builder = new FireworkBuilder();
     builder
@@ -92,6 +92,6 @@ public class TargetShootingGame extends LobbyGame {
         .trail()
         .spawn(target.getLocation().add(new Vector(0, 1.5, 0)));
 
-    player.getInventory().addItem(prices.get(score / 3));
+    player.getInventory().addItem(prizes.get(score / 3));
   }
 }

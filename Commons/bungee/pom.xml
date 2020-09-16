@@ -36,9 +36,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
+            <groupId>cl.bgmp</groupId>
             <artifactId>command-framework-bungee</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
@@ -85,7 +85,9 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.sk89q:command-framework-bungee</include>
+                                    <include>cl.bgmp:command-framework-bungee</include>
+                                    <include>org.jetbrains:annotations</include>
+                                    <include>com.google.inject:guice</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

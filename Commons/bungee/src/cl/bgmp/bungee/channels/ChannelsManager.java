@@ -3,7 +3,7 @@ package cl.bgmp.bungee.channels;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.FlashComponent;
-import com.sk89q.minecraft.util.commands.CommandContext;
+import cl.bgmp.minecraft.util.commands.CommandContext;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,5 +1,7 @@
 package cl.bgmp.commons.modules;
 
+import java.util.Optional;
+
 public interface ModuleManager {
 
   void registerModules(Module... modules);
@@ -8,5 +10,5 @@ public interface ModuleManager {
 
   void reloadModules();
 
-  Module getModule(ModuleId id);
+  Optional<Module> getModule(ModuleId id);
 }

@@ -1,7 +1,6 @@
 package cl.bgmp.commons.modules;
 
 import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.Config;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -9,14 +8,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class ForceGamemodeModule extends Module {
 
   public ForceGamemodeModule() {
-    super(ModuleId.FORCE_GAMEMODE, Config.ForceGamemode.isEnabled());
+    super(ModuleId.FORCE_GAMEMODE, Commons.get().getConfiguration().isForceGamemodeEnabled());
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerJoin(PlayerJoinEvent event) {
-    if (event.getPlayer().hasPermission(Config.ForceGamemode.getGamemodeForceExemptPermission()))
-      return;
-    event.getPlayer().setGameMode(Config.ForceGamemode.getGamemode());
+    if (event
+        .getPlayer()
+        .hasPermission(Commons.get().getConfiguration().getForceGamemodeExemptPerm())) return;
+    event.getPlayer().setGameMode(Commons.get().getConfiguration().getForcedGamemode());
   }
 
   @Override
@@ -26,7 +26,7 @@ public class ForceGamemodeModule extends Module {
 
   @Override
   public void unload() {
-    setEnabled(Config.ForceGamemode.isEnabled());
+    setEnabled(Commons.get().getConfiguration().isForceGamemodeEnabled());
     Commons.get().unregisterEvents(this);
   }
 }

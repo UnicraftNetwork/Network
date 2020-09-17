@@ -1,10 +1,9 @@
 package cl.bgmp.commons.navigator;
 
+import cl.bgmp.butils.bungee.Bungee;
+import cl.bgmp.butils.chat.Chat;
+import cl.bgmp.butils.gui.GUI;
 import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.Config;
-import cl.bgmp.utilsbukkit.Channels;
-import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.GUI;
 import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,10 +21,10 @@ public class NavigatorGUI extends GUI implements Listener {
   public NavigatorGUI() {
     super(
         Commons.get(),
-        Chat.colourify(Config.Navigator.getTitle()),
-        Config.Navigator.getSize(),
+        Chat.color(Commons.get().getConfiguration().getNavigatorTitle()),
+        Commons.get().getConfiguration().getNavigatorSize(),
         new ItemStack(Material.AIR));
-    this.serverButtons = Config.Navigator.getServerButtons();
+    this.serverButtons = Commons.get().getConfiguration().getNavigatorButtons();
     Commons.get().registerEvents(this);
   }
 
@@ -33,7 +32,7 @@ public class NavigatorGUI extends GUI implements Listener {
   public void addContent() {
     super.addContent();
     for (ServerButton serverButton : serverButtons) {
-      setItem(serverButton.getSlot(), serverButton.getItem());
+      setItem(serverButton.getSlot(), serverButton.getItemStack());
     }
   }
 
@@ -63,7 +62,7 @@ public class NavigatorGUI extends GUI implements Listener {
               + serverButton.getServer().getName()
               + ChatColor.WHITE
               + "]");
-      Channels.sendPlayerToServer(Commons.get(), player, serverButton.getServer().getName());
+      Bungee.sendPlayer(Commons.get(), player, serverButton.getServer().getName());
     }
   }
 }

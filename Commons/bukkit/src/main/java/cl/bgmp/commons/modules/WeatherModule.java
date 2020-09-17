@@ -1,14 +1,13 @@
 package cl.bgmp.commons.modules;
 
 import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.Config;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class WeatherModule extends Module {
 
   public WeatherModule() {
-    super(ModuleId.WEATHER, Config.Weather.isDisabled());
+    super(ModuleId.WEATHER, Commons.get().getConfiguration().isWeatherDisabled());
   }
 
   @EventHandler
@@ -24,7 +23,7 @@ public class WeatherModule extends Module {
 
   @Override
   public void unload() {
-    setEnabled(Config.Weather.isDisabled());
+    setEnabled(Commons.get().getConfiguration().isWeatherDisabled());
     Commons.get().unregisterEvents(this);
   }
 }

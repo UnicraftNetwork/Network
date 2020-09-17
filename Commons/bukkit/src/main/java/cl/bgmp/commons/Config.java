@@ -1,323 +1,77 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.commons.modules.ChatFormatModule;
+import cl.bgmp.butils.items.ItemBuilder;
 import cl.bgmp.commons.navigator.ServerButton;
-import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.Server;
-import cl.bgmp.utilsbukkit.Validate;
-import cl.bgmp.utilsbukkit.items.Items;
-import cl.bgmp.utilsbukkit.timeutils.Time;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-// TODO: Reduce boilerplate validation methods
-public class Config {
-  private static Configuration getConfig() {
-    Commons commons = Commons.get();
-    if (commons != null) return commons.getConfig();
-    else return new YamlConfiguration();
-  }
+public interface Config {
 
-  public static void reload() {
-    Commons.get().reloadConfig();
-  }
+  /** Join Tools */
+  boolean areOnJoinToolsEnabled();
 
-  public static class Tools {
-    private static final String onJoinToolsPath = "onjoin-tools";
+  /** Navigator */
+  boolean isNavigatorEnabled();
 
-    private static final boolean defaultOnJoinToolsState = false;
+  String getNavigatorHead();
 
-    public static boolean areEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(onJoinToolsPath)))
-        return defaultOnJoinToolsState;
-      else return getConfig().getBoolean(onJoinToolsPath);
-    }
-  }
+  String getNavigatorTitle();
 
-  public static class Navigator {
-    private static final String navigatorPath = "navigator";
-    private static final String navigatorEnabledPath = navigatorPath + ".enabled";
-    private static final String navigatorHeadPath = navigatorPath + ".head";
-    private static final String navigatorTitlePath = navigatorPath + ".title";
-    private static final String navigatorSizePath = navigatorPath + ".size";
-    private static final String navigatorServersPath = navigatorPath + ".servers";
+  int getNavigatorSize();
 
-    private static final String defaultTitle =
-        ChatColor.BLUE.toString() + ChatColor.BOLD + "Navigator";
-    private static final int defaultSize = 27;
-    private static final boolean defaultEnabledState = false;
-    private static final String defaultHead = "xOSPREYx";
+  Set<ServerButton> getNavigatorButtons();
 
-    public static String getTitle() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorTitlePath)))
-        return defaultTitle;
-      else return getConfig().getString(navigatorTitlePath);
-    }
+  /** VaultAPI Formatting */
+  boolean isVaultFormattingEnabled();
 
-    public static int getSize() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorSizePath)))
-        return defaultSize;
-      else return getConfig().getInt(navigatorSizePath);
-    }
+  String getVaultFormat();
 
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
-        return defaultEnabledState;
-      else return getConfig().getBoolean(navigatorEnabledPath);
-    }
+  /** Force Gamemode */
+  boolean isForceGamemodeEnabled();
 
-    public static String getNavigatorHead() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(navigatorEnabledPath)))
-        return defaultHead;
-      else return getConfig().getString(navigatorHeadPath);
-    }
+  String getForceGamemodeExemptPerm();
 
-    public static Set<ServerButton> getServerButtons() {
-      final Set<String> keys =
-          Objects.requireNonNull(getConfig().getConfigurationSection(navigatorServersPath))
-              .getKeys(false);
-      Set<ServerButton> serverButtons = new HashSet<>();
+  GameMode getForcedGamemode();
 
-      for (String key : keys) {
-        String serverName = getConfig().getString(navigatorServersPath + "." + key + ".name");
-        String serverIp = getConfig().getString(navigatorServersPath + "." + key + ".ip");
-        int serverPort = getConfig().getInt(navigatorServersPath + "." + key + ".port");
+  /** JoinQuitMessages */
+  boolean areJoinQuitMessagesEnabled();
 
-        String materialString =
-            getConfig().getString(navigatorServersPath + "." + key + ".item.material");
-        String title = getConfig().getString(navigatorServersPath + "." + key + ".item.title");
-        List<String> lore =
-            getConfig().getStringList(navigatorServersPath + "." + key + ".item.lore");
+  boolean areJoinQuitMessagesSuppressed();
 
-        int slot = Integer.parseInt(key);
+  String getJoinMessage();
 
-        ItemStack item =
-            Items.titledItemStackWithLore(
-                Material.valueOf(materialString),
-                Chat.colourify(title),
-                lore.stream().map(Chat::colourify).collect(Collectors.toList()));
+  String getQuitMessage();
 
-        serverButtons.add(
-            new ServerButton(new Server(serverName, serverIp, serverPort), item, slot));
-      }
+  /** Weather (Rain) */
+  boolean isWeatherDisabled();
 
-      return ImmutableSet.copyOf(serverButtons);
-    }
-  }
+  /** Lobby server name */
+  String getLobby();
 
-  public static class ChatFormat {
-    private static final String chatPath = "chat";
-    private static final String vaultFormattingPath = chatPath + ".vault-formatting";
-    private static final String vaultFormattingEnabledPath = vaultFormattingPath + ".enabled";
-    private static final String vaultFormattingFormatPath = vaultFormattingPath + ".format";
+  /** Restart */
+  boolean isRestartEnabled();
 
-    private static final boolean defaultEnabledState = false;
-    private static final String defaultFormat = ChatFormatModule.DEFAULT_FORMAT;
+  String getRestartInterval();
 
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingEnabledPath)))
-        return defaultEnabledState;
-      else return getConfig().getBoolean(vaultFormattingEnabledPath);
-    }
+  /** Tips */
+  boolean areTipsEnabled();
 
-    public static String getFormat() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(vaultFormattingFormatPath)))
-        return defaultFormat;
-      else return getConfig().getString(vaultFormattingFormatPath);
-    }
-  }
+  String getTipsInterval();
 
-  public static class ForceGamemode {
-    private static final String forceGamemodePath = "force-gamemode";
-    private static final String forceGamemodeEnabledPath = forceGamemodePath + ".enabled";
-    private static final String forceGamemodeExemptPermissionPath =
-        forceGamemodePath + ".exempt-permission";
-    private static final String forcedGamemodePath = forceGamemodePath + ".gamemode";
+  String getTipsPrefix();
 
-    private static final boolean defaultForceState = false;
-    private static final String defaultPermission = "commons.defaultgamemode.exempt";
-    private static final GameMode defaultGamemode = GameMode.SURVIVAL;
+  List<String> getTips();
 
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forceGamemodeEnabledPath)))
-        return defaultForceState;
-      else return getConfig().getBoolean(forceGamemodeEnabledPath);
-    }
+  static ItemStack parseItem(ConfigurationSection section) {
+    String material = section.getString("material");
+    String title = section.getString("title");
+    String[] lore = section.getStringList("lore").toArray(new String[0]);
+    if (material == null || title == null || lore == null) return null;
 
-    public static String getGamemodeForceExemptPermission() {
-      if (!Validate.pathsAreValid(
-          getConfig().getConfigurationSection(forceGamemodeExemptPermissionPath)))
-        return defaultPermission;
-      else return getConfig().getString(forceGamemodeExemptPermissionPath);
-    }
-
-    public static GameMode getGamemode() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(forcedGamemodePath)))
-        return defaultGamemode;
-      else {
-        final String gamemodeString = getConfig().getString(forcedGamemodePath);
-        assert gamemodeString != null;
-
-        switch (gamemodeString.toLowerCase()) {
-          case "0":
-          case "survival":
-            return GameMode.SURVIVAL;
-          case "1":
-          case "creative":
-            return GameMode.CREATIVE;
-          case "2":
-          case "adventure":
-            return GameMode.ADVENTURE;
-          case "3":
-          case "spectator":
-            return GameMode.SPECTATOR;
-          default:
-            Commons.get()
-                .getLogger()
-                .warning("Unable to parse default gamemode. Check your config.yml.");
-            Commons.get().getLogger().warning("Default gamemode was default to SURVIVAL.");
-            return GameMode.SURVIVAL;
-        }
-      }
-    }
-  }
-
-  public static class Weather {
-    private static final String weatherPath = "weather";
-    private static final String weatherEnabledPath = weatherPath + ".disabled";
-
-    private static final boolean defaultWeatherState = false;
-
-    public static boolean isDisabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(weatherEnabledPath)))
-        return defaultWeatherState;
-      else return getConfig().getBoolean(weatherEnabledPath);
-    }
-  }
-
-  public static class JoinQuitMessages {
-    private static final String joinQuitMessagesPath = "joinquit-messages";
-    private static final String joinQuitMessagesEnabledPath = joinQuitMessagesPath + ".enabled";
-    private static final String joinQuitMessagesSuppressedPath =
-        joinQuitMessagesPath + ".suppressed";
-    private static final String joinQuitMessageJoinPath = joinQuitMessagesPath + ".join";
-    private static final String joinQuitMessageQuitPath = joinQuitMessagesPath + ".quit";
-
-    private static final boolean joinQuitMessagesDefaultState = false;
-    private static final boolean joinQuitMessagesDefaultSuppressed = false;
-    private static final String joinQuitMessagesDefaultJoin = "<%player%> joined the game";
-    private static final String joinQuitMessagesDefaultQuit = "<%player%> left the game";
-
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessagesEnabledPath)))
-        return joinQuitMessagesDefaultState;
-      else return getConfig().getBoolean(joinQuitMessagesEnabledPath);
-    }
-
-    public static boolean areSuppressed() {
-      if (!Validate.pathsAreValid(
-          getConfig().getConfigurationSection(joinQuitMessagesSuppressedPath))) {
-        return joinQuitMessagesDefaultSuppressed;
-      } else return getConfig().getBoolean(joinQuitMessagesSuppressedPath);
-    }
-
-    public static String getJoinMessage() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessageJoinPath)))
-        return joinQuitMessagesDefaultJoin;
-      else return getConfig().getString(joinQuitMessageJoinPath);
-    }
-
-    public static String getQuitMessage() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(joinQuitMessageQuitPath)))
-        return joinQuitMessagesDefaultQuit;
-      else return getConfig().getString(joinQuitMessageQuitPath);
-    }
-  }
-
-  public static class Lobby {
-    private static final String lobbyPath = "lobby";
-
-    private static final String defaultLobby = "Lobby";
-
-    public static String getLobbyServerName() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(lobbyPath)))
-        return defaultLobby;
-      else return getConfig().getString(lobbyPath);
-    }
-  }
-
-  public static class Restart {
-    private static final String restartPath = "restart";
-    private static final String enabledPath = restartPath + ".enabled";
-    private static final String intervalPath = restartPath + ".interval";
-
-    private static final boolean defaultEnabled = true;
-    private static final String defaultInterval = "24h";
-
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(restartPath)))
-        return defaultEnabled;
-      else return getConfig().getBoolean(enabledPath);
-    }
-
-    public static Time getInterval() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath)))
-        return Time.fromString(defaultInterval);
-      else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
-    }
-  }
-
-  public static class Tips {
-    private static final String tipsPath = "tips";
-    private static final String enabledPath = tipsPath + ".enabled";
-    private static final String intervalPath = tipsPath + ".interval";
-    private static final String prefixPath = tipsPath + ".prefix";
-    private static final String messagesPath = tipsPath + ".messages";
-
-    private static final boolean defaultEnabled = true;
-    private static final String defaultInterval = "7m";
-    private static final String defaultPrefix = "[Tip] ";
-    private static final List<String> defaultMessages =
-        new ArrayList<String>() {
-          {
-            add("Check your configuration! something might've gone wrong!");
-          }
-        };
-
-    public static boolean isEnabled() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(enabledPath))) {
-        return defaultEnabled;
-      } else return getConfig().getBoolean(enabledPath);
-    }
-
-    public static Time getInterval() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(intervalPath))) {
-        return Time.fromString(defaultInterval);
-      } else return Time.fromString(Objects.requireNonNull(getConfig().getString(intervalPath)));
-    }
-
-    public static String getPrefix() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(prefixPath))) {
-        return defaultPrefix;
-      } else return Chat.colourify(getConfig().getString(prefixPath));
-    }
-
-    public static ImmutableList<String> getMessages() {
-      if (!Validate.pathsAreValid(getConfig().getConfigurationSection(messagesPath))) {
-        return ImmutableList.copyOf(defaultMessages);
-      } else return ImmutableList.copyOf(getConfig().getStringList(messagesPath));
-    }
+    return new ItemBuilder(Material.valueOf(material)).setName(title).setLore(lore).build();
   }
 }

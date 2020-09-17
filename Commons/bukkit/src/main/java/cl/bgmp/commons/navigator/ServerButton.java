@@ -1,28 +1,22 @@
 package cl.bgmp.commons.navigator;
 
-import cl.bgmp.utilsbukkit.Server;
+import cl.bgmp.butils.bungee.Server;
+import cl.bgmp.butils.gui.GUIButton;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ServerButton {
+public abstract class ServerButton extends GUIButton {
   private Server server;
-  private ItemStack item;
-  private int slot;
 
-  public ServerButton(Server server, ItemStack item, int slot) {
+  public ServerButton(ItemStack itemStack, int slot, Server server) {
+    super(itemStack, slot);
     this.server = server;
-    this.item = item;
-    this.slot = slot;
   }
 
   public Server getServer() {
     return server;
   }
 
-  public ItemStack getItem() {
-    return item;
-  }
-
-  public int getSlot() {
-    return slot;
-  }
+  @Override
+  public abstract void clickBy(Player player);
 }

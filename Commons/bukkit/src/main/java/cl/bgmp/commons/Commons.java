@@ -1,38 +1,31 @@
 package cl.bgmp.commons;
 
+import cl.bgmp.bukkit.util.BukkitCommandsManager;
+import cl.bgmp.bukkit.util.CommandsManagerRegistration;
 import cl.bgmp.commons.commands.ChatFormatterCommand;
 import cl.bgmp.commons.commands.CommonsCommand;
 import cl.bgmp.commons.commands.GamemodeCommand;
-import cl.bgmp.commons.commands.PurchaseNotificationCommand;
 import cl.bgmp.commons.commands.RestartCommand;
 import cl.bgmp.commons.modules.ChatFormatModule;
 import cl.bgmp.commons.modules.ForceGamemodeModule;
 import cl.bgmp.commons.modules.JoinQuitMessageModule;
 import cl.bgmp.commons.modules.JoinToolsModule;
-import cl.bgmp.commons.modules.Module;
-import cl.bgmp.commons.modules.ModuleId;
 import cl.bgmp.commons.modules.ModuleManager;
+import cl.bgmp.commons.modules.ModuleManagerImpl;
 import cl.bgmp.commons.modules.NavigatorModule;
 import cl.bgmp.commons.modules.RestartModule;
 import cl.bgmp.commons.modules.TipsModule;
 import cl.bgmp.commons.modules.WeatherModule;
-import cl.bgmp.utilsbukkit.Channels;
-import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.translations.Translations;
-import com.sk89q.bukkit.util.BukkitCommandsManager;
-import com.sk89q.bukkit.util.CommandsManagerRegistration;
-import com.sk89q.minecraft.util.commands.CommandsManager;
-import com.sk89q.minecraft.util.commands.annotations.TabCompletion;
-import com.sk89q.minecraft.util.commands.exceptions.CommandException;
-import com.sk89q.minecraft.util.commands.exceptions.CommandPermissionsException;
-import com.sk89q.minecraft.util.commands.exceptions.CommandUsageException;
-import com.sk89q.minecraft.util.commands.exceptions.MissingNestedCommandException;
-import com.sk89q.minecraft.util.commands.exceptions.ScopeMismatchException;
-import com.sk89q.minecraft.util.commands.exceptions.WrappedCommandException;
+import cl.bgmp.commons.translations.AllTranslations;
+import cl.bgmp.minecraft.util.commands.CommandsManager;
+import cl.bgmp.minecraft.util.commands.annotations.TabCompletion;
+import cl.bgmp.minecraft.util.commands.exceptions.CommandException;
+import cl.bgmp.minecraft.util.commands.exceptions.CommandPermissionsException;
+import cl.bgmp.minecraft.util.commands.exceptions.CommandUsageException;
+import cl.bgmp.minecraft.util.commands.exceptions.MissingNestedCommandException;
+import cl.bgmp.minecraft.util.commands.exceptions.ScopeMismatchException;
+import cl.bgmp.minecraft.util.commands.exceptions.WrappedCommandException;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -44,18 +37,89 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public final class Commons extends JavaPlugin implements ModuleManager {
+public final class Commons extends JavaPlugin {
   private static Commons commons;
 
-  @SuppressWarnings("rawtypes")
   private CommandsManager commandsManager;
-
   private CommandsManagerRegistration defaultRegistration;
 
-  private Set<Module> modules = new HashSet<>();
+  private Config config;
+  private ModuleManagerImpl moduleManager;
+  private AllTranslations translations;
 
   public static Commons get() {
     return commons;
+  }
+
+  public Config getConfiguration() {
+    return config;
+  }
+
+  public AllTranslations getTranslations() {
+    return translations;
+  }
+
+  public ModuleManager getModuleManager() {
+    return moduleManager;
+  }
+
+  @Override
+  public void onEnable() {
+    commons = this;
+
+    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "bungeecord:main");
+
+    this.saveDefaultConfig();
+    this.reloadConfig();
+    if (config == null) {
+      this.getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
+
+    this.translations = new AllTranslations();
+
+    this.commandsManager = new BukkitCommandsManager();
+    this.defaultRegistration = new CommandsManagerRegistration(this, commandsManager);
+
+    this.moduleManager = new ModuleManagerImpl();
+    this.moduleManager.registerModules(
+        new NavigatorModule(),
+        new JoinToolsModule(),
+        new ForceGamemodeModule(),
+        new ChatFormatModule(),
+        new WeatherModule(),
+        new JoinQuitMessageModule(),
+        new RestartModule(),
+        new TipsModule(getLogger()));
+    this.moduleManager.loadModules();
+
+    this.registerCommands(
+        ChatFormatterCommand.class,
+        CommonsCommand.class,
+        GamemodeCommand.class,
+        RestartCommand.class);
+
+    this.registerEvents();
+  }
+
+  @Override
+  public void reloadConfig() {
+    super.reloadConfig();
+
+    final boolean startup = config == null;
+    try {
+      this.config = new CommonsConfig(getConfig(), getDataFolder());
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+      this.getLogger()
+          .severe(
+              translations.get("misc.configuration.load.failed", getServer().getConsoleSender()));
+      return;
+    }
+
+    if (!startup)
+      this.getLogger()
+          .info(translations.get("misc.configuration.reloaded", getServer().getConsoleSender()));
   }
 
   @SuppressWarnings("unchecked")
@@ -70,27 +134,23 @@ public final class Commons extends JavaPlugin implements ModuleManager {
     } catch (ScopeMismatchException exception) {
       String[] scopes = exception.getScopes();
       if (!Arrays.asList(scopes).contains("player")) {
-        sender.sendMessage(
-            Chat.getStringAsException(Translations.get("commands.no.player", sender)));
+        sender.sendMessage(ChatColor.RED + translations.get("commands.no.player", sender));
       } else {
-        sender.sendMessage(
-            Chat.getStringAsException(Translations.get("commands.no.console", sender)));
+        sender.sendMessage(ChatColor.RED + translations.get("commands.no.console", sender));
       }
     } catch (CommandPermissionsException exception) {
-      sender.sendMessage(
-          Chat.getStringAsException(Translations.get("commands.no.permission", sender)));
+      sender.sendMessage(ChatColor.RED + translations.get("commands.no.permission", sender));
     } catch (MissingNestedCommandException exception) {
-      sender.sendMessage(Chat.getStringAsException(exception.getUsage()));
+      sender.sendMessage(
+          ChatColor.RED + translations.get("commands.syntax.error", sender, exception.getUsage()));
     } catch (CommandUsageException exception) {
       sender.sendMessage(ChatColor.RED + exception.getMessage());
       sender.sendMessage(ChatColor.RED + exception.getUsage());
     } catch (WrappedCommandException exception) {
       if (exception.getCause() instanceof NumberFormatException) {
-        sender.sendMessage(
-            Chat.getStringAsException(Translations.get("misc.number.string.exception", sender)));
+        sender.sendMessage(ChatColor.RED + translations.get("commands.number.string", sender));
       } else {
-        sender.sendMessage(
-            Chat.getStringAsException(Translations.get("misc.unknown.error", sender)));
+        sender.sendMessage(translations.get("commands.unknown.error", sender));
         exception.printStackTrace();
       }
     } catch (CommandException exception) {
@@ -99,82 +159,7 @@ public final class Commons extends JavaPlugin implements ModuleManager {
     return true;
   }
 
-  @Override
-  public void onEnable() {
-    commons = this;
-    loadConfiguration();
-
-    Channels.registerBungeeToPlugin(this);
-
-    commandsManager = new BukkitCommandsManager();
-    defaultRegistration = new CommandsManagerRegistration(this, commandsManager);
-
-    registerModules(
-        new NavigatorModule(),
-        new JoinToolsModule(),
-        new ForceGamemodeModule(),
-        new ChatFormatModule(),
-        new WeatherModule(),
-        new JoinQuitMessageModule(),
-        new RestartModule(),
-        new TipsModule(getLogger()));
-
-    registerCommands(
-        ChatFormatterCommand.class,
-        CommonsCommand.class,
-        GamemodeCommand.class,
-        PurchaseNotificationCommand.class,
-        RestartCommand.class);
-    loadModules();
-
-    registerEvents();
-  }
-
-  @Override
-  public void onDisable() {}
-
-  public void registerEvents(Listener... listeners) {
-    final PluginManager pluginManager = Bukkit.getPluginManager();
-    for (Listener listener : listeners) pluginManager.registerEvents(listener, this);
-  }
-
-  public void unregisterEvents(Listener... listeners) {
-    for (Listener listener : listeners) HandlerList.unregisterAll(listener);
-  }
-
-  private void loadConfiguration() {
-    getConfig().options().copyDefaults(true);
-    saveConfig();
-  }
-
-  @Override
-  public void registerModules(Module... modules) {
-    this.modules.addAll(Arrays.asList(modules));
-  }
-
-  @Override
-  public void loadModules() {
-    this.modules.stream()
-        .filter(Module::isEnabled)
-        .collect(Collectors.toSet())
-        .forEach(Module::load);
-  }
-
-  @Override
-  public void reloadModules() {
-    this.modules.forEach(Module::unload);
-    this.loadModules();
-  }
-
-  @Override
-  public Module getModule(ModuleId id) {
-    return this.modules.stream()
-        .filter(module -> module.getId().equals(id))
-        .findFirst()
-        .orElse(null);
-  }
-
-  public void registerCommands(Class<?>... classes) {
+  private void registerCommands(Class<?>... classes) {
     for (Class<?> clazz : classes) {
       final Class<?>[] subclasses = clazz.getClasses();
 
@@ -191,7 +176,6 @@ public final class Commons extends JavaPlugin implements ModuleManager {
             }
           } else nestNode = subclass;
         }
-
         if (tabCompleter == null) defaultRegistration.register(subclasses[0]);
         else {
           CommandsManagerRegistration customRegistration =
@@ -200,6 +184,19 @@ public final class Commons extends JavaPlugin implements ModuleManager {
           else customRegistration.register(nestNode);
         }
       }
+    }
+  }
+
+  public void registerEvents(Listener... listeners) {
+    final PluginManager pluginManager = Bukkit.getPluginManager();
+    for (Listener listener : listeners) {
+      pluginManager.registerEvents(listener, this);
+    }
+  }
+
+  public void unregisterEvents(Listener... listeners) {
+    for (Listener listener : listeners) {
+      HandlerList.unregisterAll(listener);
     }
   }
 }

@@ -1,28 +1,29 @@
 package cl.bgmp.commons.modules;
 
+import cl.bgmp.butils.chat.Chat;
+import cl.bgmp.butils.time.SimpleDuration;
 import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.Config;
-import cl.bgmp.utilsbukkit.Chat;
-import cl.bgmp.utilsbukkit.timeutils.Time;
-import cl.bgmp.utilsbukkit.timeutils.TimeUnit;
 import com.google.common.collect.ImmutableList;
+import java.time.Duration;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TipsModule extends Module {
-  private Time interval = Config.Tips.getInterval();
-  private String prefix = Config.Tips.getPrefix();
-  private ImmutableList<String> messages = Config.Tips.getMessages();
+  private Duration interval =
+      SimpleDuration.fromString(Commons.get().getConfiguration().getTipsInterval());
+  private String prefix = Commons.get().getConfiguration().getTipsPrefix();
+  private ImmutableList<String> messages =
+      ImmutableList.copyOf(Commons.get().getConfiguration().getTips());
   private BukkitRunnable tipsTask = getNewTipsTask();
   private Logger logger;
 
   public TipsModule(Logger logger) {
-    super(ModuleId.TIPS, Config.Tips.isEnabled());
+    super(ModuleId.TIPS, Commons.get().getConfiguration().areTipsEnabled());
     this.logger = logger;
   }
 
-  public void setInterval(Time interval) {
+  public void setInterval(Duration interval) {
     this.interval = interval;
   }
 
@@ -42,7 +43,7 @@ public class TipsModule extends Module {
       @Override
       public void run() {
         if (count == messages.size()) count = 0;
-        Bukkit.broadcastMessage(prefix + Chat.colourify(messages.get(count)));
+        Bukkit.broadcastMessage(Chat.color(prefix) + Chat.color(messages.get(count)));
         count++;
       }
     };
@@ -54,15 +55,17 @@ public class TipsModule extends Module {
       if (messages.isEmpty()) {
         logger.warning("[Tip] Tips module is enabled, but no tips are declared in it.");
         logger.warning("[Tip] Check your config.yml file to add some tips, or disable the module.");
-      } else this.tipsTask.runTaskTimer(Commons.get(), interval.ticks(), interval.ticks());
+      } else
+        this.tipsTask.runTaskTimer(
+            Commons.get(), interval.getSeconds() * 20, interval.getSeconds() * 20);
     }
   }
 
   @Override
   public void unload() {
-    setEnabled(Config.Tips.isEnabled());
-    setInterval(Config.Tips.getInterval().getAs(TimeUnit.SECONDS));
-    setMessages(Config.Tips.getMessages());
+    setEnabled(Commons.get().getConfiguration().areTipsEnabled());
+    setInterval(SimpleDuration.fromString(Commons.get().getConfiguration().getTipsInterval()));
+    setMessages(ImmutableList.copyOf(Commons.get().getConfiguration().getTips()));
 
     resetTipsTask();
     Commons.get().unregisterEvents(this);

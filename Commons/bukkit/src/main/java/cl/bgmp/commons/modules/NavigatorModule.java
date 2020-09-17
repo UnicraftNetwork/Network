@@ -1,10 +1,8 @@
 package cl.bgmp.commons.modules;
 
 import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.Config;
 import cl.bgmp.commons.navigator.Navigator;
 import cl.bgmp.commons.navigator.NavigatorGUI;
-import cl.bgmp.utilsbukkit.translations.Translations;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -21,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class NavigatorModule extends Module {
 
   public NavigatorModule() {
-    super(ModuleId.NAVIGATOR, Config.Navigator.isEnabled());
+    super(ModuleId.NAVIGATOR, Commons.get().getConfiguration().isNavigatorEnabled());
   }
 
   /**
@@ -30,7 +28,6 @@ public class NavigatorModule extends Module {
    * @param itemStack The item to compare to navigator's item
    * @return Whether or not the two items are equal
    */
-  @SuppressWarnings({"ConstantConditions", "deprecation"})
   private boolean itemIsNavigator(final @NotNull ItemStack itemStack) {
     if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
 
@@ -48,10 +45,13 @@ public class NavigatorModule extends Module {
     if (itemInHand == null || itemInHand.getType() == Material.AIR) return;
     // FIXME: Statement bellow should never be true, and must be filtered in config rather than
     // here, I'll fix it... eventually
-    if (Config.Navigator.getServerButtons().stream().anyMatch(button -> button.getItem() == null)) {
+    if (Commons.get().getConfiguration().getNavigatorButtons().stream()
+        .anyMatch(button -> button.getItemStack() == null)) {
       event
           .getPlayer()
-          .sendMessage(ChatColor.RED + Translations.get("misc.unknown.error", event.getPlayer()));
+          .sendMessage(
+              ChatColor.RED
+                  + Commons.get().getTranslations().get("misc.unknown.error", event.getPlayer()));
       return;
     }
     if (itemIsNavigator(itemInHand))
@@ -78,7 +78,7 @@ public class NavigatorModule extends Module {
 
   @Override
   public void unload() {
-    setEnabled(Config.Navigator.isEnabled());
+    setEnabled(Commons.get().getConfiguration().isNavigatorEnabled());
     Commons.get().unregisterEvents(this);
   }
 }

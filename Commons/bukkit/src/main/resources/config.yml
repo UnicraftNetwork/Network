@@ -18,7 +18,7 @@ navigator:
 chat:
   vault-formatting:
     enabled: true
-    format: "<{prefix}{name}{suffix}> {message}"
+    format: "<{prefix}{name}&r{suffix}> {message}"
 force-gamemode:
   enabled: true
   exempt-permission: "commons.defaultgamemode.exempt"
@@ -37,7 +37,7 @@ restart:
 tips:
   enabled: true
   interval: 7m
-  prefix: "&7[&b&oTip&7] "
+  prefix: "&7[&b&o&lTip&7] "
   messages:
     - "&7Visita nuestra web oficial: &bhttps://udecesports.com/"
     - "&7Síguenos en nuestro instagram &b@teamudecesports"

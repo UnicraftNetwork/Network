@@ -16,7 +16,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>Utils-Bukkit</module>
         <module>Commons</module>
         <module>LobbyX</module>
     </modules>

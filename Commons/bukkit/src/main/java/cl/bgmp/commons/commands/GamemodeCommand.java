@@ -1,9 +1,9 @@
 package cl.bgmp.commons.commands;
 
-import cl.bgmp.utilsbukkit.translations.Translations;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.annotations.Command;
-import com.sk89q.minecraft.util.commands.annotations.CommandPermissions;
+import cl.bgmp.commons.Commons;
+import cl.bgmp.minecraft.util.commands.CommandContext;
+import cl.bgmp.minecraft.util.commands.annotations.Command;
+import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -43,7 +43,10 @@ public class GamemodeCommand {
 
     if (gamemode == null) {
       sender.sendMessage(
-          ChatColor.RED + Translations.get("commons.invalid.gamemode", sender, gamemodeString));
+          ChatColor.RED
+              + Commons.get()
+                  .getTranslations()
+                  .get("commons.invalid.gamemode", sender, gamemodeString));
       return;
     }
 
@@ -53,9 +56,12 @@ public class GamemodeCommand {
         player.setGameMode(gamemode);
         player.sendMessage(
             ChatColor.YELLOW
-                + Translations.get("commons.gamemode.set.own", sender, gamemode.toString()));
+                + Commons.get()
+                    .getTranslations()
+                    .get("commons.gamemode.set.own", sender, gamemode.toString()));
       } else {
-        sender.sendMessage(ChatColor.RED + Translations.get("commands.no.console", sender));
+        sender.sendMessage(
+            ChatColor.RED + Commons.get().getTranslations().get("commands.no.console", sender));
       }
     } else {
       Player thirdParty = Bukkit.getPlayer(args.getString(1));
@@ -63,16 +69,21 @@ public class GamemodeCommand {
         thirdParty.setGameMode(gamemode);
         sender.sendMessage(
             ChatColor.YELLOW
-                + Translations.get(
-                    "commons.gamemode.set.other",
-                    sender,
-                    thirdParty.getDisplayName(),
-                    gamemode.toString()));
+                + Commons.get()
+                    .getTranslations()
+                    .get(
+                        "commons.gamemode.set.other",
+                        sender,
+                        thirdParty.getDisplayName(),
+                        gamemode.toString()));
         thirdParty.sendMessage(
             ChatColor.YELLOW
-                + Translations.get("commons.gamemode.set.own", sender, gamemode.toString()));
+                + Commons.get()
+                    .getTranslations()
+                    .get("commons.gamemode.set.own", sender, gamemode.toString()));
       } else {
-        sender.sendMessage(ChatColor.RED + Translations.get("misc.invalid.player", sender));
+        sender.sendMessage(
+            ChatColor.RED + Commons.get().getTranslations().get("misc.invalid.player", sender));
       }
     }
   }

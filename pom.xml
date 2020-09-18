@@ -16,8 +16,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>Commons</module>
         <module>LobbyX</module>
+        <module>Commons</module>
     </modules>
 
     <build>

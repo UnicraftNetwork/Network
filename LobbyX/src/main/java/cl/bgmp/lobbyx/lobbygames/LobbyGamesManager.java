@@ -1,20 +1,23 @@
 package cl.bgmp.lobbyx.lobbygames;
 
 import cl.bgmp.lobbyx.LobbyX;
+import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.bukkit.plugin.Plugin;
 
 public class LobbyGamesManager {
-  private Plugin plugin = LobbyX.get();
+  private LobbyX lobbyX;
   private Set<LobbyGame> games = new HashSet<>();
 
-  public LobbyGamesManager() {}
+  @Inject
+  public LobbyGamesManager(LobbyX lobbyX) {
+    this.lobbyX = lobbyX;
+  }
 
   public void registerGames(LobbyGame... lobbyGames) {
     games.addAll(Arrays.asList(lobbyGames));
     Arrays.stream(lobbyGames)
-        .forEach(game -> plugin.getServer().getPluginManager().registerEvents(game, this.plugin));
+        .forEach(game -> lobbyX.getServer().getPluginManager().registerEvents(game, this.lobbyX));
   }
 }

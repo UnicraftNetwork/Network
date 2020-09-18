@@ -54,11 +54,6 @@
             <artifactId>guice-assistedinject</artifactId>
             <version>4.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>17.0.0</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -89,8 +84,9 @@
                                 <includes>
                                     <include>cl.bgmp:command-framework-bukkit</include>
                                     <include>cl.bgmp:BUtils</include>
-                                    <include>org.jetbrains:annotations</include>
                                     <include>com.google.inject:guice</include>
+                                    <include>javax.inject:javax.inject</include>
+                                    <include>aopalliance:aopalliance</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

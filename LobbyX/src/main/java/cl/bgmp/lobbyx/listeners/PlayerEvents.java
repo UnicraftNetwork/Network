@@ -1,7 +1,7 @@
 package cl.bgmp.lobbyx.listeners;
 
 import cl.bgmp.lobbyx.Config;
-import cl.bgmp.lobbyx.LobbyX;
+import com.google.inject.Inject;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,9 +18,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerEvents implements Listener {
 
+  private Config config;
+
+  @Inject
+  public PlayerEvents(Config config) {
+    this.config = config;
+  }
+
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerJoin(PlayerJoinEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     final Player player = event.getPlayer();
 
     player.teleport(config.getSpawn());
@@ -30,21 +36,18 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onBlockBreak(BlockBreakEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onBlockPlace(BlockPlaceEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     final Entity attacker = event.getDamager();
     final Entity damaged = event.getEntity();
     if (attacker instanceof Player || damaged instanceof Player) {
@@ -55,7 +58,10 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onEntityDamage(EntityDamageEvent event) {
-    event.setCancelled(true);
+    EntityDamageEvent.DamageCause cause = event.getCause();
+    if (cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
@@ -65,14 +71,12 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onItemPickup(PlayerAttemptPickupItemEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
   public void onItemDrop(PlayerDropItemEvent event) {
-    final Config config = LobbyX.get().getConfiguration();
     if (event.getPlayer().hasPermission(config.getBypassPerm())) return;
     event.setCancelled(true);
   }

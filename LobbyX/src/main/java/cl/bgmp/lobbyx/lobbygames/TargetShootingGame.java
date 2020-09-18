@@ -4,6 +4,7 @@ import cl.bgmp.butils.entity.FireworkBuilder;
 import cl.bgmp.butils.items.ItemBuilder;
 import cl.bgmp.lobbyx.LobbyX;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import java.util.Map;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -15,13 +16,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class TargetShootingGame extends LobbyGame {
-  private Plugin plugin = LobbyX.get();
+  private LobbyX lobbyX;
   private Map<Integer, ItemStack> prizes =
       ImmutableMap.<Integer, ItemStack>builder()
           .put(1, new ItemBuilder(Material.GUNPOWDER).setName("&4Basura").build())
@@ -58,7 +58,10 @@ public class TargetShootingGame extends LobbyGame {
                   .build())
           .build();
 
-  public TargetShootingGame() {}
+  @Inject
+  public TargetShootingGame(LobbyX lobbyX) {
+    this.lobbyX = lobbyX;
+  }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onPlayerShootTarget(ProjectileHitEvent event) {
@@ -78,7 +81,7 @@ public class TargetShootingGame extends LobbyGame {
         final AnaloguePowerable powerable = (AnaloguePowerable) hitBlock.getBlockData();
         TargetShootingGame.this.givePrize(hitBlock, player, powerable.getPower());
       }
-    }.runTaskLater(this.plugin, 1L);
+    }.runTaskLater(this.lobbyX, 1L);
   }
 
   private void givePrize(Block target, Player player, int score) {

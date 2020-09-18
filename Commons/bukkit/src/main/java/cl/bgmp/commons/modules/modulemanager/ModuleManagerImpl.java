@@ -2,7 +2,6 @@ package cl.bgmp.commons.modules.modulemanager;
 
 import cl.bgmp.commons.modules.Module;
 import cl.bgmp.commons.modules.ModuleId;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;

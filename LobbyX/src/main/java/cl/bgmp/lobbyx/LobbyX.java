@@ -2,8 +2,8 @@ package cl.bgmp.lobbyx;
 
 import cl.bgmp.bukkit.util.BukkitCommandsManager;
 import cl.bgmp.bukkit.util.CommandsManagerRegistration;
-import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.lobbyx.commands.LobbyXCommands;
+import cl.bgmp.lobbyx.injection.BinderModule;
 import cl.bgmp.lobbyx.listeners.BlockEvents;
 import cl.bgmp.lobbyx.listeners.PlayerEvents;
 import cl.bgmp.lobbyx.lobbygames.LobbyGamesManager;
@@ -17,6 +17,9 @@ import cl.bgmp.minecraft.util.commands.exceptions.CommandUsageException;
 import cl.bgmp.minecraft.util.commands.exceptions.MissingNestedCommandException;
 import cl.bgmp.minecraft.util.commands.exceptions.ScopeMismatchException;
 import cl.bgmp.minecraft.util.commands.exceptions.WrappedCommandException;
+import cl.bgmp.minecraft.util.commands.injection.SimpleInjector;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,52 +29,44 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public final class LobbyX extends JavaPlugin {
-  private static LobbyX lobbyX;
+  private CommandsManager commandsManager = new BukkitCommandsManager();
+  private LobbyXConfig config;
+  private AllTranslations translations;
 
-  private CommandsManager commandsManager;
-  private CommandsManagerRegistration defaultRegistration;
-
-  private Config config;
-  private Translations translations;
-
-  private LobbyGamesManager lobbyGamesManager;
-
-  public static LobbyX get() {
-    return lobbyX;
-  }
-
-  public Config getConfiguration() {
-    return config;
-  }
-
-  public Translations getTranslations() {
-    return translations;
-  }
+  @Inject private LobbyGamesManager lobbyGamesManager;
+  @Inject private TargetShootingGame targetShootingGame;
+  @Inject private PlayerEvents playerEvents;
+  @Inject private BlockEvents blockEvents;
 
   @Override
   public void onEnable() {
-    lobbyX = this;
-
-    this.saveDefaultConfig();
-    this.reloadConfig();
-    if (config == null) {
-      this.getServer().getPluginManager().disablePlugin(this);
-      return;
-    }
-
+    this.loadConfig();
     this.translations = new AllTranslations();
 
-    this.commandsManager = new BukkitCommandsManager();
-    this.defaultRegistration = new CommandsManagerRegistration(this, commandsManager);
-    this.registerCommands(LobbyXCommands.class);
+    this.inject();
+    this.registerCommands();
 
-    this.lobbyGamesManager = new LobbyGamesManager();
-    this.lobbyGamesManager.registerGames(new TargetShootingGame());
+    this.lobbyGamesManager.registerGames(this.targetShootingGame);
+    this.registerEvents(this.blockEvents, this.playerEvents);
+  }
 
-    this.registerEvents(new BlockEvents(), new PlayerEvents());
+  private void loadConfig() {
+    this.saveDefaultConfig();
+    this.reloadConfig();
+    if (config != null) return;
+
+    this.getServer().getPluginManager().disablePlugin(this);
+  }
+
+  private void inject() {
+    final BinderModule module = new BinderModule(this, this.config, this.translations);
+    final Injector injector = module.createInjector();
+
+    injector.injectMembers(this);
+    injector.injectMembers(this.config);
+    injector.injectMembers(this.translations);
   }
 
   @Override
@@ -86,21 +81,12 @@ public final class LobbyX extends JavaPlugin {
       this.getLogger()
           .severe(
               translations.get("misc.configuration.load.failed", getServer().getConsoleSender()));
-      return;
     }
-
-    if (!startup)
-      this.getLogger()
-          .info(translations.get("misc.configuration.reloaded", getServer().getConsoleSender()));
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public boolean onCommand(
-      @NotNull CommandSender sender,
-      Command command,
-      @NotNull String label,
-      @NotNull String[] args) {
+  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     try {
       this.commandsManager.execute(command.getName(), args, sender, sender);
     } catch (ScopeMismatchException exception) {
@@ -131,38 +117,45 @@ public final class LobbyX extends JavaPlugin {
     return true;
   }
 
-  private void registerCommands(Class<?>... classes) {
-    for (Class<?> clazz : classes) {
-      final Class<?>[] subclasses = clazz.getClasses();
-
-      if (subclasses.length == 0) defaultRegistration.register(clazz);
-      else {
-        TabCompleter tabCompleter = null;
-        Class<?> nestNode = null;
-        for (Class<?> subclass : subclasses) {
-          if (subclass.isAnnotationPresent(TabCompletion.class)) {
-            try {
-              tabCompleter = (TabCompleter) subclass.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-              e.printStackTrace();
-            }
-          } else nestNode = subclass;
-        }
-        if (tabCompleter == null) defaultRegistration.register(subclasses[0]);
-        else {
-          CommandsManagerRegistration customRegistration =
-              new CommandsManagerRegistration(this, this, tabCompleter, commandsManager);
-          if (subclasses.length == 1) customRegistration.register(clazz);
-          else customRegistration.register(nestNode);
-        }
-      }
-    }
-  }
-
   private void registerEvents(Listener... listeners) {
     PluginManager pluginManager = Bukkit.getPluginManager();
     for (Listener listener : listeners) {
       pluginManager.registerEvents(listener, this);
+    }
+  }
+
+  private void registerCommands() {
+    this.registerCommand(LobbyXCommands.class, this, translations);
+  }
+
+  private void registerCommand(Class<?> clazz, Object... toInject) {
+    if (toInject.length > 0) this.commandsManager.setInjector(new SimpleInjector(toInject));
+    else this.commandsManager.setInjector(null);
+    CommandsManagerRegistration defaultRegistration =
+        new CommandsManagerRegistration(this, this.commandsManager);
+
+    final Class<?>[] subclasses = clazz.getClasses();
+
+    if (subclasses.length == 0) defaultRegistration.register(clazz);
+    else {
+      TabCompleter tabCompleter = null;
+      Class<?> nestNode = null;
+      for (Class<?> subclass : subclasses) {
+        if (subclass.isAnnotationPresent(TabCompletion.class)) {
+          try {
+            tabCompleter = (TabCompleter) subclass.newInstance();
+          } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+          }
+        } else nestNode = subclass;
+      }
+      if (tabCompleter == null) defaultRegistration.register(subclasses[0]);
+      else {
+        CommandsManagerRegistration customRegistration =
+            new CommandsManagerRegistration(this, this, tabCompleter, commandsManager);
+        if (subclasses.length == 1) customRegistration.register(clazz);
+        else customRegistration.register(nestNode);
+      }
     }
   }
 }

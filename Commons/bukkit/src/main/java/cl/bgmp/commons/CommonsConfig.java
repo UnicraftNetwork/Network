@@ -1,6 +1,5 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.butils.bungee.Bungee;
 import cl.bgmp.butils.bungee.Server;
 import cl.bgmp.commons.navigator.ServerButton;
 import java.io.File;
@@ -111,7 +110,7 @@ public class CommonsConfig implements Config {
             new ServerButton(item, slot, new Server(serverName, ip, port)) {
               @Override
               public void clickBy(Player player) {
-                Bungee.sendPlayer(Commons.get(), player, serverName);
+                Commons.get().getBungee().sendPlayer(player, serverName);
               }
             });
       }

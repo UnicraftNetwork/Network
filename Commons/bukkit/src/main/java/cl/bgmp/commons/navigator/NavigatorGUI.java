@@ -1,6 +1,5 @@
 package cl.bgmp.commons.navigator;
 
-import cl.bgmp.butils.bungee.Bungee;
 import cl.bgmp.butils.chat.Chat;
 import cl.bgmp.butils.gui.GUI;
 import cl.bgmp.commons.Commons;
@@ -62,7 +61,7 @@ public class NavigatorGUI extends GUI implements Listener {
               + serverButton.getServer().getName()
               + ChatColor.WHITE
               + "]");
-      Bungee.sendPlayer(Commons.get(), player, serverButton.getServer().getName());
+      Commons.get().getBungee().sendPlayer(player, serverButton.getServer().getName());
     }
   }
 }

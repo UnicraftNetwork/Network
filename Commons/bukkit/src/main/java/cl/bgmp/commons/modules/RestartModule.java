@@ -1,6 +1,5 @@
 package cl.bgmp.commons.modules;
 
-import cl.bgmp.butils.bungee.Bungee;
 import cl.bgmp.butils.time.SimpleDuration;
 import cl.bgmp.commons.Commons;
 import com.destroystokyo.paper.Title;
@@ -107,8 +106,9 @@ public class RestartModule extends Module {
             onlinePlayer -> {
               onlinePlayer.sendMessage(
                   ChatColor.RED + "The server you were previously on is currently restarting...");
-              Bungee.sendPlayer(
-                  Commons.get(), onlinePlayer, Commons.get().getConfiguration().getLobby());
+              Commons.get()
+                  .getBungee()
+                  .sendPlayer(onlinePlayer, Commons.get().getConfiguration().getLobby());
             });
   }
 

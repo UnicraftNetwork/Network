@@ -2,6 +2,7 @@ package cl.bgmp.commons;
 
 import cl.bgmp.bukkit.util.BukkitCommandsManager;
 import cl.bgmp.bukkit.util.CommandsManagerRegistration;
+import cl.bgmp.butils.bungee.Bungee;
 import cl.bgmp.commons.commands.ChatFormatterCommand;
 import cl.bgmp.commons.commands.CommonsCommand;
 import cl.bgmp.commons.commands.GamemodeCommand;
@@ -10,8 +11,8 @@ import cl.bgmp.commons.modules.ChatFormatModule;
 import cl.bgmp.commons.modules.ForceGamemodeModule;
 import cl.bgmp.commons.modules.JoinQuitMessageModule;
 import cl.bgmp.commons.modules.JoinToolsModule;
-import cl.bgmp.commons.modules.ModuleManager;
-import cl.bgmp.commons.modules.ModuleManagerImpl;
+import cl.bgmp.commons.modules.modulemanager.ModuleManager;
+import cl.bgmp.commons.modules.modulemanager.ModuleManagerImpl;
 import cl.bgmp.commons.modules.NavigatorModule;
 import cl.bgmp.commons.modules.RestartModule;
 import cl.bgmp.commons.modules.TipsModule;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Commons extends JavaPlugin {
   private static Commons commons;
+  private Bungee bungee;
 
   private CommandsManager commandsManager;
   private CommandsManagerRegistration defaultRegistration;
@@ -63,11 +65,16 @@ public final class Commons extends JavaPlugin {
     return moduleManager;
   }
 
+  public Bungee getBungee() {
+    return bungee;
+  }
+
   @Override
   public void onEnable() {
     commons = this;
 
-    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "bungeecord:main");
+    this.bungee = new Bungee(this);
+    this.bungee.registerOutgoing();
 
     this.saveDefaultConfig();
     this.reloadConfig();

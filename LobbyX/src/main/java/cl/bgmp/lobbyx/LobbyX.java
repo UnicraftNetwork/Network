@@ -35,7 +35,7 @@ public final class LobbyX extends JavaPlugin {
   private LobbyXConfig config;
   private AllTranslations translations;
 
-  @Inject private LobbyGamesManager lobbyGamesManager;
+  // @Inject private LobbyGamesManager lobbyGamesManager;
   @Inject private TargetShootingGame targetShootingGame;
   @Inject private PlayerEvents playerEvents;
   @Inject private BlockEvents blockEvents;
@@ -48,16 +48,19 @@ public final class LobbyX extends JavaPlugin {
     this.inject();
     this.registerCommands();
 
-    this.lobbyGamesManager.registerGames(this.targetShootingGame);
+    // this.lobbyGamesManager.registerGames(this.targetShootingGame);
     this.registerEvents(this.blockEvents, this.playerEvents);
   }
 
-  private void loadConfig() {
-    this.saveDefaultConfig();
-    this.reloadConfig();
-    if (config != null) return;
+  private void registerCommands() {
+    this.registerCommand(LobbyXCommands.class, this, translations);
+  }
 
-    this.getServer().getPluginManager().disablePlugin(this);
+  private void registerEvents(Listener... listeners) {
+    PluginManager pluginManager = Bukkit.getPluginManager();
+    for (Listener listener : listeners) {
+      pluginManager.registerEvents(listener, this);
+    }
   }
 
   private void inject() {
@@ -69,11 +72,18 @@ public final class LobbyX extends JavaPlugin {
     injector.injectMembers(this.translations);
   }
 
+  private void loadConfig() {
+    this.saveDefaultConfig();
+    this.reloadConfig();
+    if (config != null) return;
+
+    this.getServer().getPluginManager().disablePlugin(this);
+  }
+
   @Override
   public void reloadConfig() {
     super.reloadConfig();
 
-    final boolean startup = config == null;
     try {
       this.config = new LobbyXConfig(getConfig(), getDataFolder());
     } catch (RuntimeException e) {
@@ -115,17 +125,6 @@ public final class LobbyX extends JavaPlugin {
       sender.sendMessage(ChatColor.RED + exception.getMessage());
     }
     return true;
-  }
-
-  private void registerEvents(Listener... listeners) {
-    PluginManager pluginManager = Bukkit.getPluginManager();
-    for (Listener listener : listeners) {
-      pluginManager.registerEvents(listener, this);
-    }
-  }
-
-  private void registerCommands() {
-    this.registerCommand(LobbyXCommands.class, this, translations);
   }
 
   private void registerCommand(Class<?> clazz, Object... toInject) {

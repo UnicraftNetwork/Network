@@ -113,7 +113,6 @@ public final class Commons extends JavaPlugin {
   public void reloadConfig() {
     super.reloadConfig();
 
-    final boolean startup = config == null;
     try {
       this.config = new CommonsConfig(getConfig(), getDataFolder());
     } catch (RuntimeException e) {
@@ -121,12 +120,7 @@ public final class Commons extends JavaPlugin {
       this.getLogger()
           .severe(
               translations.get("misc.configuration.load.failed", getServer().getConsoleSender()));
-      return;
     }
-
-    if (!startup)
-      this.getLogger()
-          .info(translations.get("misc.configuration.reloaded", getServer().getConsoleSender()));
   }
 
   @SuppressWarnings("unchecked")

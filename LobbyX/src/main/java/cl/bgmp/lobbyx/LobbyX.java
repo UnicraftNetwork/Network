@@ -6,8 +6,6 @@ import cl.bgmp.lobbyx.commands.LobbyXCommands;
 import cl.bgmp.lobbyx.injection.BinderModule;
 import cl.bgmp.lobbyx.listeners.BlockEvents;
 import cl.bgmp.lobbyx.listeners.PlayerEvents;
-import cl.bgmp.lobbyx.lobbygames.LobbyGamesManager;
-import cl.bgmp.lobbyx.lobbygames.TargetShootingGame;
 import cl.bgmp.lobbyx.translations.AllTranslations;
 import cl.bgmp.minecraft.util.commands.CommandsManager;
 import cl.bgmp.minecraft.util.commands.annotations.TabCompletion;
@@ -35,8 +33,6 @@ public final class LobbyX extends JavaPlugin {
   private LobbyXConfig config;
   private AllTranslations translations;
 
-  // @Inject private LobbyGamesManager lobbyGamesManager;
-  @Inject private TargetShootingGame targetShootingGame;
   @Inject private PlayerEvents playerEvents;
   @Inject private BlockEvents blockEvents;
 
@@ -48,7 +44,6 @@ public final class LobbyX extends JavaPlugin {
     this.inject();
     this.registerCommands();
 
-    // this.lobbyGamesManager.registerGames(this.targetShootingGame);
     this.registerEvents(this.blockEvents, this.playerEvents);
   }
 

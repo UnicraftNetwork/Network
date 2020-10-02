@@ -17,5 +17,5 @@ public class AllTranslations extends Translations {
   }
 
   @Override
-  public void setLocale(CommandSender commandSender) {}
+  public void setLocale(CommandSender commandSender, String s) {}
 }

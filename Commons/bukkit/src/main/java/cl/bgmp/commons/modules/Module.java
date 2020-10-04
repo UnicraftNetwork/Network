@@ -1,32 +1,45 @@
 package cl.bgmp.commons.modules;
 
+import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.commons.Commons;
-import java.util.logging.Logger;
+import cl.bgmp.commons.Config;
+import com.google.inject.Inject;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 
 public abstract class Module implements Listener {
-  protected ModuleId id;
-  protected boolean enabled;
-  protected Logger logger = Commons.get().getLogger();
+  @Inject protected Commons commons;
+  @Inject protected Config config;
+  @Inject protected Translations translations;
 
-  public Module(ModuleId id, boolean enabled) {
+  protected ModuleId id;
+
+  public Module(ModuleId id) {
     this.id = id;
-    this.enabled = enabled;
   }
 
   public ModuleId getId() {
     return id;
   }
 
-  public boolean isEnabled() {
-    return enabled;
+  public void configure() {}
+
+  public abstract boolean isEnabled();
+
+  public void load() {
+    if (this.isEnabled()) {
+      PluginManager pm = this.commons.getServer().getPluginManager();
+      pm.registerEvents(this, this.commons);
+    }
   }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
+  public void unload() {
+    HandlerList.unregisterAll(this);
   }
 
-  public abstract void load();
-
-  public abstract void unload();
+  public void reload() {
+    this.unload();
+    this.load();
+  }
 }

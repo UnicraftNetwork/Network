@@ -1,9 +1,7 @@
 package cl.bgmp.commons.modules;
 
 import cl.bgmp.butils.items.ItemBuilder;
-import cl.bgmp.commons.Commons;
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,40 +11,39 @@ import org.bukkit.inventory.ItemStack;
 
 public class JoinToolsModule extends Module {
 
-  // TODO: Probably not the best of practices to keep this here
-  private static List<ItemStack> onJoinTools =
-      new ArrayList<ItemStack>() {
-        {
-          add(
-              new ItemBuilder(Material.COMPASS)
-                  .setName("&9&lTeleport Tool&r")
-                  .setLore("&7Click to teleport!&r")
-                  .build());
-          add(new ItemBuilder(Material.RABBIT_FOOT).setName("&5&lEdit Wand").build());
-        }
-      };
-
   public JoinToolsModule() {
-    super(ModuleId.JOIN_TOOLS, Commons.get().getConfiguration().areOnJoinToolsEnabled());
+    super(ModuleId.JOIN_TOOLS);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerJoin(final PlayerJoinEvent event) {
     final Player player = event.getPlayer();
 
+    ItemStack wand =
+        new ItemBuilder(Material.RABBIT_FOOT)
+            .setName(
+                ChatColor.DARK_PURPLE.toString()
+                    + ChatColor.BOLD
+                    + this.translations.get("module.jointools.wand.title", player))
+            .build();
+    ItemStack compass =
+        new ItemBuilder(Material.COMPASS)
+            .setName(
+                ChatColor.BLUE.toString()
+                    + ChatColor.BOLD
+                    + this.translations.get("module.jointools.compass.title", player))
+            .setLore(
+                ChatColor.GRAY + this.translations.get("module.jointools.compass.lore", player))
+            .build();
+
     if (!player.hasPermission("commons.tools")) return;
-    player.getInventory().setItem(0, onJoinTools.get(0));
-    player.getInventory().setItem(1, onJoinTools.get(1));
+
+    player.getInventory().setItem(0, wand);
+    player.getInventory().setItem(1, compass);
   }
 
   @Override
-  public void load() {
-    if (enabled) Commons.get().registerEvents(this);
-  }
-
-  @Override
-  public void unload() {
-    setEnabled(Commons.get().getConfiguration().areOnJoinToolsEnabled());
-    Commons.get().unregisterEvents(this);
+  public boolean isEnabled() {
+    return this.config.areOnJoinToolsEnabled();
   }
 }

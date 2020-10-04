@@ -1,10 +1,11 @@
-package cl.bgmp.commons.modules;
+package cl.bgmp.commons.modules.navigator;
 
-import cl.bgmp.commons.Commons;
-import cl.bgmp.commons.navigator.Navigator;
-import cl.bgmp.commons.navigator.NavigatorGUI;
+import cl.bgmp.butils.items.PlayerHeadBuilder;
+import cl.bgmp.commons.modules.Module;
+import cl.bgmp.commons.modules.ModuleId;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class NavigatorModule extends Module {
 
   public NavigatorModule() {
-    super(ModuleId.NAVIGATOR, Commons.get().getConfiguration().isNavigatorEnabled());
+    super(ModuleId.NAVIGATOR);
   }
 
   /**
@@ -33,29 +34,25 @@ public class NavigatorModule extends Module {
 
     if (itemStack.getItemMeta() instanceof SkullMeta) {
       final SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-      return skullMeta.getOwner().equals(Navigator.playerHeadOwner);
+      if (skullMeta.getOwner() == null) return false;
+      return skullMeta.getOwner().equals(this.config.getNavigatorHead());
     } else return false;
   }
 
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
+    final Action action = event.getAction();
+    if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) return;
+
     final ItemStack itemInHand = event.getItem();
-    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
-      return;
     if (itemInHand == null || itemInHand.getType() == Material.AIR) return;
-    // FIXME: Statement bellow should never be true, and must be filtered in config rather than
-    // here, I'll fix it... eventually
-    if (Commons.get().getConfiguration().getNavigatorButtons().stream()
-        .anyMatch(button -> button.getItemStack() == null)) {
-      event
-          .getPlayer()
-          .sendMessage(
-              ChatColor.RED
-                  + Commons.get().getTranslations().get("misc.unknown.error", event.getPlayer()));
-      return;
-    }
-    if (itemIsNavigator(itemInHand))
-      event.getPlayer().openInventory(new NavigatorGUI().getInventory());
+    if (!itemIsNavigator(itemInHand)) return;
+
+    event
+        .getPlayer()
+        .openInventory(
+            new NavigatorGUI(event.getPlayer(), this.commons, this.config, this.translations)
+                .getInventory());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -68,17 +65,23 @@ public class NavigatorModule extends Module {
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    event.getPlayer().getInventory().setItem(4, new Navigator(event.getPlayer()).getItem());
+    Player player = event.getPlayer();
+
+    ItemStack navigatorItem =
+        new PlayerHeadBuilder()
+            .setOwner(this.config.getNavigatorHead())
+            .setName(
+                ChatColor.BLUE.toString()
+                    + ChatColor.BOLD
+                    + this.translations.get("module.navigator.title", player))
+            .setLore(ChatColor.GRAY + this.translations.get("module.navigator.lore", player))
+            .build();
+
+    event.getPlayer().getInventory().setItem(4, navigatorItem);
   }
 
   @Override
-  public void load() {
-    if (enabled) Commons.get().registerEvents(this);
-  }
-
-  @Override
-  public void unload() {
-    setEnabled(Commons.get().getConfiguration().isNavigatorEnabled());
-    Commons.get().unregisterEvents(this);
+  public boolean isEnabled() {
+    return this.config.isNavigatorEnabled();
   }
 }

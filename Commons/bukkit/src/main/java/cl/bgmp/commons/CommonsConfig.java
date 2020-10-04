@@ -1,17 +1,10 @@
 package cl.bgmp.commons;
 
-import cl.bgmp.butils.bungee.Server;
-import cl.bgmp.commons.navigator.ServerButton;
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class CommonsConfig implements Config {
   private FileConfiguration config;
@@ -23,7 +16,7 @@ public class CommonsConfig implements Config {
   private String navigatorHead;
   private String navigatorTitle;
   private int navigatorSize;
-  private Set<ServerButton> navigatorButtons;
+  private ConfigurationSection navigatorButtons;
 
   private boolean isVaultFormattingEnabled;
   private String vaultFormat;
@@ -59,8 +52,7 @@ public class CommonsConfig implements Config {
     this.navigatorHead = config.getString("navigator.head");
     this.navigatorTitle = config.getString("navigator.title");
     this.navigatorSize = config.getInt("navigator.size");
-    this.navigatorButtons =
-        this.parseNavigatorButtons(this.config.getConfigurationSection("navigator.servers"));
+    this.navigatorButtons = this.config.getConfigurationSection("navigator.servers");
 
     this.isVaultFormattingEnabled = this.config.getBoolean("chat.vault-formatting.enabled");
     this.vaultFormat = this.config.getString("chat.vault-formatting.format");
@@ -86,37 +78,6 @@ public class CommonsConfig implements Config {
     this.tipsInterval = this.config.getString("tips.interval");
     this.tipsPrefix = this.config.getString("tips.prefix");
     this.tips = this.config.getStringList("tips.messages");
-  }
-
-  private Set<ServerButton> parseNavigatorButtons(ConfigurationSection navigatorServersSection) {
-    final Set<ServerButton> buttons = new HashSet<>();
-
-    if (navigatorServersSection != null) {
-      for (String key : navigatorServersSection.getKeys(false)) {
-        int slot = Integer.parseInt(key);
-        String serverName = navigatorServersSection.getString(key + ".name");
-        String ip = navigatorServersSection.getString(key + ".ip");
-        int port = navigatorServersSection.getInt(key + ".port");
-
-        ItemStack item = new ItemStack(Material.AIR);
-        ConfigurationSection itemSection =
-            navigatorServersSection.getConfigurationSection(key + ".item");
-        if (itemSection != null) {
-          ItemStack parsedItem = Config.parseItem(itemSection);
-          item = parsedItem == null ? item : parsedItem;
-        }
-
-        buttons.add(
-            new ServerButton(item, slot, new Server(serverName, ip, port)) {
-              @Override
-              public void clickBy(Player player) {
-                Commons.get().getBungee().sendPlayer(player, serverName);
-              }
-            });
-      }
-    }
-
-    return buttons;
   }
 
   @Override
@@ -145,7 +106,7 @@ public class CommonsConfig implements Config {
   }
 
   @Override
-  public Set<ServerButton> getNavigatorButtons() {
+  public ConfigurationSection getNavigatorButtons() {
     return navigatorButtons;
   }
 

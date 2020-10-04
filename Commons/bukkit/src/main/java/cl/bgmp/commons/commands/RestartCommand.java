@@ -1,10 +1,11 @@
 package cl.bgmp.commons.commands;
 
 import cl.bgmp.butils.time.SimpleDuration;
-import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.modules.Module;
 import cl.bgmp.commons.modules.ModuleId;
 import cl.bgmp.commons.modules.RestartModule;
+import cl.bgmp.commons.modules.manager.ModuleManagerImpl;
+import cl.bgmp.commons.translations.AllTranslations;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
@@ -14,19 +15,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class RestartCommand {
-  private static void setNewRestart(
-      CommandSender setter, RestartModule restartModule, Duration interval) {
+  private ModuleManagerImpl moduleManager;
+  private AllTranslations translations;
+
+  public RestartCommand(ModuleManagerImpl moduleManager, AllTranslations translations) {
+    this.moduleManager = moduleManager;
+    this.translations = translations;
+  }
+
+  private void setNewRestart(CommandSender setter, RestartModule restartModule, Duration interval) {
     restartModule.setInterval(interval);
     restartModule.runNewRestartTask();
     setter.sendMessage(
         ChatColor.AQUA
-            + Commons.get()
-                .getTranslations()
-                .get(
-                    "module.restart.server.will.restart.in",
-                    setter,
-                    ChatColor.DARK_RED + String.valueOf(interval.getSeconds()) + ChatColor.AQUA,
-                    Commons.get().getTranslations().get("time.unit.seconds", setter)));
+            + this.translations.get(
+                "module.restart.server.will.restart.in",
+                setter,
+                ChatColor.DARK_RED + String.valueOf(interval.getSeconds()) + ChatColor.AQUA,
+                this.translations.get("time.unit.seconds", setter)));
   }
 
   @Command(
@@ -35,11 +41,10 @@ public class RestartCommand {
       usage = "<time>",
       min = 1)
   @CommandPermissions("commons.restart")
-  public static void restart(final CommandContext args, final CommandSender sender) {
-    final Optional<Module> module = Commons.get().getModuleManager().getModule(ModuleId.RESTART);
+  public void restart(final CommandContext args, final CommandSender sender) {
+    final Optional<Module> module = this.moduleManager.getModule(ModuleId.RESTART);
     if (!module.isPresent() || !module.get().isEnabled()) {
-      sender.sendMessage(
-          ChatColor.RED + Commons.get().getTranslations().get("module.restart.disabled", sender));
+      sender.sendMessage(ChatColor.RED + this.translations.get("module.restart.disabled", sender));
       return;
     }
 
@@ -61,10 +66,7 @@ public class RestartCommand {
       setNewRestart(sender, restartModule, time);
     } catch (Exception ignore) {
       sender.sendMessage(
-          ChatColor.RED
-              + Commons.get()
-                  .getTranslations()
-                  .get("module.restart.invalid.time", sender, timeString));
+          ChatColor.RED + this.translations.get("module.restart.invalid.time", sender, timeString));
     }
   }
 }

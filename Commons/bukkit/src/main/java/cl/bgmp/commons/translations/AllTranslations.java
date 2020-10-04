@@ -11,11 +11,11 @@ public class AllTranslations extends Translations {
   }
 
   @Override
-  public String getLocale(CommandSender commandSender) {
-    if (!(commandSender instanceof Player)) return "es_cl";
-    return ((Player) commandSender).getLocale();
+  public String getLocale(CommandSender sender) {
+    if (!(sender instanceof Player)) return "es_cl";
+    return ((Player) sender).getLocale();
   }
 
   @Override
-  public void setLocale(CommandSender commandSender, String s) {}
+  public void setLocale(CommandSender sender, String locale) {}
 }

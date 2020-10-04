@@ -1,6 +1,5 @@
 package cl.bgmp.commons.modules;
 
-import cl.bgmp.commons.Commons;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,7 +9,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServiceRegisterEvent;
 
 public class ChatFormatModule extends Module {
-
   // Placeholder constants
   private static final String NAME = "{name}";
   private static final String DISPLAY_NAME = "{displayname}";
@@ -19,11 +17,11 @@ public class ChatFormatModule extends Module {
   private static final String SUFFIX = "{suffix}";
   public static final String DEFAULT_FORMAT = "<" + PREFIX + NAME + SUFFIX + "> " + MESSAGE;
 
-  private String format = Commons.get().getConfiguration().getVaultFormat();
+  private String format;
   private Chat vaultChat = null;
 
   public ChatFormatModule() {
-    super(ModuleId.CHAT_FORMAT, Commons.get().getConfiguration().isVaultFormattingEnabled());
+    super(ModuleId.CHAT_FORMAT);
   }
 
   public String getPlayerPrefix(final Player player) {
@@ -35,22 +33,20 @@ public class ChatFormatModule extends Module {
   }
 
   public void reloadConfigValues() {
-    Commons.get().reloadConfig();
+    this.commons.reloadConfig();
     format =
         cl.bgmp.butils.chat.Chat.color(
-            Commons.get()
-                .getConfiguration()
-                .getVaultFormat()
-                .replace(DISPLAY_NAME, "%1$s")
-                .replace(MESSAGE, "%2$s"));
+            this.config.getVaultFormat().replace(DISPLAY_NAME, "%1$s").replace(MESSAGE, "%2$s"));
   }
 
   public void refreshVault() {
     Chat vaultChat = Bukkit.getServer().getServicesManager().load(Chat.class);
     if (vaultChat != this.vaultChat)
-      logger.info(
-          "New Vault Chat implementation registered: "
-              + (vaultChat == null ? "null" : vaultChat.getName()));
+      this.commons
+          .getLogger()
+          .info(
+              "New Vault Chat implementation registered: "
+                  + (vaultChat == null ? "null" : vaultChat.getName()));
     this.vaultChat = vaultChat;
   }
 
@@ -84,17 +80,26 @@ public class ChatFormatModule extends Module {
   }
 
   @Override
+  public void configure() {
+    this.format = this.config.getVaultFormat();
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return this.config.isVaultFormattingEnabled();
+  }
+
+  @Override
   public void load() {
-    if (enabled) {
+    if (this.isEnabled()) {
       refreshVault();
       reloadConfigValues();
-      Commons.get().registerEvents(this);
+      this.commons.registerEvent(this);
     }
   }
 
   @Override
   public void unload() {
-    setEnabled(Commons.get().getConfiguration().isVaultFormattingEnabled());
-    Commons.get().unregisterEvents(this);
+    this.commons.unregisterEvent(this);
   }
 }

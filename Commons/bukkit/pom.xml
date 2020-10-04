@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -97,8 +97,9 @@
                                 <includes>
                                     <include>cl.bgmp:command-framework-bukkit</include>
                                     <include>cl.bgmp:BUtils</include>
-                                    <include>org.jetbrains:annotations</include>
                                     <include>com.google.inject:guice</include>
+                                    <include>javax.inject:javax.inject</include>
+                                    <include>aopalliance:aopalliance</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

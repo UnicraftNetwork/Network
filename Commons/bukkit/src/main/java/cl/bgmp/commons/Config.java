@@ -1,9 +1,7 @@
 package cl.bgmp.commons;
 
 import cl.bgmp.butils.items.ItemBuilder;
-import cl.bgmp.commons.navigator.ServerButton;
 import java.util.List;
-import java.util.Set;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +21,7 @@ public interface Config {
 
   int getNavigatorSize();
 
-  Set<ServerButton> getNavigatorButtons();
+  ConfigurationSection getNavigatorButtons();
 
   /** VaultAPI Formatting */
   boolean isVaultFormattingEnabled();

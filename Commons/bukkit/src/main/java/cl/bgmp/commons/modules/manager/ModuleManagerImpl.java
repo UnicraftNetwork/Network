@@ -1,4 +1,4 @@
-package cl.bgmp.commons.modules.modulemanager;
+package cl.bgmp.commons.modules.manager;
 
 import cl.bgmp.commons.modules.Module;
 import cl.bgmp.commons.modules.ModuleId;
@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ModuleManagerImpl implements ModuleManager {
   private Set<Module> modules = new HashSet<>();
@@ -17,17 +16,25 @@ public class ModuleManagerImpl implements ModuleManager {
   }
 
   @Override
+  public void registerModule(Module module) {
+    this.modules.add(module);
+  }
+
+  @Override
   public void loadModules() {
-    this.modules.stream()
-        .filter(Module::isEnabled)
-        .collect(Collectors.toSet())
-        .forEach(Module::load);
+    for (Module module : this.modules) {
+      if (module.isEnabled()) {
+        module.configure();
+        module.load();
+      }
+    }
   }
 
   @Override
   public void reloadModules() {
-    this.modules.forEach(Module::unload);
-    this.loadModules();
+    for (Module module : this.modules) {
+      module.reload();
+    }
   }
 
   @Override

@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -61,6 +62,11 @@ public class PlayerEvents implements Listener {
     if (cause != EntityDamageEvent.DamageCause.VOID) {
       event.setCancelled(true);
     }
+  }
+
+  @EventHandler
+  public void onPlayerDeath(PlayerDeathEvent event) {
+    event.setDeathMessage(null);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)

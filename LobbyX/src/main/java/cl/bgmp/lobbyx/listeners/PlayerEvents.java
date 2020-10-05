@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
@@ -59,14 +58,9 @@ public class PlayerEvents implements Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void onEntityDamage(EntityDamageEvent event) {
     EntityDamageEvent.DamageCause cause = event.getCause();
-    if (cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+    if (cause != EntityDamageEvent.DamageCause.VOID) {
       event.setCancelled(true);
     }
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR)
-  public void onEntityDamagedByBlock(EntityDamageByBlockEvent event) {
-    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)

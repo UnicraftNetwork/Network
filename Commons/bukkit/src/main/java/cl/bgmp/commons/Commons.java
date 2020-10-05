@@ -4,6 +4,7 @@ import cl.bgmp.bukkit.util.BukkitCommandsManager;
 import cl.bgmp.bukkit.util.CommandsManagerRegistration;
 import cl.bgmp.butils.bungee.Bungee;
 import cl.bgmp.commons.commands.CommonsCommand;
+import cl.bgmp.commons.commands.FlyCommand;
 import cl.bgmp.commons.commands.RestartCommand;
 import cl.bgmp.commons.injection.CommonsModule;
 import cl.bgmp.commons.modules.ChatFormatModule;
@@ -101,6 +102,7 @@ public final class Commons extends JavaPlugin {
   private void registerCommands() {
     this.registerCommand(CommonsCommand.class, this, this.moduleManager, this.translations);
     this.registerCommand(RestartCommand.class, this.moduleManager, this.translations);
+    this.registerCommand(FlyCommand.class);
   }
 
   public void registerEvent(Listener listener) {

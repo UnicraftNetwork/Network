@@ -64,6 +64,11 @@ public interface Config {
 
   List<String> getTips();
 
+  /** Chat censor */
+  boolean isChatCensored();
+
+  String getChatCensorExemptPermission();
+
   static ItemStack parseItem(ConfigurationSection section) {
     String material = section.getString("material");
     String title = section.getString("title");

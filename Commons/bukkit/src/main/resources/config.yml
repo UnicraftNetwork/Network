@@ -16,6 +16,9 @@ navigator:
           - ""
           - "hi"
 chat:
+  censored:
+    enabled: false
+    exempt-permission: "commons.censorship.bypass"
   vault-formatting:
     enabled: true
     format: "<{prefix}{name}&r{suffix}> {message}"

@@ -16,7 +16,7 @@ public class FlyCommand {
       max = 0)
   @CommandPermissions("commons.fly")
   @CommandScopes("player")
-  public void fly(final CommandContext args, final CommandSender sender) {
+  public static void fly(final CommandContext args, final CommandSender sender) {
     Player player = (Player) sender;
     player.setAllowFlight(!player.getAllowFlight());
     player.sendMessage(

@@ -8,7 +8,8 @@ public enum ModuleId {
   WEATHER("weather-module"),
   JOINQUIT_MESSAGES("joinquit-messages-module"),
   RESTART("restart-module"),
-  TIPS("tips-module");
+  TIPS("tips-module"),
+  CHAT_CENSOR("chat-censor");
 
   private String toString;
 

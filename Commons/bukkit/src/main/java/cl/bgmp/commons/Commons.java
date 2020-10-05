@@ -7,6 +7,7 @@ import cl.bgmp.commons.commands.CommonsCommand;
 import cl.bgmp.commons.commands.FlyCommand;
 import cl.bgmp.commons.commands.RestartCommand;
 import cl.bgmp.commons.injection.CommonsModule;
+import cl.bgmp.commons.modules.ChatCensorModule;
 import cl.bgmp.commons.modules.ChatFormatModule;
 import cl.bgmp.commons.modules.ForceGamemodeModule;
 import cl.bgmp.commons.modules.JoinQuitMessageModule;
@@ -63,6 +64,7 @@ public final class Commons extends JavaPlugin {
   @Inject private RestartModule restartModule;
   @Inject private TipsModule tipsModule;
   @Inject private NavigatorModule navigatorModule;
+  @Inject private ChatCensorModule chatCensorModule;
 
   @Override
   public void onEnable() {
@@ -83,6 +85,7 @@ public final class Commons extends JavaPlugin {
     this.moduleManager.registerModule(this.restartModule);
     this.moduleManager.registerModule(this.tipsModule);
     this.moduleManager.registerModule(this.navigatorModule);
+    this.moduleManager.registerModule(this.chatCensorModule);
     this.moduleManager.loadModules();
 
     this.registerCommands();

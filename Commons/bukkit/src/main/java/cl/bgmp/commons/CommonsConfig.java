@@ -42,6 +42,9 @@ public class CommonsConfig implements Config {
   private String tipsPrefix;
   private List<String> tips;
 
+  private boolean isChatCensored;
+  private String censorExemptPermission;
+
   public CommonsConfig(FileConfiguration config, File datafolder) {
     this.config = config;
     this.datafolder = datafolder;
@@ -78,6 +81,9 @@ public class CommonsConfig implements Config {
     this.tipsInterval = this.config.getString("tips.interval");
     this.tipsPrefix = this.config.getString("tips.prefix");
     this.tips = this.config.getStringList("tips.messages");
+
+    this.isChatCensored = this.config.getBoolean("chat.censored.enabled");
+    this.censorExemptPermission = this.config.getString("chat.censored.exempt-permission");
   }
 
   @Override
@@ -193,5 +199,15 @@ public class CommonsConfig implements Config {
   @Override
   public List<String> getTips() {
     return tips;
+  }
+
+  @Override
+  public boolean isChatCensored() {
+    return isChatCensored;
+  }
+
+  @Override
+  public String getChatCensorExemptPermission() {
+    return censorExemptPermission;
   }
 }

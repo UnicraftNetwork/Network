@@ -1,7 +1,7 @@
 Network [![deploy](https://github.com/ElMedievo-UdeC/Network/workflows/build/badge.svg)](https://github.com/ElMedievo-UdeC/Network/runs/632186694) [![Crowdin](https://badges.crowdin.net/elmedievo/localized.svg)](https://crowdin.com/project/elmedievo)
 ===
 
-Minecraft plugins used by the UdeC Craft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
+Minecraft plugins used by the Unicraft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
 
 ## Modules
 * **Commons** ➔ From commands to features that should/could be present on the different servers of the network.

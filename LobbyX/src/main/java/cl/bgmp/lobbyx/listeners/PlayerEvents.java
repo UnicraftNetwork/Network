@@ -3,6 +3,7 @@ package cl.bgmp.lobbyx.listeners;
 import cl.bgmp.lobbyx.Config;
 import com.google.inject.Inject;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,9 +12,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerEvents implements Listener {
@@ -46,14 +50,46 @@ public class PlayerEvents implements Listener {
     event.setCancelled(true);
   }
 
-  @EventHandler(priority = EventPriority.MONITOR)
-  public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onPlayerDamage(EntityDamageByEntityEvent event) {
     final Entity attacker = event.getDamager();
     final Entity damaged = event.getEntity();
     if (attacker instanceof Player || damaged instanceof Player) {
       if (attacker.hasPermission(config.getBypassPerm())) return;
       event.setCancelled(true);
     }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onPlayerAttackEntity(EntityDamageByEntityEvent event) {
+    final Entity attacker = event.getDamager();
+    if (attacker instanceof Player) {
+      final Player player = (Player) attacker;
+      if (player.hasPermission(config.getBypassPerm())) return;
+
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
+    event.setCancelled(true);
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onPlayerInteractItemFrames(PlayerInteractEntityEvent event) {
+    final Entity entity = event.getRightClicked();
+    if (!(entity instanceof ItemFrame)) return;
+
+    final Player player = event.getPlayer();
+    if (player.hasPermission(config.getBypassPerm())) return;
+
+    event.setCancelled(true);
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void onFoodLevelChange(FoodLevelChangeEvent event) {
+    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)

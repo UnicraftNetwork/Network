@@ -73,6 +73,12 @@ public class PlayerEvents implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
+    final Entity remover = event.getRemover();
+    if (remover instanceof Player) {
+      final Player player = (Player) remover;
+      if (player.hasPermission(config.getBypassPerm())) return;
+    }
+
     event.setCancelled(true);
   }
 

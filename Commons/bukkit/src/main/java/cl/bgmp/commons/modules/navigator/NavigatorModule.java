@@ -15,7 +15,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class NavigatorModule extends Module {
 
@@ -29,7 +30,7 @@ public class NavigatorModule extends Module {
    * @param itemStack The item to compare to navigator's item
    * @return Whether or not the two items are equal
    */
-  private boolean itemIsNavigator(final @NotNull ItemStack itemStack) {
+  private boolean itemIsNavigator(final @Nonnull ItemStack itemStack) {
     if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
 
     if (itemStack.getItemMeta() instanceof SkullMeta) {

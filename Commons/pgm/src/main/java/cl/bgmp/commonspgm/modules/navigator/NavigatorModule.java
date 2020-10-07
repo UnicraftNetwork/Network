@@ -15,6 +15,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import tc.oc.pgm.spawns.events.ObserverKitApplyEvent;
 
+import javax.annotation.Nonnull;
+
 public class NavigatorModule extends Module {
 
   public NavigatorModule() {
@@ -27,7 +29,7 @@ public class NavigatorModule extends Module {
    * @param itemStack The item to compare to navigator's item
    * @return Whether or not the two items are equal
    */
-  private boolean itemIsNavigator(final ItemStack itemStack) {
+  private boolean itemIsNavigator(final @Nonnull ItemStack itemStack) {
     if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
 
     if (itemStack.getItemMeta() instanceof SkullMeta) {

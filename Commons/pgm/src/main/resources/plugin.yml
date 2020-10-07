@@ -1,0 +1,8 @@
+name: Commons-Legacy
+version: ${project.version}
+main: cl.bgmp.commonspgm.CommonsPGM
+authors: [BGMP]
+description: A legacy version of Unicraft Network's Commons plugin, which extends support for SportPaper
+website: https://udecesports.com/
+depend: [PGM]
+softdepend: [Vault, CommandBook]

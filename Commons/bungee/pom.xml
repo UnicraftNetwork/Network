@@ -50,6 +50,12 @@
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>cl.bgmp</groupId>
+            <artifactId>BUtils</artifactId>
+            <version>1.0.5.pre-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

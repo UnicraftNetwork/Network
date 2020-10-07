@@ -10,36 +10,48 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Commons-Bukkit</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>Commons-PGM</artifactId>
     <packaging>jar</packaging>
 
-    <name>Commons-Bukkit</name>
+    <name>Commons-PGM</name>
+
+    <description>A legacy version of Unicraft Network's Commons plugin</description>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <url>https://unicraft.cl/</url>
 
     <repositories>
         <repository>
-            <id>destroystokyo-repo</id>
-            <url>https://repo.destroystokyo.com/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>bgm</id>
-            <url>https://maven.bgmp.cl/repo/</url>
-        </repository>
-        <repository>
-            <id>spigot-vault-api</id>
-            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+            <url>https://maven.bgmp.cl/</url>
         </repository>
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>ashcon.app</id>
+            <url>https://repo.ashcon.app/content/repositories/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <groupId>app.ashcon</groupId>
+            <artifactId>sportpaper</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>tc.oc.pgm</groupId>
+            <artifactId>core</artifactId>
+            <version>0.8-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

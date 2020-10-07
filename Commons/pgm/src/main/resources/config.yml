@@ -1,0 +1,26 @@
+lobby: "Lobby"
+navigator:
+  enabled: true
+  head: "xOSPREYx"
+  title: "&2&lAvailable Servers"
+  size: 27
+  slot: 7
+  servers:
+    13:
+      name: Local
+      ip: localhost
+      port: 25565
+      item:
+        material: GRASS                               # Reminder to use 1.8 Bukkit material strings
+        title: "&b&lElMedievo"
+        lore:
+          - ""
+          - "hi"
+tips:
+  enabled: true
+  interval: 7m
+  prefix: "&7[&b&oTip&7] "
+  messages:
+    - "&7Visita nuestra web oficial: &bhttps://udecesports.com/"
+    - "&7Síguenos en nuestro instagram &b@teamudecesports"
+    - "&7¿Quieres ayudar al servidor? Adquiere un rango VIP en &bhttps://udecesports.com/shop"

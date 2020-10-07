@@ -18,6 +18,7 @@
     <modules>
         <module>bukkit</module>
         <module>bungee</module>
+        <module>pgm</module>
     </modules>
 
     <build>

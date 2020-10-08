@@ -8,6 +8,8 @@ import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -22,13 +24,8 @@ public class ServersCommand {
       aliases = {"servers"},
       desc = "List all available servers.",
       max = 0)
+  @CommandScopes("player")
   public static void servers(final CommandContext args, CommandSender sender) {
-    if (!(sender instanceof ProxiedPlayer)) {
-      sender.sendMessage(
-          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
-      return;
-    }
-
     final ProxiedPlayer player = (ProxiedPlayer) sender;
     final Map<String, ServerInfo> servers = ProxyServer.getInstance().getServers();
 

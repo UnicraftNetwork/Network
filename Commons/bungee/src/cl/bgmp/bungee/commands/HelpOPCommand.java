@@ -8,6 +8,7 @@ import cl.bgmp.bungee.Util;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
+import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,13 +21,8 @@ public class HelpOPCommand {
       usage = "<msg>",
       min = 1)
   @CommandPermissions("commons.bungee.command.helpop")
+  @CommandScopes("player")
   public static void helpop(final CommandContext args, CommandSender sender) {
-    if (!(sender instanceof ProxiedPlayer)) {
-      sender.sendMessage(
-          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
-      return;
-    }
-
     final ProxiedPlayer player = (ProxiedPlayer) sender;
     final String message = args.getJoinedStrings(0);
 

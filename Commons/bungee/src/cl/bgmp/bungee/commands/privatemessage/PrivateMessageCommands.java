@@ -6,6 +6,7 @@ import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
+import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -17,13 +18,8 @@ public class PrivateMessageCommands {
       usage = "<player> <msg>",
       min = 2)
   @CommandPermissions("commons.bungee.command.message")
+  @CommandScopes("player")
   public static void message(final CommandContext args, CommandSender sender) {
-    if (!(sender instanceof ProxiedPlayer)) {
-      sender.sendMessage(
-          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
-      return;
-    }
-
     final ProxiedPlayer msgReceiver = CommonsBungee.get().getProxy().getPlayer(args.getString(0));
     if (msgReceiver == null) {
       sender.sendMessage(
@@ -45,13 +41,8 @@ public class PrivateMessageCommands {
       usage = "<msg>",
       min = 1)
   @CommandPermissions("commons.bungee.command.reply")
+  @CommandScopes("player")
   public static void reply(final CommandContext args, CommandSender sender) {
-    if (!(sender instanceof ProxiedPlayer)) {
-      sender.sendMessage(
-          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
-      return;
-    }
-
     PrivateMessagesManager.sendReply((ProxiedPlayer) sender, args.getJoinedStrings(0));
   }
 }

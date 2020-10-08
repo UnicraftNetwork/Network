@@ -15,6 +15,7 @@ import cl.bgmp.bungee.commands.channelcommands.StaffChannelCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
 import cl.bgmp.bungee.listeners.PlayerEvents;
+import cl.bgmp.bungee.translations.AllTranslations;
 import cl.bgmp.bungee.util.BungeeCommandsManager;
 import cl.bgmp.bungee.util.CommandExecutor;
 import cl.bgmp.bungee.util.CommandRegistration;
@@ -22,7 +23,10 @@ import cl.bgmp.minecraft.util.commands.exceptions.CommandException;
 import cl.bgmp.minecraft.util.commands.exceptions.CommandPermissionsException;
 import cl.bgmp.minecraft.util.commands.exceptions.CommandUsageException;
 import cl.bgmp.minecraft.util.commands.exceptions.MissingNestedCommandException;
+import cl.bgmp.minecraft.util.commands.exceptions.ScopeMismatchException;
 import cl.bgmp.minecraft.util.commands.exceptions.WrappedCommandException;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import net.md_5.bungee.api.ChatColor;
@@ -31,11 +35,14 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class CommonsBungee extends Plugin implements CommandExecutor<CommandSender> {
-  private static CommonsBungee commonsBungee;
-  private BungeeCommandsManager commands;
-  private CommandRegistration registrar;
+  private BungeeCommandsManager commandsManager = new BungeeCommandsManager();
+
+  private AllTranslations translations;
   private NetworkInfoProvider networkInfoProvider;
   private ChannelsManager channelsManager;
+
+  private static CommonsBungee commonsBungee;
+  private CommandRegistration registrar;
 
   public static CommonsBungee get() {
     return commonsBungee;
@@ -50,9 +57,41 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   }
 
   @Override
+  public void onEnable() {
+    commonsBungee = this;
+
+    commandsManager = new BungeeCommandsManager();
+    registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commandsManager, this);
+
+    PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
+    networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
+    channelsManager =
+            new ChannelsManager(
+                    new StaffChannel(), new EveryoneChannel(), new ECChannel(), new RefChannel());
+
+    registerCommands(
+            HelpOPCommand.class,
+            LobbyCommand.class,
+            PrivateMessageCommands.class,
+            ServersCommand.class,
+            EveryoneChannelCommand.class,
+            StaffChannelCommand.class,
+            EventCoordChannelCommand.class,
+            RefereeChannelCommand.class);
+    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
+  }
+
+  @Override
   public void onCommand(CommandSender sender, String commandName, String[] args) {
     try {
-      this.commands.execute(commandName, args, sender, sender);
+      this.commandsManager.execute(commandName, args, sender, sender);
+    } catch (ScopeMismatchException exception) {
+      String[] scopes = exception.getScopes();
+      if (!Arrays.asList(scopes).contains("player")) {
+        sender.sendMessage(ChatColor.RED + "You must execute this command via server console!");
+      } else {
+        sender.sendMessage(ChatColor.RED + "You must be a player to execute this command!");
+      }
     } catch (CommandPermissionsException e) {
       sender.sendMessage(
           new ComponentWrapper(ChatConstant.NO_PERMISSION.getAsString())
@@ -77,31 +116,6 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     } catch (CommandException e) {
       sender.sendMessage(new ComponentWrapper(e.getMessage()).color(ChatColor.RED).build());
     }
-  }
-
-  @Override
-  public void onEnable() {
-    commonsBungee = this;
-
-    commands = new BungeeCommandsManager();
-    registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commands, this);
-
-    PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
-    networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
-    channelsManager =
-        new ChannelsManager(
-            new StaffChannel(), new EveryoneChannel(), new ECChannel(), new RefChannel());
-
-    registerCommands(
-        HelpOPCommand.class,
-        LobbyCommand.class,
-        PrivateMessageCommands.class,
-        ServersCommand.class,
-        EveryoneChannelCommand.class,
-        StaffChannelCommand.class,
-        EventCoordChannelCommand.class,
-        RefereeChannelCommand.class);
-    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
   }
 
   private void registerCommands(Class<?>... commandClasses) {

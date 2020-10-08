@@ -9,6 +9,7 @@ import cl.bgmp.bungee.channels.ChannelsManager;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
+import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -22,13 +23,8 @@ public class RefereeChannelCommand {
       help =
           "Use alone to set your chat mode to referee. More arguments will just send the message through this channel.")
   @CommandPermissions("commons.bungee.command.referee")
+  @CommandScopes("player")
   public static void referee(CommandContext args, CommandSender sender) {
-    if (!(sender instanceof ProxiedPlayer)) {
-      sender.sendMessage(
-          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
-      return;
-    }
-
     final Channel globalChannel =
         CommonsBungee.get().getChannelsManager().getChannelByName(ChannelName.EVERYONE);
 

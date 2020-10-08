@@ -3,6 +3,7 @@ package cl.bgmp.commons.modules.navigator;
 import cl.bgmp.butils.items.PlayerHeadBuilder;
 import cl.bgmp.commons.modules.Module;
 import cl.bgmp.commons.modules.ModuleId;
+import javax.annotation.Nonnull;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,8 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import javax.annotation.Nonnull;
 
 public class NavigatorModule extends Module {
 

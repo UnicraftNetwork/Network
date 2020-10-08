@@ -2,7 +2,7 @@ package cl.bgmp.bungee.listeners;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.FlashComponent;
+import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.bungee.Util;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
@@ -30,7 +30,7 @@ public class PlayerEvents implements Listener {
 
     if (from == null) {
       prefix =
-          new FlashComponent("[")
+          new ComponentWrapper("[")
               .color(ChatColor.WHITE)
               .append(Util.resolveServerName(to))
               .append("] ")
@@ -39,7 +39,7 @@ public class PlayerEvents implements Listener {
       action = ChatConstant.JOINED_THE_GAME.getAsString();
     } else {
       prefix =
-          new FlashComponent("[")
+          new ComponentWrapper("[")
               .color(ChatColor.WHITE)
               .append(Util.resolveServerName(from))
               .append(" ")
@@ -53,7 +53,7 @@ public class PlayerEvents implements Listener {
     }
 
     player.sendMessage(
-        new FlashComponent()
+        new ComponentWrapper()
             .append(prefix)
             .append(player.getDisplayName())
             .color(ChatColor.DARK_AQUA)
@@ -69,7 +69,7 @@ public class PlayerEvents implements Listener {
   public void onPlayerDisconnect(PlayerDisconnectEvent event) {
     ProxiedPlayer player = event.getPlayer();
     player.sendMessage(
-        new FlashComponent("[")
+        new ComponentWrapper("[")
             .color(ChatColor.WHITE)
             .append(
                 Util.resolveServerName(player.getServer())
@@ -107,6 +107,6 @@ public class PlayerEvents implements Listener {
     event.setCancelServer(to);
 
     player.sendMessage(
-        new FlashComponent(ChatConstant.SERVER_KICK.getAsString()).color(ChatColor.RED).build());
+        new ComponentWrapper(ChatConstant.SERVER_KICK.getAsString()).color(ChatColor.RED).build());
   }
 }

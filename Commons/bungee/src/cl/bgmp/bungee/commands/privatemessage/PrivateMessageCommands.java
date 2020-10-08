@@ -2,7 +2,7 @@ package cl.bgmp.bungee.commands.privatemessage;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.FlashComponent;
+import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
@@ -20,14 +20,14 @@ public class PrivateMessageCommands {
   public static void message(final CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
-          new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
+          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
       return;
     }
 
     final ProxiedPlayer msgReceiver = CommonsBungee.get().getProxy().getPlayer(args.getString(0));
     if (msgReceiver == null) {
       sender.sendMessage(
-          new FlashComponent(ChatConstant.PLAYER_NOT_FOUND.getAsString())
+          new ComponentWrapper(ChatConstant.PLAYER_NOT_FOUND.getAsString())
               .color(ChatColor.RED)
               .build());
       return;
@@ -48,7 +48,7 @@ public class PrivateMessageCommands {
   public static void reply(final CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
-          new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
+          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
       return;
     }
 

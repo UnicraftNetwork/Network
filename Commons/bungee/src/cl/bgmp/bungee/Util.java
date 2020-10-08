@@ -21,12 +21,12 @@ public class Util {
    * @return formatted, colourful nickname if both target & enquirer share servers at that moment,
    *     or dark aqua colour nickname if not.
    */
-  public static FlashComponent resolveProxiedPlayerNick(
+  public static ComponentWrapper resolveProxiedPlayerNick(
       ProxiedPlayer target /* ProxiedPlayer enquirer */) {
     // final Server targetServer = target.getServer();
     // final Server enquirerServer = enquirer.getServer();
 
-    return new FlashComponent(target.getName()).color(ChatColor.DARK_AQUA);
+    return new ComponentWrapper(target.getName()).color(ChatColor.DARK_AQUA);
 
     /* FIXME: This below requires a reliable method to set the user's nickname colours and such. Commenting until that's worked out.
     if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName())) {
@@ -35,11 +35,11 @@ public class Util {
     */
   }
 
-  public static FlashComponent resolveServerName(final Server server) {
-    FlashComponent serverName;
+  public static ComponentWrapper resolveServerName(final Server server) {
+    ComponentWrapper serverName;
     serverName =
         server == null
-            ? new FlashComponent("Unknown").color(ChatColor.GOLD)
+            ? new ComponentWrapper("Unknown").color(ChatColor.GOLD)
             : resolveServerName(server.getInfo());
     return serverName;
   }
@@ -51,11 +51,11 @@ public class Util {
    * @param serverInfo The server with the name to be resolved
    * @return The server name "Server" with hover and click events applied
    */
-  public static FlashComponent resolveServerName(final @NotNull ServerInfo serverInfo) {
-    return new FlashComponent(serverInfo.getName())
+  public static ComponentWrapper resolveServerName(final @NotNull ServerInfo serverInfo) {
+    return new ComponentWrapper(serverInfo.getName())
         .color(ChatColor.GOLD)
         .hoverText(
-            new FlashComponent("[")
+            new ComponentWrapper("[")
                 .color(ChatColor.WHITE)
                 .append(serverInfo.getName())
                 .color(ChatColor.GOLD)

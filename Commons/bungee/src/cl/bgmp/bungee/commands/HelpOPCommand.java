@@ -2,7 +2,7 @@ package cl.bgmp.bungee.commands;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.FlashComponent;
+import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.bungee.Permission;
 import cl.bgmp.bungee.Util;
 import cl.bgmp.minecraft.util.commands.CommandContext;
@@ -23,7 +23,7 @@ public class HelpOPCommand {
   public static void helpop(final CommandContext args, CommandSender sender) {
     if (!(sender instanceof ProxiedPlayer)) {
       sender.sendMessage(
-          new FlashComponent(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
+          new ComponentWrapper(ChatConstant.NO_CONSOLE.getAsString()).color(ChatColor.RED).build());
       return;
     }
 
@@ -39,7 +39,7 @@ public class HelpOPCommand {
             .getName()
             .equals(player.getServer().getInfo().getName())) {
           onlinePlayer.sendMessage(
-              new FlashComponent(ChatConstant.HELPOP_PREFIX.getAsString())
+              new ComponentWrapper(ChatConstant.HELPOP_PREFIX.getAsString())
                   .append("[")
                   .color(ChatColor.WHITE)
                   .append(Util.resolveServerName(player.getServer()))
@@ -55,7 +55,7 @@ public class HelpOPCommand {
                   .build());
         } else {
           onlinePlayer.sendMessage(
-              new FlashComponent(ChatConstant.HELPOP_PREFIX.getAsString())
+              new ComponentWrapper(ChatConstant.HELPOP_PREFIX.getAsString())
                   .append(Util.resolveProxiedPlayerNick(player))
                   .append(" ")
                   .append(ChatConstant.ARROW.getAsString())
@@ -69,6 +69,6 @@ public class HelpOPCommand {
     }
 
     player.sendMessage(
-        new FlashComponent(ChatConstant.HELPOP_SENT.getAsString()).color(ChatColor.GREEN).build());
+        new ComponentWrapper(ChatConstant.HELPOP_SENT.getAsString()).color(ChatColor.GREEN).build());
   }
 }

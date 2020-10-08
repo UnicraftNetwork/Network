@@ -55,27 +55,27 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
       this.commands.execute(commandName, args, sender, sender);
     } catch (CommandPermissionsException e) {
       sender.sendMessage(
-          new FlashComponent(ChatConstant.NO_PERMISSION.getAsString())
+          new ComponentWrapper(ChatConstant.NO_PERMISSION.getAsString())
               .color(ChatColor.RED)
               .build());
     } catch (MissingNestedCommandException e) {
-      sender.sendMessage(new FlashComponent(e.getUsage()).color(ChatColor.RED).build());
+      sender.sendMessage(new ComponentWrapper(e.getUsage()).color(ChatColor.RED).build());
     } catch (CommandUsageException e) {
-      sender.sendMessage(new FlashComponent(e.getMessage()).color(ChatColor.RED).build());
-      sender.sendMessage(new FlashComponent(e.getUsage()).color(ChatColor.RED).build());
+      sender.sendMessage(new ComponentWrapper(e.getMessage()).color(ChatColor.RED).build());
+      sender.sendMessage(new ComponentWrapper(e.getUsage()).color(ChatColor.RED).build());
     } catch (WrappedCommandException e) {
       if (e.getCause() instanceof NumberFormatException) {
         sender.sendMessage(
-            new FlashComponent(ChatConstant.NUMBER_STRING_EXCEPTION.getAsString())
+            new ComponentWrapper(ChatConstant.NUMBER_STRING_EXCEPTION.getAsString())
                 .color(ChatColor.RED)
                 .build());
       } else {
         sender.sendMessage(
-            new FlashComponent(ChatConstant.ERROR.getAsString()).color(ChatColor.RED).build());
+            new ComponentWrapper(ChatConstant.ERROR.getAsString()).color(ChatColor.RED).build());
         e.printStackTrace();
       }
     } catch (CommandException e) {
-      sender.sendMessage(new FlashComponent(e.getMessage()).color(ChatColor.RED).build());
+      sender.sendMessage(new ComponentWrapper(e.getMessage()).color(ChatColor.RED).build());
     }
   }
 

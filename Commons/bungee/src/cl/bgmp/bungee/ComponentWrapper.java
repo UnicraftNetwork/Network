@@ -18,21 +18,21 @@ import net.md_5.bungee.api.chat.TextComponent;
  *
  * @author https://gist.github.com/BGMP/8e7e9af9654e0d7119290e3fb5869d46
  */
-public class FlashComponent {
+public class ComponentWrapper {
   private TextComponent init;
   private List<BaseComponent> queue = new ArrayList<>();
 
-  public FlashComponent() {
+  public ComponentWrapper() {
     this.init = new TextComponent();
     queue.add(init);
   }
 
-  public FlashComponent(String initialText) {
+  public ComponentWrapper(String initialText) {
     this.init = new TextComponent(initialText);
     queue.add(init);
   }
 
-  public FlashComponent(TextComponent initialText) {
+  public ComponentWrapper(TextComponent initialText) {
     this.init = initialText;
     queue.add(init);
   }
@@ -41,69 +41,69 @@ public class FlashComponent {
     return ImmutableList.copyOf(queue);
   }
 
-  public FlashComponent color(ChatColor color) {
+  public ComponentWrapper color(ChatColor color) {
     getHeadFlash().setColor(color);
     return this;
   }
 
-  public FlashComponent bold(boolean bold) {
+  public ComponentWrapper bold(boolean bold) {
     getHeadFlash().setBold(bold);
     return this;
   }
 
-  public FlashComponent italic(boolean italic) {
+  public ComponentWrapper italic(boolean italic) {
     getHeadFlash().setItalic(italic);
     return this;
   }
 
-  public FlashComponent strike(boolean strike) {
+  public ComponentWrapper strike(boolean strike) {
     getHeadFlash().setStrikethrough(strike);
     return this;
   }
 
-  public FlashComponent magic(boolean magic) {
+  public ComponentWrapper magic(boolean magic) {
     getHeadFlash().setObfuscated(magic);
     return this;
   }
 
-  public FlashComponent underline(boolean underline) {
+  public ComponentWrapper underline(boolean underline) {
     getHeadFlash().setUnderlined(underline);
     return this;
   }
 
-  public FlashComponent hoverText(String text) {
+  public ComponentWrapper hoverText(String text) {
     getHeadFlash()
         .setHoverEvent(
             new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(text).create()));
     return this;
   }
 
-  public FlashComponent hoverText(BaseComponent... component) {
+  public ComponentWrapper hoverText(BaseComponent... component) {
     getHeadFlash().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, component));
     return this;
   }
 
-  public FlashComponent clickCommand(String command) {
+  public ComponentWrapper clickCommand(String command) {
     getHeadFlash().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + command));
     return this;
   }
 
-  public FlashComponent append(FlashComponent flashComponent) {
-    queue.addAll(flashComponent.getQueue());
+  public ComponentWrapper append(ComponentWrapper componentWrapper) {
+    queue.addAll(componentWrapper.getQueue());
     return this;
   }
 
-  public FlashComponent append(BaseComponent... baseComponents) {
+  public ComponentWrapper append(BaseComponent... baseComponents) {
     queue.addAll(Arrays.asList(baseComponents));
     return this;
   }
 
-  public FlashComponent append(String string) {
+  public ComponentWrapper append(String string) {
     queue.add(new TextComponent(string));
     return this;
   }
 
-  public FlashComponent append(TextComponent textComponent) {
+  public ComponentWrapper append(TextComponent textComponent) {
     queue.add(textComponent);
     return this;
   }

@@ -2,7 +2,7 @@ package cl.bgmp.bungee.channels;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.FlashComponent;
+import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -62,7 +62,7 @@ public final class ChannelsManager implements Listener {
     if (args.argsLength() == 0) {
       if (channel.isEnabledFor(player)) {
         player.sendMessage(
-            new FlashComponent(ChatConstant.CHAT_ALREADY_SET_TO.getAsString())
+            new ComponentWrapper(ChatConstant.CHAT_ALREADY_SET_TO.getAsString())
                 .color(ChatColor.WHITE)
                 .append(channel.getName().getLiteral())
                 .color(ChatColor.GOLD)
@@ -70,7 +70,7 @@ public final class ChannelsManager implements Listener {
       } else {
         CommonsBungee.get().getChannelsManager().switchChannelFor(player, channel);
         player.sendMessage(
-            new FlashComponent(ChatConstant.CHAT_MODE_SWITCH.getAsString())
+            new ComponentWrapper(ChatConstant.CHAT_MODE_SWITCH.getAsString())
                 .color(ChatColor.WHITE)
                 .append(channel.getName().getLiteral())
                 .color(ChatColor.GOLD)
@@ -82,7 +82,7 @@ public final class ChannelsManager implements Listener {
       else {
         CommonsBungee.get().getChannelsManager().switchChannelFor(player, global);
         player.sendMessage(
-            new FlashComponent(ChatConstant.CHAT_MODE_SWITCH.getAsString())
+            new ComponentWrapper(ChatConstant.CHAT_MODE_SWITCH.getAsString())
                 .color(ChatColor.WHITE)
                 .append(global.getName().getLiteral())
                 .color(ChatColor.GREEN)

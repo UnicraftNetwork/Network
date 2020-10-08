@@ -65,6 +65,8 @@ public class HelpOPCommand {
     }
 
     player.sendMessage(
-        new ComponentWrapper(ChatConstant.HELPOP_SENT.getAsString()).color(ChatColor.GREEN).build());
+        new ComponentWrapper(ChatConstant.HELPOP_SENT.getAsString())
+            .color(ChatColor.GREEN)
+            .build());
   }
 }

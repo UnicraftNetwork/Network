@@ -4,7 +4,6 @@ import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.minecraft.util.commands.CommandContext;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import net.md_5.bungee.api.ChatColor;
@@ -20,11 +19,14 @@ import org.jetbrains.annotations.NotNull;
  * Represents a manager for all {@link Channel}s, handling the players using them, commands, etc.
  */
 public final class ChannelsManager implements Listener {
-  private Set<Channel> channels;
+  private Set<Channel> channels = new HashSet<>();
 
-  public ChannelsManager(Channel... channels) {
-    this.channels = new HashSet<>(Arrays.asList(channels));
+  public ChannelsManager() {
     CommonsBungee.get().registerEvents(this);
+  }
+
+  public void registerChannel(Channel channel) {
+    this.channels.add(channel);
   }
 
   /**

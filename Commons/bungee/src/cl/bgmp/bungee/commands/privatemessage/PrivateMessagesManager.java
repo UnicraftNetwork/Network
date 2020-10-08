@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 // TODO: Sounds
 public class PrivateMessagesManager implements Listener {
-  public static HashMap<String, String> privateMessagesReplyRelations;
+  public static HashMap<String, String> privateMessagesReplyRelations = new HashMap<>();
 
   public static HashMap<String, String> getReplyRelations() {
     return privateMessagesReplyRelations;
@@ -46,7 +46,9 @@ public class PrivateMessagesManager implements Listener {
     sender.sendMessage(
         new ComponentWrapper(ChatConstant.MSG_PREFIX_TO.getAsString()).append(toMessage).build());
     receiver.sendMessage(
-        new ComponentWrapper(ChatConstant.MSG_PREFIX_FROM.getAsString()).append(fromMessage).build());
+        new ComponentWrapper(ChatConstant.MSG_PREFIX_FROM.getAsString())
+            .append(fromMessage)
+            .build());
   }
 
   public static void sendReply(@NotNull final ProxiedPlayer sender, @NotNull String message) {

@@ -1,15 +1,12 @@
 package cl.bgmp.bungee.commands;
 
-import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.bungee.Util;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
+import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;

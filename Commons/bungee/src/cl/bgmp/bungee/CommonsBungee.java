@@ -25,24 +25,24 @@ import cl.bgmp.minecraft.util.commands.exceptions.CommandUsageException;
 import cl.bgmp.minecraft.util.commands.exceptions.MissingNestedCommandException;
 import cl.bgmp.minecraft.util.commands.exceptions.ScopeMismatchException;
 import cl.bgmp.minecraft.util.commands.exceptions.WrappedCommandException;
-
+import cl.bgmp.minecraft.util.commands.injection.SimpleInjector;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
 
 public class CommonsBungee extends Plugin implements CommandExecutor<CommandSender> {
-  private BungeeCommandsManager commandsManager = new BungeeCommandsManager();
+  private BungeeCommandsManager commandsManager;
+  private CommandRegistration commandRegistration;
 
   private AllTranslations translations;
   private NetworkInfoProvider networkInfoProvider;
   private ChannelsManager channelsManager;
 
   private static CommonsBungee commonsBungee;
-  private CommandRegistration registrar;
 
   public static CommonsBungee get() {
     return commonsBungee;
@@ -59,26 +59,53 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   @Override
   public void onEnable() {
     commonsBungee = this;
+    final PluginManager pm = this.getProxy().getPluginManager();
 
-    commandsManager = new BungeeCommandsManager();
-    registrar = new CommandRegistration(this, this.getProxy().getPluginManager(), commandsManager, this);
+    this.commandsManager = new BungeeCommandsManager();
+    this.commandRegistration = new CommandRegistration(this, pm, commandsManager, this);
 
-    PrivateMessagesManager.privateMessagesReplyRelations = new HashMap<>();
-    networkInfoProvider = new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
-    channelsManager =
-            new ChannelsManager(
-                    new StaffChannel(), new EveryoneChannel(), new ECChannel(), new RefChannel());
+    this.networkInfoProvider =
+        new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
 
-    registerCommands(
-            HelpOPCommand.class,
-            LobbyCommand.class,
-            PrivateMessageCommands.class,
-            ServersCommand.class,
-            EveryoneChannelCommand.class,
-            StaffChannelCommand.class,
-            EventCoordChannelCommand.class,
-            RefereeChannelCommand.class);
-    registerEvents(new PrivateMessagesManager(), new PlayerEvents());
+    this.channelsManager = new ChannelsManager();
+    this.channelsManager.registerChannel(new StaffChannel());
+    this.channelsManager.registerChannel(new EveryoneChannel());
+    this.channelsManager.registerChannel(new ECChannel());
+    this.channelsManager.registerChannel(new RefChannel());
+
+    this.registerCommands();
+    this.registerEvents(pm);
+  }
+
+  public void registerCommands() {
+    this.registerCommand(HelpOPCommand.class);
+    this.registerCommand(LobbyCommand.class);
+    this.registerCommand(PrivateMessageCommands.class);
+    this.registerCommand(ServersCommand.class);
+    this.registerCommand(EveryoneChannelCommand.class);
+    this.registerCommand(StaffChannelCommand.class);
+    this.registerCommand(EventCoordChannelCommand.class);
+    this.registerCommand(RefereeChannelCommand.class);
+  }
+
+  private void registerCommand(Class<?> clazz, Object... toInject) {
+    if (toInject.length > 0) {
+      this.commandsManager.setInjector(new SimpleInjector(toInject));
+    }
+
+    this.commandRegistration.register(clazz);
+  }
+
+  public void registerEvents(PluginManager pm) {
+    pm.registerListener(this, new PrivateMessagesManager());
+    pm.registerListener(this, new PlayerEvents());
+  }
+
+  // TODO: Remove
+  public void registerEvents(Listener... listeners) {
+    for (Listener listener : listeners) {
+      getProxy().getPluginManager().registerListener(this, listener);
+    }
   }
 
   @Override
@@ -88,9 +115,15 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     } catch (ScopeMismatchException exception) {
       String[] scopes = exception.getScopes();
       if (!Arrays.asList(scopes).contains("player")) {
-        sender.sendMessage(ChatColor.RED + "You must execute this command via server console!");
+        sender.sendMessage(
+            new ComponentWrapper("You must execute this command via server console!")
+                .color(ChatColor.RED)
+                .build());
       } else {
-        sender.sendMessage(ChatColor.RED + "You must be a player to execute this command!");
+        sender.sendMessage(
+            new ComponentWrapper("You must be a player to execute this command!")
+                .color(ChatColor.RED)
+                .build());
       }
     } catch (CommandPermissionsException e) {
       sender.sendMessage(
@@ -115,18 +148,6 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
       }
     } catch (CommandException e) {
       sender.sendMessage(new ComponentWrapper(e.getMessage()).color(ChatColor.RED).build());
-    }
-  }
-
-  private void registerCommands(Class<?>... commandClasses) {
-    for (Class<?> commandClass : commandClasses) {
-      registrar.register(commandClass);
-    }
-  }
-
-  public void registerEvents(Listener... listeners) {
-    for (Listener listener : listeners) {
-      getProxy().getPluginManager().registerListener(this, listener);
     }
   }
 }

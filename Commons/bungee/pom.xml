@@ -13,6 +13,11 @@
 
     <name>Commons-Bungee</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skipTests>true</skipTests>
+    </properties>
+
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
@@ -92,8 +97,10 @@
                             <artifactSet>
                                 <includes>
                                     <include>cl.bgmp:command-framework-bungee</include>
-                                    <include>org.jetbrains:annotations</include>
+                                    <include>cl.bgmp:BUtils</include>
                                     <include>com.google.inject:guice</include>
+                                    <include>javax.inject:javax.inject</include>
+                                    <include>aopalliance:aopalliance</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -102,9 +109,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skipTests>true</skipTests>
-    </properties>
 </project>

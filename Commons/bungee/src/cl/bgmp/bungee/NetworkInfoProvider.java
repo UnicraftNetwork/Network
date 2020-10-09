@@ -1,5 +1,6 @@
 package cl.bgmp.bungee;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -7,20 +8,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.md_5.bungee.api.config.ServerInfo;
 
 public class NetworkInfoProvider {
-  private Set<ServerInfo> servers;
+  private CommonsBungee commonsBungee;
+  private Collection<ServerInfo> servers;
   private Set<ServerDetails> serverDetails = new HashSet<>();
 
-  public NetworkInfoProvider(Set<ServerInfo> servers) {
-    this.servers = servers;
+  public NetworkInfoProvider(CommonsBungee commonsBungee) {
+    this.commonsBungee = commonsBungee;
+    this.servers = this.commonsBungee.getProxy().getServers().values();
 
     for (ServerInfo server : servers) {
       serverDetails.add(new ServerDetails(server, -1));
     }
 
-    CommonsBungee.get()
+    this.commonsBungee
         .getProxy()
         .getScheduler()
-        .schedule(CommonsBungee.get(), this::sync, 0L, 10L, TimeUnit.SECONDS);
+        .schedule(this.commonsBungee, this::sync, 0L, 10L, TimeUnit.SECONDS);
   }
 
   /**
@@ -49,11 +52,11 @@ public class NetworkInfoProvider {
           (serverPing, throwable) ->
               maxPlayers.set(serverPing == null ? -1 : serverPing.getPlayers().getMax()));
 
-      CommonsBungee.get()
+      this.commonsBungee
           .getProxy()
           .getScheduler()
           .schedule(
-              CommonsBungee.get(),
+              this.commonsBungee,
               () -> getServerDetailsByServer(server).setMaxPlayers(maxPlayers.get()),
               3L,
               TimeUnit.SECONDS);

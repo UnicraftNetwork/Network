@@ -1,5 +1,6 @@
 package cl.bgmp.bungee;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -9,9 +10,14 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
-import org.jetbrains.annotations.NotNull;
 
-public class Util {
+/** Resolves information based on network status */
+public class MultiResolver {
+  private final CommonsBungee commonsBungee;
+
+  public MultiResolver(CommonsBungee commonsBungee) {
+    this.commonsBungee = commonsBungee;
+  }
 
   /**
    * Resolves a player nickname throughout the Network.
@@ -21,7 +27,7 @@ public class Util {
    * @return formatted, colourful nickname if both target & enquirer share servers at that moment,
    *     or dark aqua colour nickname if not.
    */
-  public static ComponentWrapper resolveProxiedPlayerNick(
+  public ComponentWrapper resolveProxiedPlayerNick(
       ProxiedPlayer target /* ProxiedPlayer enquirer */) {
     // final Server targetServer = target.getServer();
     // final Server enquirerServer = enquirer.getServer();
@@ -35,8 +41,8 @@ public class Util {
     */
   }
 
-  public static ComponentWrapper resolveServerName(final Server server) {
-    ComponentWrapper serverName;
+  public ComponentWrapper resolveServerName(final Server server) {
+    final ComponentWrapper serverName;
     serverName =
         server == null
             ? new ComponentWrapper("Unknown").color(ChatColor.GOLD)
@@ -51,7 +57,7 @@ public class Util {
    * @param serverInfo The server with the name to be resolved
    * @return The server name "Server" with hover and click events applied
    */
-  public static ComponentWrapper resolveServerName(final @NotNull ServerInfo serverInfo) {
+  public ComponentWrapper resolveServerName(ServerInfo serverInfo) {
     return new ComponentWrapper(serverInfo.getName())
         .color(ChatColor.GOLD)
         .hoverText(
@@ -72,9 +78,10 @@ public class Util {
    *
    * @return The suitable lobby instance, or null if not found
    */
-  public static ServerInfo resolveSuitableLobby() {
-    final Set<ServerInfo> servers =
-        new HashSet<>(CommonsBungee.get().getProxy().getServers().values());
+  public ServerInfo resolveSuitableLobby() {
+    final Collection<ServerInfo> serverInfoCollection =
+        commonsBungee.getProxy().getServers().values();
+    final Set<ServerInfo> servers = new HashSet<>(serverInfoCollection);
     final List<ServerInfo> availableLobbies =
         servers.stream()
             .filter(serverInfo -> serverInfo.getName().startsWith("Lobby"))

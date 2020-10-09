@@ -3,8 +3,8 @@ package cl.bgmp.bungee.commands;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.ComponentWrapper;
+import cl.bgmp.bungee.MultiResolver;
 import cl.bgmp.bungee.Permission;
-import cl.bgmp.bungee.Util;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandPermissions;
@@ -14,6 +14,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class HelpOPCommand {
+  private final CommonsBungee commonsBungee;
+  private final MultiResolver multiResolver;
+
+  public HelpOPCommand(CommonsBungee commonsBungee, MultiResolver multiResolver) {
+    this.commonsBungee = commonsBungee;
+    this.multiResolver = multiResolver;
+  }
 
   @Command(
       aliases = {"helpop"},
@@ -22,11 +29,11 @@ public class HelpOPCommand {
       min = 1)
   @CommandPermissions("commons.bungee.command.helpop")
   @CommandScopes("player")
-  public static void helpop(final CommandContext args, CommandSender sender) {
+  public void helpop(final CommandContext args, CommandSender sender) {
     final ProxiedPlayer player = (ProxiedPlayer) sender;
     final String message = args.getJoinedStrings(0);
 
-    for (final ProxiedPlayer onlinePlayer : CommonsBungee.get().getProxy().getPlayers()) {
+    for (final ProxiedPlayer onlinePlayer : this.commonsBungee.getProxy().getPlayers()) {
       if (onlinePlayer.hasPermission(Permission.HELPOP_SEE.getNode())) {
 
         if (!onlinePlayer
@@ -38,10 +45,10 @@ public class HelpOPCommand {
               new ComponentWrapper(ChatConstant.HELPOP_PREFIX.getAsString())
                   .append("[")
                   .color(ChatColor.WHITE)
-                  .append(Util.resolveServerName(player.getServer()))
+                  .append(this.multiResolver.resolveServerName(player.getServer()))
                   .append("] ")
                   .color(ChatColor.WHITE)
-                  .append(Util.resolveProxiedPlayerNick(player))
+                  .append(this.multiResolver.resolveProxiedPlayerNick(player))
                   .append(" ")
                   .append(ChatConstant.ARROW.getAsString())
                   .color(ChatColor.WHITE)
@@ -52,7 +59,7 @@ public class HelpOPCommand {
         } else {
           onlinePlayer.sendMessage(
               new ComponentWrapper(ChatConstant.HELPOP_PREFIX.getAsString())
-                  .append(Util.resolveProxiedPlayerNick(player))
+                  .append(this.multiResolver.resolveProxiedPlayerNick(player))
                   .append(" ")
                   .append(ChatConstant.ARROW.getAsString())
                   .color(ChatColor.WHITE)

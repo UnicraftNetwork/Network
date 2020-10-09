@@ -2,7 +2,7 @@ package cl.bgmp.bungee.commands;
 
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.ComponentWrapper;
-import cl.bgmp.bungee.Util;
+import cl.bgmp.bungee.MultiResolver;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
@@ -13,14 +13,20 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class LobbyCommand {
 
+  private final MultiResolver multiResolver;
+
+  public LobbyCommand(MultiResolver multiResolver) {
+    this.multiResolver = multiResolver;
+  }
+
   @Command(
-      aliases = {"hub", "lobby", "main"},
+      aliases = {"lobby", "hug", "main"},
       desc = "Teleport to the lobby",
       max = 0)
   @CommandScopes("player")
-  public static void hub(final CommandContext args, CommandSender sender) {
+  public void lobby(final CommandContext args, CommandSender sender) {
     final ProxiedPlayer player = (ProxiedPlayer) sender;
-    final ServerInfo suitableLobby = Util.resolveSuitableLobby();
+    final ServerInfo suitableLobby = this.multiResolver.resolveSuitableLobby();
 
     if (suitableLobby == null) {
       sender.sendMessage(
@@ -31,7 +37,7 @@ public class LobbyCommand {
       sender.sendMessage(
           new ComponentWrapper("[")
               .color(ChatColor.WHITE)
-              .append(Util.resolveServerName(suitableLobby))
+              .append(this.multiResolver.resolveServerName(suitableLobby))
               .append("] ")
               .color(ChatColor.WHITE)
               .append(ChatConstant.TELEPORTING.getAsString())

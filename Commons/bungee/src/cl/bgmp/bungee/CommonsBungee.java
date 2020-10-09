@@ -5,16 +5,14 @@ import cl.bgmp.bungee.channels.ECChannel;
 import cl.bgmp.bungee.channels.EveryoneChannel;
 import cl.bgmp.bungee.channels.RefChannel;
 import cl.bgmp.bungee.channels.StaffChannel;
+import cl.bgmp.bungee.commands.ChannelCommands;
 import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.LobbyCommand;
 import cl.bgmp.bungee.commands.ServersCommand;
-import cl.bgmp.bungee.commands.channelcommands.EventCoordChannelCommand;
-import cl.bgmp.bungee.commands.channelcommands.EveryoneChannelCommand;
-import cl.bgmp.bungee.commands.channelcommands.RefereeChannelCommand;
-import cl.bgmp.bungee.commands.channelcommands.StaffChannelCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
-import cl.bgmp.bungee.commands.privatemessage.PrivateMessagesManager;
+import cl.bgmp.bungee.injection.CommonsBungeeModule;
 import cl.bgmp.bungee.listeners.PlayerEvents;
+import cl.bgmp.bungee.privatemessages.PrivateMessagesManager;
 import cl.bgmp.bungee.translations.AllTranslations;
 import cl.bgmp.bungee.util.BungeeCommandsManager;
 import cl.bgmp.bungee.util.CommandExecutor;
@@ -26,8 +24,9 @@ import cl.bgmp.minecraft.util.commands.exceptions.MissingNestedCommandException;
 import cl.bgmp.minecraft.util.commands.exceptions.ScopeMismatchException;
 import cl.bgmp.minecraft.util.commands.exceptions.WrappedCommandException;
 import cl.bgmp.minecraft.util.commands.injection.SimpleInjector;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import java.util.Arrays;
-import java.util.HashSet;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Listener;
@@ -41,51 +40,59 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   private AllTranslations translations;
   private NetworkInfoProvider networkInfoProvider;
   private ChannelsManager channelsManager;
+  private MultiResolver multiResolver;
+  private PrivateMessagesManager privateMessagesManager;
 
-  private static CommonsBungee commonsBungee;
-
-  public static CommonsBungee get() {
-    return commonsBungee;
-  }
-
-  public NetworkInfoProvider getNetworkInfoProvider() {
-    return networkInfoProvider;
-  }
-
-  public ChannelsManager getChannelsManager() {
-    return channelsManager;
-  }
+  @Inject private StaffChannel staffChannel;
+  @Inject private EveryoneChannel everyoneChannel;
+  @Inject private ECChannel ecChannel;
+  @Inject private RefChannel refChannel;
 
   @Override
   public void onEnable() {
-    commonsBungee = this;
-    final PluginManager pm = this.getProxy().getPluginManager();
-
     this.commandsManager = new BungeeCommandsManager();
-    this.commandRegistration = new CommandRegistration(this, pm, commandsManager, this);
+    this.commandRegistration =
+        new CommandRegistration(this, this.getProxy().getPluginManager(), commandsManager, this);
 
-    this.networkInfoProvider =
-        new NetworkInfoProvider(new HashSet<>(getProxy().getServers().values()));
+    this.translations = new AllTranslations();
+    this.networkInfoProvider = new NetworkInfoProvider(this);
+    this.channelsManager = new ChannelsManager(this);
+    this.multiResolver = new MultiResolver(this);
+    this.privateMessagesManager = new PrivateMessagesManager(this, this.multiResolver);
 
-    this.channelsManager = new ChannelsManager();
-    this.channelsManager.registerChannel(new StaffChannel());
-    this.channelsManager.registerChannel(new EveryoneChannel());
-    this.channelsManager.registerChannel(new ECChannel());
-    this.channelsManager.registerChannel(new RefChannel());
+    this.inject();
+
+    this.channelsManager.registerChannel(this.staffChannel);
+    this.channelsManager.registerChannel(this.everyoneChannel);
+    this.channelsManager.registerChannel(this.ecChannel);
+    this.channelsManager.registerChannel(this.refChannel);
 
     this.registerCommands();
-    this.registerEvents(pm);
+    this.registerEvents();
+  }
+
+  private void inject() {
+    final CommonsBungeeModule module =
+        new CommonsBungeeModule(
+            this,
+            this.translations,
+            this.networkInfoProvider,
+            this.channelsManager,
+            this.multiResolver);
+    final Injector injector = module.createInjector();
+
+    injector.injectMembers(this);
+    injector.injectMembers(this.translations);
+    injector.injectMembers(this.networkInfoProvider);
+    injector.injectMembers(this.channelsManager);
   }
 
   public void registerCommands() {
-    this.registerCommand(HelpOPCommand.class);
-    this.registerCommand(LobbyCommand.class);
-    this.registerCommand(PrivateMessageCommands.class);
-    this.registerCommand(ServersCommand.class);
-    this.registerCommand(EveryoneChannelCommand.class);
-    this.registerCommand(StaffChannelCommand.class);
-    this.registerCommand(EventCoordChannelCommand.class);
-    this.registerCommand(RefereeChannelCommand.class);
+    this.registerCommand(HelpOPCommand.class, this, this.multiResolver);
+    this.registerCommand(LobbyCommand.class, this.multiResolver);
+    this.registerCommand(PrivateMessageCommands.class, this, this.privateMessagesManager);
+    this.registerCommand(ServersCommand.class, this, this.networkInfoProvider, this.multiResolver);
+    this.registerCommand(ChannelCommands.class, this.channelsManager);
   }
 
   private void registerCommand(Class<?> clazz, Object... toInject) {
@@ -96,16 +103,15 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     this.commandRegistration.register(clazz);
   }
 
-  public void registerEvents(PluginManager pm) {
-    pm.registerListener(this, new PrivateMessagesManager());
-    pm.registerListener(this, new PlayerEvents());
+  @Inject private PlayerEvents playerEvents;
+
+  public void registerEvents() {
+    final PluginManager pm = this.getProxy().getPluginManager();
+    pm.registerListener(this, this.playerEvents);
   }
 
-  // TODO: Remove
-  public void registerEvents(Listener... listeners) {
-    for (Listener listener : listeners) {
-      getProxy().getPluginManager().registerListener(this, listener);
-    }
+  public void registerEvent(Listener listener) {
+    this.getProxy().getPluginManager().registerListener(this, listener);
   }
 
   @Override

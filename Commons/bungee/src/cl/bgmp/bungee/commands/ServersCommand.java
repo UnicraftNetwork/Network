@@ -1,7 +1,8 @@
 package cl.bgmp.bungee.commands;
 
 import cl.bgmp.bungee.CommonsBungee;
-import cl.bgmp.bungee.Util;
+import cl.bgmp.bungee.MultiResolver;
+import cl.bgmp.bungee.NetworkInfoProvider;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
@@ -16,13 +17,25 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ServersCommand {
+  private final CommonsBungee commonsBungee;
+  private final NetworkInfoProvider networkInfoProvider;
+  private final MultiResolver multiResolver;
+
+  public ServersCommand(
+      CommonsBungee commonsBungee,
+      NetworkInfoProvider networkInfoProvider,
+      MultiResolver multiResolver) {
+    this.commonsBungee = commonsBungee;
+    this.networkInfoProvider = networkInfoProvider;
+    this.multiResolver = multiResolver;
+  }
 
   @Command(
       aliases = {"servers"},
       desc = "List all available servers.",
       max = 0)
   @CommandScopes("player")
-  public static void servers(final CommandContext args, CommandSender sender) {
+  public void servers(final CommandContext args, CommandSender sender) {
     final ProxiedPlayer player = (ProxiedPlayer) sender;
     final Map<String, ServerInfo> servers = ProxyServer.getInstance().getServers();
 
@@ -31,21 +44,21 @@ public class ServersCommand {
             .filter(serverInfo -> serverInfo.canAccess(sender))
             .collect(Collectors.toSet())
             .isEmpty()) {
-      sender.sendMessage(emptyServerList(getHeader(servers)));
+      sender.sendMessage(this.emptyServerList(getHeader(servers)));
       return;
     }
 
-    sender.sendMessage(bundledServerList(getHeader(servers), getServerList(player)));
+    sender.sendMessage(this.bundledServerList(getHeader(servers), getServerList(player)));
   }
 
-  private static BaseComponent[] bundledServerList(BaseComponent[] header, BaseComponent[] list) {
+  private BaseComponent[] bundledServerList(BaseComponent[] header, BaseComponent[] list) {
     return new ComponentBuilder()
         .append(header, ComponentBuilder.FormatRetention.NONE)
         .append(list, ComponentBuilder.FormatRetention.NONE)
         .create();
   }
 
-  private static BaseComponent[] emptyServerList(BaseComponent[] header) {
+  private BaseComponent[] emptyServerList(BaseComponent[] header) {
     return new ComponentBuilder()
         .append(header)
         .append("No online servers :(", ComponentBuilder.FormatRetention.NONE)
@@ -53,7 +66,7 @@ public class ServersCommand {
         .create();
   }
 
-  private static BaseComponent[] getHeader(Map<String, ServerInfo> servers) {
+  private BaseComponent[] getHeader(Map<String, ServerInfo> servers) {
     return new ComponentBuilder("-------------")
         .color(ChatColor.BLUE)
         .bold(true)
@@ -65,10 +78,7 @@ public class ServersCommand {
                 servers.values().stream()
                     .filter(
                         serverInfo ->
-                            CommonsBungee.get()
-                                    .getNetworkInfoProvider()
-                                    .getServerMaxPlayers(serverInfo)
-                                != -1)
+                            this.networkInfoProvider.getServerMaxPlayers(serverInfo) != -1)
                     .collect(Collectors.toSet())
                     .size()),
             ComponentBuilder.FormatRetention.NONE)
@@ -82,21 +92,22 @@ public class ServersCommand {
         .create();
   }
 
-  private static BaseComponent[] getServerList(ProxiedPlayer sender) {
+  private BaseComponent[] getServerList(ProxiedPlayer sender) {
     ComponentBuilder serverList = new ComponentBuilder();
 
-    for (ServerInfo server : CommonsBungee.get().getProxy().getServers().values()) {
+    for (ServerInfo server : this.commonsBungee.getProxy().getServers().values()) {
       if (!server.canAccess(sender)) continue;
 
-      final int serverMaxPlayers =
-          CommonsBungee.get().getNetworkInfoProvider().getServerMaxPlayers(server);
+      final int serverMaxPlayers = this.networkInfoProvider.getServerMaxPlayers(server);
       if (serverMaxPlayers == -1) continue;
 
       serverList
           .append("\n")
           .append("[")
           .color(ChatColor.WHITE)
-          .append(Util.resolveServerName(server).build(), ComponentBuilder.FormatRetention.NONE)
+          .append(
+              this.multiResolver.resolveServerName(server).build(),
+              ComponentBuilder.FormatRetention.NONE)
           .append("] ", ComponentBuilder.FormatRetention.NONE)
           .color(ChatColor.WHITE)
           .append("Players: ", ComponentBuilder.FormatRetention.NONE)

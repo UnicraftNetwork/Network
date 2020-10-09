@@ -3,7 +3,8 @@ package cl.bgmp.bungee.listeners;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.ComponentWrapper;
-import cl.bgmp.bungee.Util;
+import cl.bgmp.bungee.MultiResolver;
+import com.google.inject.Inject;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -19,6 +20,15 @@ import net.md_5.bungee.event.EventPriority;
 
 public class PlayerEvents implements Listener {
 
+  private final CommonsBungee commonsBungee;
+  private final MultiResolver multiResolver;
+
+  @Inject
+  public PlayerEvents(CommonsBungee commonsBungee, MultiResolver multiResolver) {
+    this.multiResolver = multiResolver;
+    this.commonsBungee = commonsBungee;
+  }
+
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerSwitchServer(ServerSwitchEvent event) {
     final ServerInfo from = event.getFrom();
@@ -32,7 +42,7 @@ public class PlayerEvents implements Listener {
       prefix =
           new ComponentWrapper("[")
               .color(ChatColor.WHITE)
-              .append(Util.resolveServerName(to))
+              .append(this.multiResolver.resolveServerName(to))
               .append("] ")
               .color(ChatColor.WHITE)
               .build();
@@ -41,11 +51,11 @@ public class PlayerEvents implements Listener {
       prefix =
           new ComponentWrapper("[")
               .color(ChatColor.WHITE)
-              .append(Util.resolveServerName(from))
+              .append(this.multiResolver.resolveServerName(from))
               .append(" ")
               .append(ChatConstant.DOUBLE_ARROWS.getAsString())
               .append(" ")
-              .append(Util.resolveServerName(to))
+              .append(this.multiResolver.resolveServerName(to))
               .append("] ")
               .color(ChatColor.WHITE)
               .build();
@@ -72,7 +82,8 @@ public class PlayerEvents implements Listener {
         new ComponentWrapper("[")
             .color(ChatColor.WHITE)
             .append(
-                Util.resolveServerName(player.getServer())
+                this.multiResolver
+                    .resolveServerName(player.getServer())
                     .append(player.getName())
                     .color(ChatColor.DARK_AQUA)
                     .append(" " + ChatConstant.LEFT_THE_GAME.getAsString())
@@ -87,9 +98,9 @@ public class PlayerEvents implements Listener {
     ServerInfo from;
     if (event.getPlayer().getServer() != null) {
       from = player.getServer().getInfo();
-    } else if (CommonsBungee.get().getProxy().getReconnectHandler() == null) {
+    } else if (this.commonsBungee.getProxy().getReconnectHandler() == null) {
 
-      from = CommonsBungee.get().getProxy().getReconnectHandler().getServer(player);
+      from = this.commonsBungee.getProxy().getReconnectHandler().getServer(player);
     } else {
       from = AbstractReconnectHandler.getForcedHost(player.getPendingConnection());
       if (from == null)
@@ -100,7 +111,7 @@ public class PlayerEvents implements Listener {
 
     if (from == null) return;
 
-    final ServerInfo to = Util.resolveSuitableLobby();
+    final ServerInfo to = this.multiResolver.resolveSuitableLobby();
     if (from.equals(to)) return;
 
     event.setCancelled(true);

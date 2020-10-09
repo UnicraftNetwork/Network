@@ -1,14 +1,19 @@
 package cl.bgmp.bungee.channels;
 
 import cl.bgmp.bungee.CommonsBungee;
+import cl.bgmp.bungee.MultiResolver;
+import com.google.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import org.jetbrains.annotations.NotNull;
 
 /** Represents a chat channel */
 public abstract class Channel {
+
+  @Inject protected CommonsBungee commonsBungee;
+  @Inject protected MultiResolver multiResolver;
+
   private Set<String> users = new HashSet<>();
   protected ChannelName name;
   protected String permission;
@@ -26,20 +31,20 @@ public abstract class Channel {
     return users;
   }
 
-  public void enableFor(@NotNull ProxiedPlayer player) {
+  public void enableFor(ProxiedPlayer player) {
     users.add(player.getName());
   }
 
-  public void disableFor(@NotNull ProxiedPlayer player) {
+  public void disableFor(ProxiedPlayer player) {
     users.remove(player.getName());
   }
 
-  public boolean isEnabledFor(@NotNull ProxiedPlayer player) {
+  public boolean isEnabledFor(ProxiedPlayer player) {
     return users.contains(player.getName());
   }
 
-  public void sendChannelMessage(@NotNull ProxiedPlayer sender, @NotNull String message) {
-    for (ProxiedPlayer onlinePlayer : CommonsBungee.get().getProxy().getPlayers()) {
+  public void sendChannelMessage(ProxiedPlayer sender, String message) {
+    for (ProxiedPlayer onlinePlayer : this.commonsBungee.getProxy().getPlayers()) {
       if (permission == null || !onlinePlayer.hasPermission(permission)) continue;
       onlinePlayer.sendMessage(constructChannelMessage(sender, onlinePlayer, message));
     }

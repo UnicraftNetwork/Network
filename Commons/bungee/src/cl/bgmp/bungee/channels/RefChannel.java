@@ -3,7 +3,6 @@ package cl.bgmp.bungee.channels;
 import cl.bgmp.bungee.ChatConstant;
 import cl.bgmp.bungee.ComponentWrapper;
 import cl.bgmp.bungee.Permission;
-import cl.bgmp.bungee.Util;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -17,8 +16,9 @@ public class RefChannel extends Channel {
   @Override
   public BaseComponent[] constructChannelMessage(
       ProxiedPlayer sender, ProxiedPlayer receiver, String message) {
-    final ComponentWrapper resolvedServerName = Util.resolveServerName(sender.getServer());
-    final ComponentWrapper resolvedSenderNick = Util.resolveProxiedPlayerNick(sender);
+    final ComponentWrapper resolvedServerName =
+        this.multiResolver.resolveServerName(sender.getServer());
+    final ComponentWrapper resolvedSenderNick = this.multiResolver.resolveProxiedPlayerNick(sender);
 
     if (!sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {
       return new ComponentWrapper(ChatConstant.REF_CHAT_PREFIX.getAsString())

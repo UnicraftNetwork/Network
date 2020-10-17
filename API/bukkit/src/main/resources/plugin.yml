@@ -1,0 +1,7 @@
+name: API-Bukkit
+version: ${project.version}
+main: cl.bgmp.api.APIBukkit
+api-version: '1.16'
+authors: [BGMP]
+description: Network Bukkit API
+website: https://unicraft.cl/

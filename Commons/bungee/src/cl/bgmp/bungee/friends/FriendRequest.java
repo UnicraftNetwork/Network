@@ -16,6 +16,7 @@ public class FriendRequest {
   private final LinkedUser sender;
   private final LinkedUser receiver;
   private boolean expired = false;
+  private boolean responded = false;
 
   public FriendRequest(
       CommonsBungee commonsBungee, APIBungee api, LinkedUser sender, LinkedUser receiver) {
@@ -42,8 +43,13 @@ public class FriendRequest {
     return expired;
   }
 
+  public boolean wasResponded() {
+    return responded;
+  }
+
   public void expire() {
     this.expired = true;
+    if (this.wasResponded()) return;
 
     final ProxiedPlayer senderPlayer =
         this.commonsBungee.getProxy().getPlayer(this.sender.getUUID());
@@ -68,13 +74,13 @@ public class FriendRequest {
   }
 
   public void accept() {
-    this.expired = true;
+    this.responded = true;
 
     sender.addFriend(receiver);
     receiver.addFriend(sender);
   }
 
   public void deny() {
-    this.expired = true;
+    this.responded = true;
   }
 }

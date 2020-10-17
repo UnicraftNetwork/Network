@@ -1,7 +1,6 @@
 package cl.bgmp.lobbyx.translations;
 
 import cl.bgmp.butils.translations.Translations;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AllTranslations extends Translations {

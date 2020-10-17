@@ -39,6 +39,7 @@ public class ServerSwitchAnnouncerModule extends Module {
             .color(ChatColor.WHITE)
             .append(Chat.color(cfm.getPlayerPrefix(player)))
             .append(player.getName())
+            .color(ChatColor.AQUA)
             .append(" joined the game")
             .color(ChatColor.YELLOW)
             .build();

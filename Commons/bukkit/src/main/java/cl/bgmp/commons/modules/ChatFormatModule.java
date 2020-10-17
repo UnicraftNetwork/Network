@@ -25,11 +25,11 @@ public class ChatFormatModule extends Module {
   }
 
   public String getPlayerPrefix(final Player player) {
-    return vaultChat.getPlayerPrefix(player);
+    return cl.bgmp.butils.chat.Chat.color(vaultChat.getPlayerPrefix(player));
   }
 
   public String getPlayerSuffix(final Player player) {
-    return vaultChat.getPlayerSuffix(player);
+    return cl.bgmp.butils.chat.Chat.color(vaultChat.getPlayerSuffix(player));
   }
 
   public void reloadConfigValues() {
@@ -41,12 +41,14 @@ public class ChatFormatModule extends Module {
 
   public void refreshVault() {
     Chat vaultChat = Bukkit.getServer().getServicesManager().load(Chat.class);
-    if (vaultChat != this.vaultChat)
+    if (this.vaultChat != vaultChat) {
       this.commons
           .getLogger()
           .info(
               "New Vault Chat implementation registered: "
                   + (vaultChat == null ? "null" : vaultChat.getName()));
+    }
+
     this.vaultChat = vaultChat;
   }
 
@@ -65,17 +67,14 @@ public class ChatFormatModule extends Module {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onChatHigh(AsyncPlayerChatEvent e) {
     String format = e.getFormat();
+    Player player = e.getPlayer();
     if (vaultChat != null && format.contains(PREFIX)) {
-      format =
-          format.replace(
-              PREFIX, cl.bgmp.butils.chat.Chat.color(vaultChat.getPlayerPrefix(e.getPlayer())));
+      format = format.replace(PREFIX, this.getPlayerPrefix(player));
     }
     if (vaultChat != null && format.contains(SUFFIX)) {
-      format =
-          format.replace(
-              SUFFIX, cl.bgmp.butils.chat.Chat.color(vaultChat.getPlayerSuffix(e.getPlayer())));
+      format = format.replace(SUFFIX, this.getPlayerSuffix(player));
     }
-    format = format.replace(NAME, e.getPlayer().getName());
+    format = format.replace(NAME, player.getName());
     e.setFormat(format);
   }
 
@@ -95,6 +94,13 @@ public class ChatFormatModule extends Module {
       refreshVault();
       reloadConfigValues();
       this.commons.registerEvent(this);
+    }
+
+    if (this.vaultChat == null) {
+      this.commons
+          .getLogger()
+          .warning("Disabling ChatFormatModule as no vault implementation was found.");
+      this.unload();
     }
   }
 

@@ -1,5 +1,6 @@
 package cl.bgmp.commons.modules;
 
+import cl.bgmp.api.APIBukkit;
 import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
@@ -12,6 +13,7 @@ public abstract class Module implements Listener {
   @Inject protected Commons commons;
   @Inject protected Config config;
   @Inject protected Translations translations;
+  @Inject protected APIBukkit api;
 
   protected ModuleId id;
 

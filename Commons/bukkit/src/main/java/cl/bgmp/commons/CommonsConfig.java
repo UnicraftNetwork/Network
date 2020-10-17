@@ -210,4 +210,9 @@ public class CommonsConfig implements Config {
   public String getChatCensorExemptPermission() {
     return censorExemptPermission;
   }
+
+  @Override
+  public boolean isPlayerServerSwitchAnnouncerEnabled() {
+    return false;
+  }
 }

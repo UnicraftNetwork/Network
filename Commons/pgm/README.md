@@ -1,7 +1,8 @@
-Commons-Legacy
+Commons-PGM
 ===
 
-[Network's Commons](https://github.com/ElMedievo-UdeC/Network/tree/master/Commons), now adapted to [1.8 SportPaper](https://github.com/Electroid/SportPaper).
+[Network's Commons](https://github.com/UnicraftNetwork/Network/tree/master/Commons), now adapted for
+[1.8 SportPaper](https://github.com/Electroid/SportPaper) in order to work alongside [PGM](https://github.com/PGMDev/PGM).
 
 ## Installation
 

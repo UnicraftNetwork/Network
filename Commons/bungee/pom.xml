@@ -42,6 +42,12 @@
         </dependency>
         <dependency>
             <groupId>cl.bgmp</groupId>
+            <artifactId>API-Bungee</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cl.bgmp</groupId>
             <artifactId>command-framework-bungee</artifactId>
             <version>1.0.3-SNAPSHOT</version>
         </dependency>
@@ -53,8 +59,7 @@
         <dependency>
             <groupId>cl.bgmp</groupId>
             <artifactId>BUtils</artifactId>
-            <version>1.0.9.pre-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>1.0.25.pre-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,4 @@
+name: API-Bungee
+main: cl.bgmp.bungee.APIBungee
+version: '1.0'
+author: BGMP

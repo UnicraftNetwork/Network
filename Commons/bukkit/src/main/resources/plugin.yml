@@ -1,7 +1,8 @@
 name: Commons
 version: ${project.version}
 main: cl.bgmp.commons.Commons
-api-version: '1.13'
+api-version: '1.16'
 authors: [BGMP]
+depend: [API-Bukkit]
 softdepend: [Vault]
-website: https://elmedievo.org/
+website: https://unicraft.cl/

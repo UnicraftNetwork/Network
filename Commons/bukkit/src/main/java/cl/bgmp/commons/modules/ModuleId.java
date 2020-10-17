@@ -9,7 +9,8 @@ public enum ModuleId {
   JOINQUIT_MESSAGES("joinquit-messages-module"),
   RESTART("restart-module"),
   TIPS("tips-module"),
-  CHAT_CENSOR("chat-censor");
+  CHAT_CENSOR("chat-censor-module"),
+  SERVER_SWITCH("server-switch-module");
 
   private String toString;
 

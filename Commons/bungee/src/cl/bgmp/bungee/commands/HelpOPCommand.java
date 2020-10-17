@@ -45,7 +45,7 @@ public class HelpOPCommand {
               new ComponentWrapper(ChatConstant.HELPOP_PREFIX.getAsString())
                   .append("[")
                   .color(ChatColor.WHITE)
-                  .append(this.multiResolver.resolveServerName(player.getServer()))
+                  .append(this.multiResolver.getClickableNameOf(player.getServer()))
                   .append("] ")
                   .color(ChatColor.WHITE)
                   .append(this.multiResolver.resolveProxiedPlayerNick(player))

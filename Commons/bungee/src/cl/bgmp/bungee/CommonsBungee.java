@@ -6,12 +6,16 @@ import cl.bgmp.bungee.channels.EveryoneChannel;
 import cl.bgmp.bungee.channels.RefChannel;
 import cl.bgmp.bungee.channels.StaffChannel;
 import cl.bgmp.bungee.commands.ChannelCommands;
+import cl.bgmp.bungee.commands.FriendCommands;
 import cl.bgmp.bungee.commands.HelpOPCommand;
 import cl.bgmp.bungee.commands.LobbyCommand;
+import cl.bgmp.bungee.commands.PlayerLinkCommand;
 import cl.bgmp.bungee.commands.ServersCommand;
 import cl.bgmp.bungee.commands.privatemessage.PrivateMessageCommands;
+import cl.bgmp.bungee.friends.FriendRequestManager;
 import cl.bgmp.bungee.injection.CommonsBungeeModule;
 import cl.bgmp.bungee.listeners.PlayerEvents;
+import cl.bgmp.bungee.listeners.PlayerSwitchServer;
 import cl.bgmp.bungee.privatemessages.PrivateMessagesManager;
 import cl.bgmp.bungee.translations.AllTranslations;
 import cl.bgmp.bungee.util.BungeeCommandsManager;
@@ -42,11 +46,16 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
   private ChannelsManager channelsManager;
   private MultiResolver multiResolver;
   private PrivateMessagesManager privateMessagesManager;
+  private APIBungee api;
+  private FriendRequestManager frm;
 
   @Inject private StaffChannel staffChannel;
   @Inject private EveryoneChannel everyoneChannel;
   @Inject private ECChannel ecChannel;
   @Inject private RefChannel refChannel;
+
+  @Inject private PlayerEvents playerEvents;
+  @Inject private PlayerSwitchServer playerSwitchServerEvents;
 
   @Override
   public void onEnable() {
@@ -59,6 +68,9 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     this.channelsManager = new ChannelsManager(this);
     this.multiResolver = new MultiResolver(this);
     this.privateMessagesManager = new PrivateMessagesManager(this, this.multiResolver);
+    this.frm = new FriendRequestManager(this);
+
+    this.api = APIBungee.get();
 
     this.inject();
 
@@ -78,7 +90,8 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
             this.translations,
             this.networkInfoProvider,
             this.channelsManager,
-            this.multiResolver);
+            this.multiResolver,
+            this.api);
     final Injector injector = module.createInjector();
 
     injector.injectMembers(this);
@@ -93,6 +106,8 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     this.registerCommand(PrivateMessageCommands.class, this, this.privateMessagesManager);
     this.registerCommand(ServersCommand.class, this, this.networkInfoProvider, this.multiResolver);
     this.registerCommand(ChannelCommands.class, this.channelsManager);
+    this.registerCommand(PlayerLinkCommand.class, this.api);
+    this.registerCommand(FriendCommands.FriendParentCommand.class, this, this.api, this.frm);
   }
 
   private void registerCommand(Class<?> clazz, Object... toInject) {
@@ -103,11 +118,11 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     this.commandRegistration.register(clazz);
   }
 
-  @Inject private PlayerEvents playerEvents;
-
   public void registerEvents() {
     final PluginManager pm = this.getProxy().getPluginManager();
+
     pm.registerListener(this, this.playerEvents);
+    pm.registerListener(this, this.playerSwitchServerEvents);
   }
 
   public void registerEvent(Listener listener) {

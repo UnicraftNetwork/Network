@@ -17,7 +17,7 @@ public class RefChannel extends Channel {
   public BaseComponent[] constructChannelMessage(
       ProxiedPlayer sender, ProxiedPlayer receiver, String message) {
     final ComponentWrapper resolvedServerName =
-        this.multiResolver.resolveServerName(sender.getServer());
+        this.multiResolver.getClickableNameOf(sender.getServer());
     final ComponentWrapper resolvedSenderNick = this.multiResolver.resolveProxiedPlayerNick(sender);
 
     if (!sender.getServer().getInfo().getName().equals(receiver.getServer().getInfo().getName())) {

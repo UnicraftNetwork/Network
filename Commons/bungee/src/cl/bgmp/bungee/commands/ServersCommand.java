@@ -106,7 +106,7 @@ public class ServersCommand {
           .append("[")
           .color(ChatColor.WHITE)
           .append(
-              this.multiResolver.resolveServerName(server).build(),
+              this.multiResolver.getClickableNameOf(server).build(),
               ComponentBuilder.FormatRetention.NONE)
           .append("] ", ComponentBuilder.FormatRetention.NONE)
           .color(ChatColor.WHITE)

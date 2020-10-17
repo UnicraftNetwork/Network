@@ -44,13 +44,19 @@
         </dependency>
         <dependency>
             <groupId>cl.bgmp</groupId>
+            <artifactId>API-Bukkit</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cl.bgmp</groupId>
             <artifactId>command-framework-bukkit</artifactId>
             <version>1.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cl.bgmp</groupId>
             <artifactId>BUtils</artifactId>
-            <version>1.0.3.pre-SNAPSHOT</version>
+            <version>1.0.25.pre-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>

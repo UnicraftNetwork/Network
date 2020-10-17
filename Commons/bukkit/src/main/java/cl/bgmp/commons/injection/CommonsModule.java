@@ -1,5 +1,6 @@
 package cl.bgmp.commons.injection;
 
+import cl.bgmp.api.APIBukkit;
 import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.CommonsConfig;
@@ -16,16 +17,19 @@ public class CommonsModule extends AbstractModule {
   private CommonsConfig config;
   private AllTranslations translations;
   private ModuleManagerImpl moduleManager;
+  private APIBukkit api;
 
   public CommonsModule(
       Commons commons,
       CommonsConfig config,
       AllTranslations translations,
-      ModuleManagerImpl moduleManager) {
+      ModuleManagerImpl moduleManager,
+      APIBukkit api) {
     this.commons = commons;
     this.config = config;
     this.translations = translations;
     this.moduleManager = moduleManager;
+    this.api = api;
   }
 
   public Injector createInjector() {
@@ -38,5 +42,6 @@ public class CommonsModule extends AbstractModule {
     this.bind(Config.class).toInstance(this.config);
     this.bind(Translations.class).toInstance(this.translations);
     this.bind(ModuleManager.class).toInstance(this.moduleManager);
+    this.bind(APIBukkit.class).toInstance(this.api);
   }
 }

@@ -1,5 +1,6 @@
 package cl.bgmp.commons;
 
+import cl.bgmp.api.APIBukkit;
 import cl.bgmp.bukkit.util.BukkitCommandsManager;
 import cl.bgmp.bukkit.util.CommandsManagerRegistration;
 import cl.bgmp.butils.bungee.Bungee;
@@ -13,6 +14,7 @@ import cl.bgmp.commons.modules.ForceGamemodeModule;
 import cl.bgmp.commons.modules.JoinQuitMessageModule;
 import cl.bgmp.commons.modules.JoinToolsModule;
 import cl.bgmp.commons.modules.RestartModule;
+import cl.bgmp.commons.modules.ServerSwitchAnnouncerModule;
 import cl.bgmp.commons.modules.TipsModule;
 import cl.bgmp.commons.modules.WeatherSuppressorModule;
 import cl.bgmp.commons.modules.manager.ModuleManager;
@@ -47,6 +49,7 @@ public final class Commons extends JavaPlugin {
   private CommonsConfig config;
   private AllTranslations translations;
   private ModuleManagerImpl moduleManager;
+  private APIBukkit api;
 
   public ModuleManager getModuleManager() {
     return this.moduleManager;
@@ -65,6 +68,7 @@ public final class Commons extends JavaPlugin {
   @Inject private TipsModule tipsModule;
   @Inject private NavigatorModule navigatorModule;
   @Inject private ChatCensorModule chatCensorModule;
+  @Inject private ServerSwitchAnnouncerModule serverSwitchAnnouncerModule;
 
   @Override
   public void onEnable() {
@@ -74,6 +78,9 @@ public final class Commons extends JavaPlugin {
 
     this.bungee = new Bungee(this);
     this.bungee.registerOutgoing();
+    this.bungee.registerIncoming(this.bungee);
+
+    this.api = APIBukkit.get();
 
     this.inject();
 
@@ -86,6 +93,7 @@ public final class Commons extends JavaPlugin {
     this.moduleManager.registerModule(this.tipsModule);
     this.moduleManager.registerModule(this.navigatorModule);
     this.moduleManager.registerModule(this.chatCensorModule);
+    this.moduleManager.registerModule(this.serverSwitchAnnouncerModule);
     this.moduleManager.loadModules();
 
     this.registerCommands();
@@ -93,13 +101,14 @@ public final class Commons extends JavaPlugin {
 
   private void inject() {
     final CommonsModule module =
-        new CommonsModule(this, this.config, this.translations, this.moduleManager);
+        new CommonsModule(this, this.config, this.translations, this.moduleManager, this.api);
     final Injector injector = module.createInjector();
 
     injector.injectMembers(this);
     injector.injectMembers(this.config);
     injector.injectMembers(this.translations);
     injector.injectMembers(this.moduleManager);
+    injector.injectMembers(this.api);
   }
 
   private void registerCommands() {

@@ -69,11 +69,14 @@ public interface Config {
 
   String getChatCensorExemptPermission();
 
+  /** Player Server Switch * */
+  boolean isPlayerServerSwitchAnnouncerEnabled();
+
   static ItemStack parseItem(ConfigurationSection section) {
     String material = section.getString("material");
     String title = section.getString("title");
     String[] lore = section.getStringList("lore").toArray(new String[0]);
-    if (material == null || title == null || lore == null) return null;
+    if (material == null || title == null) return null;
 
     return new ItemBuilder(Material.valueOf(material)).setName(title).setLore(lore).build();
   }

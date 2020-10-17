@@ -41,12 +41,12 @@ public class MultiResolver {
     */
   }
 
-  public ComponentWrapper resolveServerName(final Server server) {
+  public ComponentWrapper getClickableNameOf(final Server server) {
     final ComponentWrapper serverName;
     serverName =
         server == null
             ? new ComponentWrapper("Unknown").color(ChatColor.GOLD)
-            : resolveServerName(server.getInfo());
+            : getClickableNameOf(server.getInfo());
     return serverName;
   }
 
@@ -57,7 +57,7 @@ public class MultiResolver {
    * @param serverInfo The server with the name to be resolved
    * @return The server name "Server" with hover and click events applied
    */
-  public ComponentWrapper resolveServerName(ServerInfo serverInfo) {
+  public ComponentWrapper getClickableNameOf(ServerInfo serverInfo) {
     return new ComponentWrapper(serverInfo.getName())
         .color(ChatColor.GOLD)
         .hoverText(

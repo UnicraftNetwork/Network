@@ -4,8 +4,13 @@ Network [![deploy](https://github.com/ElMedievo-UdeC/Network/workflows/build/bad
 Minecraft plugins used by the Unicraft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
 
 ## Modules
+* **API** ➔ Client.
+  * `bukkit` Bukkit plugin.
+  * `bungee` Bungee plugin.
 * **Commons** ➔ From commands to features that should/could be present on the different servers of the network.
-* **Lobby** ➔ Everything related to the Network lobby is managed within this project module.
+  * `bukkit` Bukkit plugin.
+  * `bungee` Bungee plugin.
+* **Lobby** ➔ Everything related to the Network lobby is managed within this module.
 
 ## Installation
 #### Prerequisites

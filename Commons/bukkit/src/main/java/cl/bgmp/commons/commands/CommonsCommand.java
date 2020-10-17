@@ -31,6 +31,15 @@ public class CommonsCommand {
     this.translations = translations;
   }
 
+  public static class CommonsParentCommand {
+    @Command(
+        aliases = {"commons"},
+        desc = "Commons node command")
+    @NestedCommand(value = CommonsCommand.class, executeBody = false)
+    @CommandPermissions("commons.node")
+    public static void commons(final CommandContext args, final CommandSender sender) {}
+  }
+
   @Command(
       aliases = {"reload"},
       desc = "Reloads Commons's configuration.",
@@ -64,15 +73,6 @@ public class CommonsCommand {
 
     sender.sendMessage(
         ChatColor.GREEN + this.translations.get("module.chatformat.reload.success", sender));
-  }
-
-  public static class CommonsParentCommand {
-    @Command(
-        aliases = {"commons"},
-        desc = "Commons node command")
-    @NestedCommand(value = CommonsCommand.class, executeBody = false)
-    @CommandPermissions("commons.node")
-    public static void commons(final CommandContext args, final CommandSender sender) {}
   }
 
   @TabCompletion

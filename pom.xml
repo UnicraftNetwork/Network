@@ -17,6 +17,7 @@
 
     <modules>
         <module>LobbyX</module>
+        <module>API</module>
         <module>Commons</module>
     </modules>
 

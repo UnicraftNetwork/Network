@@ -20,7 +20,7 @@ public class LobbyCommand {
   }
 
   @Command(
-      aliases = {"lobby", "hug", "main"},
+      aliases = {"lobby", "hug"},
       desc = "Teleport to the lobby",
       max = 0)
   @CommandScopes("player")
@@ -37,7 +37,7 @@ public class LobbyCommand {
       sender.sendMessage(
           new ComponentWrapper("[")
               .color(ChatColor.WHITE)
-              .append(this.multiResolver.resolveServerName(suitableLobby))
+              .append(this.multiResolver.getClickableNameOf(suitableLobby))
               .append("] ")
               .color(ChatColor.WHITE)
               .append(ChatConstant.TELEPORTING.getAsString())

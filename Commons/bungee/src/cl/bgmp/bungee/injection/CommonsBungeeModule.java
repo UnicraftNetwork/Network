@@ -1,5 +1,6 @@
 package cl.bgmp.bungee.injection;
 
+import cl.bgmp.bungee.APIBungee;
 import cl.bgmp.bungee.CommonsBungee;
 import cl.bgmp.bungee.MultiResolver;
 import cl.bgmp.bungee.NetworkInfoProvider;
@@ -16,18 +17,21 @@ public class CommonsBungeeModule extends AbstractModule {
   private final NetworkInfoProvider networkInfoProvider;
   private final ChannelsManager channelsManager;
   private final MultiResolver multiResolver;
+  private final APIBungee api;
 
   public CommonsBungeeModule(
       CommonsBungee commonsBungee,
       AllTranslations translations,
       NetworkInfoProvider networkInfoProvider,
       ChannelsManager channelsManager,
-      MultiResolver multiResolver) {
+      MultiResolver multiResolver,
+      APIBungee api) {
     this.commonsBungee = commonsBungee;
     this.translations = translations;
     this.networkInfoProvider = networkInfoProvider;
     this.channelsManager = channelsManager;
     this.multiResolver = multiResolver;
+    this.api = api;
   }
 
   public Injector createInjector() {
@@ -41,5 +45,6 @@ public class CommonsBungeeModule extends AbstractModule {
     this.bind(NetworkInfoProvider.class).toInstance(this.networkInfoProvider);
     this.bind(ChannelsManager.class).toInstance(this.channelsManager);
     this.bind(MultiResolver.class).toInstance(this.multiResolver);
+    this.bind(APIBungee.class).toInstance(this.api);
   }
 }

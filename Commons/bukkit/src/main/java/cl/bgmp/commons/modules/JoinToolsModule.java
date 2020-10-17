@@ -19,13 +19,6 @@ public class JoinToolsModule extends Module {
   public void onPlayerJoin(final PlayerJoinEvent event) {
     final Player player = event.getPlayer();
 
-    ItemStack wand =
-        new ItemBuilder(Material.RABBIT_FOOT)
-            .setName(
-                ChatColor.DARK_PURPLE.toString()
-                    + ChatColor.BOLD
-                    + this.translations.get("module.jointools.wand.title", player))
-            .build();
     ItemStack compass =
         new ItemBuilder(Material.COMPASS)
             .setName(
@@ -35,11 +28,18 @@ public class JoinToolsModule extends Module {
             .setLore(
                 ChatColor.GRAY + this.translations.get("module.jointools.compass.lore", player))
             .build();
+    ItemStack wand =
+        new ItemBuilder(Material.RABBIT_FOOT)
+            .setName(
+                ChatColor.DARK_PURPLE.toString()
+                    + ChatColor.BOLD
+                    + this.translations.get("module.jointools.wand.title", player))
+            .build();
 
     if (!player.hasPermission("commons.tools")) return;
 
-    player.getInventory().setItem(0, wand);
-    player.getInventory().setItem(1, compass);
+    player.getInventory().setItem(0, compass);
+    player.getInventory().setItem(1, wand);
   }
 
   @Override

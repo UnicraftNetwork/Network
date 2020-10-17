@@ -25,7 +25,7 @@
     <repositories>
         <repository>
             <id>bgm</id>
-            <url>https://maven.bgmp.cl/</url>
+            <url>https://maven.bgmp.cl/repo/</url>
         </repository>
         <repository>
             <id>sonatype</id>

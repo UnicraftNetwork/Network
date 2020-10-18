@@ -34,13 +34,13 @@ public class FriendRequestManager {
 
   public Set<FriendRequest> getRequestsFor(String username) {
     return this.requests.stream()
-        .filter(r -> r.getReceiver().getNick().equals(username))
+        .filter(r -> r.getReceiver().getNick().equalsIgnoreCase(username))
         .collect(Collectors.toSet());
   }
 
   public Set<FriendRequest> getRequestsFrom(String username) {
     return this.requests.stream()
-        .filter(r -> r.getSender().getNick().equals(username))
+        .filter(r -> r.getSender().getNick().equalsIgnoreCase(username))
         .collect(Collectors.toSet());
   }
 
@@ -48,8 +48,8 @@ public class FriendRequestManager {
     return this.requests.stream()
         .filter(
             r ->
-                r.getSender().getNick().equals(sender)
-                    && r.getReceiver().getNick().equals(receiver))
+                r.getSender().getNick().equalsIgnoreCase(sender)
+                    && r.getReceiver().getNick().equalsIgnoreCase(receiver))
         .findFirst();
   }
 }

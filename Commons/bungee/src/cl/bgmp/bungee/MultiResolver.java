@@ -77,7 +77,7 @@ public class MultiResolver {
   /**
    * Resolves the lobby with the least amount of players, and deems it suitable to be returned
    *
-   * @return The suitable lobby instance, or null if not found
+   * @return An optional containing the suitable lobby instance, or an empty one if not found
    */
   public Optional<ServerInfo> resolveSuitableLobby() {
     final Collection<ServerInfo> serverInfoCollection =

@@ -117,12 +117,10 @@ public class FriendCommands {
     LinkedUser senderLinkedUser = (LinkedUser) senderUser.get();
     LinkedUser receiverLinkedUser = (LinkedUser) receiverUser.get();
 
-    /*
-        if (senderLinkedUser.getNick().equals(receiverNick)) {
+    if (senderLinkedUser.getNick().equals(receiverNick)) {
       sender.sendMessage(ChatColor.RED + "You may not friend yourself!");
       return;
     }
-     */
 
     final Optional<FriendRequest> request =
         this.frm.getRequest(senderLinkedUser.getNick(), receiverNick);

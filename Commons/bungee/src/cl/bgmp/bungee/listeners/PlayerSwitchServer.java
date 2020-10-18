@@ -78,13 +78,13 @@ public class PlayerSwitchServer implements Listener {
     BaseComponent[] leaveMessage =
         new ComponentWrapper("[")
             .color(ChatColor.WHITE)
-            .append(
-                this.multiResolver
-                    .getClickableNameOf(player.getServer())
-                    .append(player.getName())
-                    .color(ChatColor.DARK_AQUA)
-                    .append(" " + ChatConstant.LEFT_THE_GAME.getAsString())
-                    .color(ChatColor.YELLOW))
+            .append(this.multiResolver.getClickableNameOf(player.getServer()))
+            .append("] ")
+            .color(ChatColor.WHITE)
+            .append(player.getName())
+            .color(ChatColor.DARK_AQUA)
+            .append(ChatConstant.LEFT_THE_GAME.getAsString())
+            .color(ChatColor.YELLOW)
             .build();
 
     storedFriends.stream()

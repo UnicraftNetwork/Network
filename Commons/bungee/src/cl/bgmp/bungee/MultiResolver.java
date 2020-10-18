@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.md_5.bungee.api.ChatColor;
@@ -78,7 +79,7 @@ public class MultiResolver {
    *
    * @return The suitable lobby instance, or null if not found
    */
-  public ServerInfo resolveSuitableLobby() {
+  public Optional<ServerInfo> resolveSuitableLobby() {
     final Collection<ServerInfo> serverInfoCollection =
         commonsBungee.getProxy().getServers().values();
     final Set<ServerInfo> servers = new HashSet<>(serverInfoCollection);
@@ -88,10 +89,10 @@ public class MultiResolver {
             .collect(Collectors.toList());
 
     if (availableLobbies.isEmpty()) {
-      return null;
+      return Optional.empty();
     } else {
       availableLobbies.sort(Comparator.comparingInt(serverInfo -> serverInfo.getPlayers().size()));
-      return availableLobbies.get(0);
+      return Optional.of(availableLobbies.get(0));
     }
   }
 }

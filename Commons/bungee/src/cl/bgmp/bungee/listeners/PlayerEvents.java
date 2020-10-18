@@ -14,6 +14,8 @@ import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.Optional;
+
 public class PlayerEvents implements Listener {
 
   private final CommonsBungee commonsBungee;
@@ -45,11 +47,11 @@ public class PlayerEvents implements Listener {
 
     if (from == null) return;
 
-    final ServerInfo to = this.multiResolver.resolveSuitableLobby();
-    if (from.equals(to)) return;
+    final Optional<ServerInfo> to = this.multiResolver.resolveSuitableLobby();
+    if (!to.isPresent() || from.equals(to.get())) return;
 
     event.setCancelled(true);
-    event.setCancelServer(to);
+    event.setCancelServer(to.get());
 
     player.sendMessage(
         new ComponentWrapper(ChatConstant.SERVER_KICK.getAsString()).color(ChatColor.RED).build());

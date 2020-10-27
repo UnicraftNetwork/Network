@@ -35,7 +35,7 @@ public class MultiResolver {
 
     return new ComponentWrapper(target.getName()).color(ChatColor.DARK_AQUA);
 
-    /* FIXME: This below requires a reliable method to set the user's nickname colours and such. Commenting until that's worked out.
+    /* FIXME: Remove
     if (!targetServer.getInfo().getName().equals(enquirerServer.getInfo().getName())) {
       return new FlashComponent(target.getName()).color(ChatColor.DARK_AQUA);
     } else return new FlashComponent(target.getDisplayName());

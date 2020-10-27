@@ -6,12 +6,11 @@ import cl.bgmp.bungee.MultiResolver;
 import cl.bgmp.minecraft.util.commands.CommandContext;
 import cl.bgmp.minecraft.util.commands.annotations.Command;
 import cl.bgmp.minecraft.util.commands.annotations.CommandScopes;
+import java.util.Optional;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
-import java.util.Optional;
 
 public class LobbyCommand {
 

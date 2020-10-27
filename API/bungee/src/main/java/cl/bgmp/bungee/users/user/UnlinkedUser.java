@@ -26,8 +26,7 @@ public class UnlinkedUser extends User {
     Optional<String> validToken = this.lookForToken(token);
     if (!validToken.isPresent()) return false;
 
-    new MySQLUpdate()
-        .from(APIBungee.get().getDatabase().getConnection())
+    new MySQLUpdate(APIBungee.get().getDatabase())
         .atTable(APIBungee.get().getConfiguration().getUsersTable())
         .updating(
             new Column("uuid", SQLDataType.STRING),
@@ -42,8 +41,7 @@ public class UnlinkedUser extends User {
 
   private Optional<String> lookForToken(String token) {
     String validToken =
-        new MySQLSelect()
-            .from(APIBungee.get().getDatabase().getConnection())
+        new MySQLSelect(APIBungee.get().getDatabase())
             .atTable(APIBungee.get().getConfiguration().getUsersTable())
             .getting(new Column("minecraft_token", SQLDataType.STRING))
             .where(new Column("minecraft_token", SQLDataType.STRING))

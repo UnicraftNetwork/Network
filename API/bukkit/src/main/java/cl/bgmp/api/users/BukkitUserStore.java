@@ -74,8 +74,7 @@ public class BukkitUserStore implements Listener {
 
   private boolean isPlayerLinked(Player player) {
     String uuid =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getUsersTable())
             .getting(new Column("uuid", SQLDataType.STRING))
             .where(new Column("uuid", SQLDataType.STRING))
@@ -87,8 +86,7 @@ public class BukkitUserStore implements Listener {
 
   private Optional<UUID> getPlayerUUID(Player player) {
     String uuid =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getMinecraftUsersTable())
             .getting(new Column("uuid", SQLDataType.STRING))
             .where(new Column("nick", SQLDataType.STRING))
@@ -101,8 +99,7 @@ public class BukkitUserStore implements Listener {
 
   private LinkedList<UUID> getFriendsOf(UUID user) {
     String serializedFriends =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getUsersTable())
             .getting(new Column("friends", SQLDataType.STRING))
             .where(new Column("uuid", SQLDataType.STRING))

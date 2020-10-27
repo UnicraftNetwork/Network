@@ -25,8 +25,7 @@ public class LinkedUser extends User {
 
   public Optional<String> getLocale() {
     String locale =
-        new MySQLSelect()
-            .from(APIBungee.get().getDatabase().getConnection())
+        new MySQLSelect(APIBungee.get().getDatabase())
             .atTable(APIBungee.get().getConfiguration().getUsersTable())
             .getting(new Column("locale", SQLDataType.STRING))
             .where(new Column("uuid", SQLDataType.STRING))
@@ -40,8 +39,7 @@ public class LinkedUser extends User {
   public void addFriend(User user) {
     this.friends.add(user.getUUID());
 
-    new MySQLUpdate()
-        .from(APIBungee.get().getDatabase().getConnection())
+    new MySQLUpdate(APIBungee.get().getDatabase())
         .atTable(APIBungee.get().getConfiguration().getUsersTable())
         .updating(new Column("friends", SQLDataType.STRING))
         .respectivelyWith(this.getSerializedFriends())
@@ -53,8 +51,7 @@ public class LinkedUser extends User {
   public void removeFriend(User friend) {
     this.friends.remove(friend.getUUID());
 
-    new MySQLUpdate()
-        .from(APIBungee.get().getDatabase().getConnection())
+    new MySQLUpdate(APIBungee.get().getDatabase())
         .atTable(APIBungee.get().getConfiguration().getUsersTable())
         .updating(new Column("friends", SQLDataType.STRING))
         .respectivelyWith(this.friends.isEmpty() ? "" : this.getSerializedFriends())

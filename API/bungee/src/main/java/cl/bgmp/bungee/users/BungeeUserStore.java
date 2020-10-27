@@ -77,8 +77,7 @@ public class BungeeUserStore implements Listener {
 
   public Optional<UUID> getPlayerUUID(ProxiedPlayer player) {
     String uuid =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getMinecraftUsersTable())
             .getting(new Column("uuid", SQLDataType.STRING))
             .where(new Column("nick", SQLDataType.STRING))
@@ -91,8 +90,7 @@ public class BungeeUserStore implements Listener {
 
   private boolean isPlayerLinked(ProxiedPlayer player) {
     String uuid =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getUsersTable())
             .getting(new Column("uuid", SQLDataType.STRING))
             .where(new Column("uuid", SQLDataType.STRING))
@@ -104,8 +102,7 @@ public class BungeeUserStore implements Listener {
 
   private LinkedList<UUID> getFriendsOf(UUID user) {
     String serializedFriends =
-        new MySQLSelect()
-            .from(database.getConnection())
+        new MySQLSelect(this.database)
             .atTable(this.config.getUsersTable())
             .getting(new Column("friends", SQLDataType.STRING))
             .where(new Column("uuid", SQLDataType.STRING))

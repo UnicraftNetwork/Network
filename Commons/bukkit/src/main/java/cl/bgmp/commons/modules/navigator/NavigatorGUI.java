@@ -2,7 +2,7 @@ package cl.bgmp.commons.modules.navigator;
 
 import cl.bgmp.butils.bungee.Server;
 import cl.bgmp.butils.chat.Chat;
-import cl.bgmp.butils.gui.GUI;
+import cl.bgmp.butils.gui.legacy.LegacyGUI;
 import cl.bgmp.butils.translations.Translations;
 import cl.bgmp.commons.Commons;
 import cl.bgmp.commons.Config;
@@ -18,7 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class NavigatorGUI extends GUI {
+public class NavigatorGUI extends LegacyGUI {
   private Player owner;
   private Commons commons;
   private Set<ServerButton> serverButtons;

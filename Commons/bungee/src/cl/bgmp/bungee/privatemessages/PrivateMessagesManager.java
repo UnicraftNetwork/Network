@@ -72,6 +72,7 @@ public class PrivateMessagesManager implements Listener {
     for (final String key : this.replyRelations.keySet()) {
       if (this.replyRelations.get(key).equals(player.getName())) {
         this.replyRelations.remove(key);
+        break;
       }
     }
   }

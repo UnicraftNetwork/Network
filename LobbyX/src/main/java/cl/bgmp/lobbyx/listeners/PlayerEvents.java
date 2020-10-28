@@ -22,7 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerEvents implements Listener {
 
-  private Config config;
+  private final Config config;
 
   @Inject
   public PlayerEvents(Config config) {

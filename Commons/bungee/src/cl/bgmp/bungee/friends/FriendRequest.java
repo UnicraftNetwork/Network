@@ -24,11 +24,6 @@ public class FriendRequest {
     this.sender = sender;
     this.receiver = receiver;
     this.api = api;
-
-    this.commonsBungee
-        .getProxy()
-        .getScheduler()
-        .schedule(this.commonsBungee, this::expire, expiration.getSeconds(), TimeUnit.SECONDS);
   }
 
   public LinkedUser getSender() {
@@ -45,6 +40,13 @@ public class FriendRequest {
 
   public boolean wasResponded() {
     return responded;
+  }
+
+  public void submit() {
+    this.commonsBungee
+        .getProxy()
+        .getScheduler()
+        .schedule(this.commonsBungee, this::expire, expiration.getSeconds(), TimeUnit.SECONDS);
   }
 
   public void expire() {

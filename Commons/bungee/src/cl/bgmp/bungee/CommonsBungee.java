@@ -68,7 +68,7 @@ public class CommonsBungee extends Plugin implements CommandExecutor<CommandSend
     this.channelsManager = new ChannelsManager(this);
     this.multiResolver = new MultiResolver(this);
     this.privateMessagesManager = new PrivateMessagesManager(this, this.multiResolver);
-    this.frm = new FriendRequestManager(this);
+    this.frm = new FriendRequestManager(this, this.api);
 
     this.api = APIBungee.get();
 

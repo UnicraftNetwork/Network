@@ -23,22 +23,6 @@ public class NavigatorModule extends Module {
     super(ModuleId.NAVIGATOR);
   }
 
-  /**
-   * Compares the given item to the navigator's item and checks if they are equal
-   *
-   * @param itemStack The item to compare to navigator's item
-   * @return Whether or not the two items are equal
-   */
-  private boolean itemIsNavigator(final @Nonnull ItemStack itemStack) {
-    if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
-
-    if (itemStack.getItemMeta() instanceof SkullMeta) {
-      final SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-      if (skullMeta.getOwner() == null) return false;
-      return skullMeta.getOwner().equals(this.config.getNavigatorHead());
-    } else return false;
-  }
-
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     final Action action = event.getAction();
@@ -78,6 +62,22 @@ public class NavigatorModule extends Module {
             .build();
 
     event.getPlayer().getInventory().setItem(4, navigatorItem);
+  }
+
+  /**
+   * Compares the given item to the navigator's item and checks if they are equal
+   *
+   * @param itemStack The item to compare to navigator's item
+   * @return Whether or not the two items are equal
+   */
+  private boolean itemIsNavigator(final @Nonnull ItemStack itemStack) {
+    if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) return false;
+
+    if (itemStack.getItemMeta() instanceof SkullMeta) {
+      final SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+      if (skullMeta.getOwner() == null) return false;
+      return skullMeta.getOwner().equals(this.config.getNavigatorHead());
+    } else return false;
   }
 
   @Override

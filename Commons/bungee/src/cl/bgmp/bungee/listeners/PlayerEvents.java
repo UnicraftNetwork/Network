@@ -26,6 +26,11 @@ public class PlayerEvents implements Listener {
     this.commonsBungee = commonsBungee;
   }
 
+  /**
+   * Throw kicked out users into any available Lobby instance.
+   *
+   * @param event The kick event.
+   */
   @EventHandler
   public void onPlayerKickedFromServer(ServerKickEvent event) {
     final ProxiedPlayer player = event.getPlayer();
@@ -46,11 +51,11 @@ public class PlayerEvents implements Listener {
 
     if (from == null) return;
 
-    final Optional<ServerInfo> to = this.multiResolver.resolveSuitableLobby();
-    if (!to.isPresent() || from.equals(to.get())) return;
+    final Optional<ServerInfo> lobby = this.multiResolver.resolveSuitableLobby();
+    if (!lobby.isPresent() || from.equals(lobby.get())) return;
 
     event.setCancelled(true);
-    event.setCancelServer(to.get());
+    event.setCancelServer(lobby.get());
 
     player.sendMessage(
         new ComponentWrapper(ChatConstant.SERVER_KICK.getAsString()).color(ChatColor.RED).build());

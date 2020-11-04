@@ -52,8 +52,7 @@ public class NavigatorModule extends Module {
     Player player = event.getPlayer();
 
     ItemStack navigatorItem =
-        new PlayerHeadBuilder()
-            .setOwner(this.config.getNavigatorHead())
+        new PlayerHeadBuilder(this.config.getNavigatorHead())
             .setName(
                 ChatColor.BLUE.toString()
                     + ChatColor.BOLD

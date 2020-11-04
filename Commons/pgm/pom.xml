@@ -58,7 +58,7 @@
         <dependency>
             <groupId>cl.bgmp</groupId>
             <artifactId>BUtils</artifactId>
-            <version>1.0.1.pre-SNAPSHOT</version>
+            <version>1.0.4.pre-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>

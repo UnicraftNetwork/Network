@@ -1,6 +1,8 @@
 Network [![deploy](https://github.com/ElMedievo-UdeC/Network/workflows/build/badge.svg)](https://github.com/ElMedievo-UdeC/Network/runs/632186694) [![Crowdin](https://badges.crowdin.net/elmedievo/localized.svg)](https://crowdin.com/project/elmedievo)
 ===
 
+**NOTE**: This repository is no longer maintained. It has been publicly archived to serve as a public resource.
+
 Minecraft plugins used by the Unicraft Network, in alliance with [@ElMedievo](https://github.com/ElMedievo)
 
 ## Modules
